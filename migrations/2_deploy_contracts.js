@@ -1,11 +1,14 @@
-var Ownable = artifacts.require("./zeppelin/ownership/Ownable.sol");
-var Killable = artifacts.require("./zeppelin/lifecycle/Killable.sol");
-var Authentication = artifacts.require("./Authentication.sol");
+/*eslint no-undef: "off"*/
+
+var Market = artifacts.require("./Market.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Ownable);
-  deployer.link(Ownable, Killable);
-  deployer.deploy(Killable);
-  deployer.link(Killable, Authentication);
-  deployer.deploy(Authentication);
+
+  const statement = "The Mayans will return to earth on November 2017.";
+  const blockDuration = 150000;
+
+  deployer.deploy(Market,
+    statement,
+    blockDuration
+  );
 };
