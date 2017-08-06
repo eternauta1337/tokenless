@@ -8,6 +8,7 @@ import getWeb3 from './util/web3/getWeb3';
 // Layouts
 import App from './App';
 import Home from './components/Home';
+import MarketContainer from './components/MarketContainer';
 
 // Redux Store
 import store from './store';
@@ -20,15 +21,16 @@ getWeb3
 .then(results => {
   console.log('Web3 initialized!');
 })
-.catch(() => {
-  console.log('Error in web3 initialization.');
+.catch((error) => {
+  console.log('Error in web3 initialization: ', error);
 });
 
 ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={App}>
-          <IndexRoute component={Home} />
+          <IndexRoute component={Home}/>
+          <Route path="market/:address" component={MarketContainer}/>
         </Route>
       </Router>
     </Provider>

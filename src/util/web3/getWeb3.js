@@ -10,6 +10,7 @@ function web3Initialized(results) {
 }
 
 let getWeb3 = new Promise(function(resolve, reject) {
+
   // Wait for loading completion to avoid race conditions with web3 injection timing.
   window.addEventListener('load', function(dispatch) {
     var results;
@@ -21,7 +22,7 @@ let getWeb3 = new Promise(function(resolve, reject) {
       web3 = new Web3(web3.currentProvider);
 
       results = {
-        web3Instance: web3
+        instance: web3
       };
 
       console.log('Injected web3 detected.');
@@ -36,7 +37,7 @@ let getWeb3 = new Promise(function(resolve, reject) {
       web3 = new Web3(provider);
 
       results = {
-        web3Instance: web3
+        instance: web3
       };
 
       console.log('No web3 instance injected, using Local web3.');

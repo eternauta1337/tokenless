@@ -80,7 +80,7 @@ contract('Basic Tests (Market)', function(accounts) {
 
     const playerBalance = web3.fromWei(await contract.getPlayerBalance({
       from: accounts[1]
-    }), 'ether');
+    }), 'ether').toNumber();
     // log('player 1 balance: ', playerBalance);
 
     assert.equal(2, playerBalance, 'player balance was not tracked');
@@ -166,17 +166,17 @@ contract('Basic Tests (Market)', function(accounts) {
 
     await contract.bet(true, {
       from: accounts[1],
-      value: web3.toWei(10, 'ether')
+      value: web3.toWei(1, 'ether')
     });
 
     await contract.bet(false, {
       from: accounts[2],
-      value: web3.toWei(10, 'ether')
+      value: web3.toWei(1, 'ether')
     });
 
     await contract.bet(false, {
       from: accounts[3],
-      value: web3.toWei(10, 'ether')
+      value: web3.toWei(1, 'ether')
     });
 
     skipBlocks(5);
@@ -193,7 +193,7 @@ contract('Basic Tests (Market)', function(accounts) {
     await contract.withdrawPayments({from: accounts[1]});
     const newPlayerBalance = getBalanceInEther(accounts[1]);
     // log('newPlayerBalance', newPlayerBalance);
-    const prize = 10 + 20 * 0.98;
+    const prize = 1 + 2 * 0.98;
     const expectedNewPlayerBalance = initPlayerBalance + prize;
     // log('expectedNewPlayerBalance', expectedNewPlayerBalance);
     assert.approximately(newPlayerBalance, expectedNewPlayerBalance, 0.01, 'expected winner balance is incorrect');
@@ -201,7 +201,7 @@ contract('Basic Tests (Market)', function(accounts) {
     // Winners should not be able to withdraw twice.
     const remainingBalance = web3.fromWei(await contract.getPlayerBalance({
       from: accounts[1]
-    }), 'ether');
+    }), 'ether').toNumber();
     // log('remainingBalance: ', remainingBalance);
     await expectThrow(contract.claimPrize({from: accounts[1]}));
   });
