@@ -36,7 +36,7 @@ contract('Basic Tests (Market)', function(accounts) {
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
     // Assumes that tests are ran immediately after contract creation.
-    const lifeSpan = (await contract.endBlock.call()) - web3.eth.blockNumber;
+    const lifeSpan = (await contract.endBlock.call()).toNumber() - web3.eth.blockNumber;
     // log('lifeSpan: ', lifeSpan);
 
     assert.isAbove(lifeSpan, 0, 'contract was just created but has no time left');

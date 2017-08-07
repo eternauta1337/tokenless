@@ -4,7 +4,7 @@ import {
 
 const initialState = {
   /* ["0x05d2b3c177c974cb70492b8ad956e1caf64077f7"]: market */
-  focusedMarketAddress: undefined
+  focusedMarket: undefined
 };
 
 export default function(state = initialState, action) {
@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       [market.address]: market,
-      focusedMarketAddress: market.address
+      focusedMarket: market
     };
 
   default:

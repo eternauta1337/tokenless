@@ -11,7 +11,7 @@ import './styles/index.css';
 // Layouts
 import App from './components/App';
 import Home from './components/Home';
-import MarketContainer from './components/MarketContainer';
+import MarketContainer from './components/market/MarketContainer';
 
 // Redux Store
 import store from './store';
