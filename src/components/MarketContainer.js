@@ -1,7 +1,7 @@
 import Market from './Market';
 import { connect } from 'react-redux';
 import {
-  fetchMarketAsync
+  retrieveAndWatchMarketAt
 } from '../actions/MarketActions';
 import store from '../store';
 
@@ -9,16 +9,19 @@ const mapStateToProps = (state, ownProps) => {
   // console.log('MarketContainer - state', state);
 
   const web3 = state.network.web3;
-  const market = state.markets[ownProps.routeParams.address];
+  const focusedMarketAddress = state.markets.focusedMarketAddress;
+  const urlMarketAddress = ownProps.routeParams.address;
+  const market = state.markets[urlMarketAddress];
 
-  // Request market fetch?
-  if(web3 && !market) {
+  // Retrieve and watch contract?
+  if(web3 && focusedMarketAddress !== urlMarketAddress) {
     const { address } = ownProps.routeParams;
-    store.dispatch(fetchMarketAsync(address));
+    store.dispatch(retrieveAndWatchMarketAt(address));
   }
 
   return {
     isConnected: web3 && market,
+    coinbase: state.network.coinbase,
     market
   };
 };

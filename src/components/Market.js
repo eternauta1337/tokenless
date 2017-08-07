@@ -28,6 +28,7 @@ class Market extends React.Component {
           <h2>Yea: 722 votes (3500 eth)</h2>
           <h2>Nay: 328 votes (250 eth)</h2>
           <h2>blocks remaining: {market.blocksRemaining}</h2>
+          <h2>owned by user: {market.isOwnedByUser ? 'true' : 'false'}</h2>
           <br/>
           <h2>What is your prediction?</h2>
           <input placeholder='Please enter your bet'></input>
