@@ -5,7 +5,7 @@ import {
 } from '../actions/MarketActions';
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('MarketContainer - state', state);
+  // console.log('MarketContainer - state', state);
   const web3 = state.network.web3;
   const market = state.markets[ownProps.routeParams.address];
   return {

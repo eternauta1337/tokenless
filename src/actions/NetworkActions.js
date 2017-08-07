@@ -3,7 +3,6 @@ import Web3 from 'web3';
 export const INIT_WEB3 = 'network/INIT_WEB3';
 
 export function initWeb3(web3) {
-  console.log('initWeb3', web3);
   return {
     type: INIT_WEB3,
     payload: web3

@@ -10,8 +10,6 @@ class Market extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 
-    console.log('componentWillReceiveProps - props: ', nextProps);
-
     // Request market fetch?
     if(nextProps.isWeb3Connected &&
       !nextProps.isMarketConnected) {
