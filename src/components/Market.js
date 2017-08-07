@@ -8,22 +8,13 @@ import React from 'react';
 
 class Market extends React.Component {
 
-  componentWillReceiveProps(nextProps) {
-
-    // Request market fetch?
-    if(nextProps.isWeb3Connected &&
-      !nextProps.isMarketConnected) {
-        const { address } = this.props.routeParams;
-        this.props.fetchMarketAsync(address);
-    }
-  }
-
   render() {
+
     const {
-      isWeb3Connected,
-      isMarketConnected
+      isConnected
     } = this.props;
-    if(!isWeb3Connected || !isMarketConnected) {
+
+    if(!isConnected) {
       return (
         <div>Connecting...</div>
       );
@@ -31,7 +22,7 @@ class Market extends React.Component {
     else {
       return (
         <div>
-          <h1>This is a market</h1>
+          <h1>This is a market.</h1>
           <p>statement: {this.props.market.statement}</p>
         </div>
       );
