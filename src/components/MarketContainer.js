@@ -5,10 +5,11 @@ import {
 } from '../actions/MarketActions';
 
 const mapStateToProps = (state, ownProps) => {
-  const web3 = state.web3.instance;
+  console.log('MarketContainer - state', state);
+  const web3 = state.network.web3;
   const market = state.markets[ownProps.routeParams.address];
   return {
-    isWeb3Connected: web3 !== null,
+    isWeb3Connected: web3 !== undefined,
     isMarketConnected: market !== undefined,
     market
   };

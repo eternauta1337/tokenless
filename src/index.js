@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import getWeb3 from './util/web3/getWeb3';
+import {
+  loadWeb3Async
+} from './actions/NetworkActions';
+import './styles/index.css';
 
 // Layouts
-import App from './App';
+import App from './components/App';
 import Home from './components/Home';
 import MarketContainer from './components/MarketContainer';
 
@@ -15,15 +18,6 @@ import store from './store';
 
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
-
-// Initialize web3 and set in Redux.
-getWeb3
-.then(results => {
-  console.log('Web3 initialized!');
-})
-.catch((error) => {
-  console.log('Error in web3 initialization: ', error);
-});
 
 ReactDOM.render((
     <Provider store={store}>
@@ -37,3 +31,6 @@ ReactDOM.render((
   ),
   document.getElementById('root')
 );
+
+// Initialize web3 and store in state.
+store.dispatch(loadWeb3Async());
