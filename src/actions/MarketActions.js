@@ -3,16 +3,22 @@ import MarketArtifacts from '../../build/contracts/Market.json';
 
 export const LOAD_MARKET = 'market/LOAD_MARKET';
 
+// ---------------------
+// Sync actions
+// ---------------------
+
 export function loadMarket(market) {
-  // console.log('loadMarket() - market.address', market.address);
   return {
     type: LOAD_MARKET,
     payload: market
   };
 }
 
+// ---------------------
+// Async actions
+// ---------------------
+
 export function fetchMarketAsync(address) {
-  // console.log('fetchMarketAsync() - address: ', address);
   return function(dispatch, getState) {
     const web3 = getState().network.web3;
     const Market = TruffleContract(MarketArtifacts);
