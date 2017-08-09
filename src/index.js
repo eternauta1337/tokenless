@@ -33,4 +33,5 @@ ReactDOM.render((
 );
 
 // Initialize web3 and store in state.
-store.dispatch(loadWeb3Async());
+const DEBUG = true;
+store.dispatch(loadWeb3Async(DEBUG));
