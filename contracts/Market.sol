@@ -47,6 +47,10 @@ contract Market is Ownable, PullPayment {
     return bets[msg.sender].prediction;
   }
 
+  function getPredictionBalance(bool prediction) constant returns (uint) {
+    return totals[prediction];
+  }
+
   // --------------------------------------------------
   // Resolution
   // --------------------------------------------------
