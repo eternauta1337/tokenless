@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import * as util from '../utils/Web3Util';
+import * as util from '../../utils/Web3Util';
 
 export const INIT_WEB3 = 'network/INIT_WEB3';
 

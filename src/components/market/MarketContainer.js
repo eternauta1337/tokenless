@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import {
   retrieveAndWatchMarketAt,
   placeBetAsync,
-  resolveMarketASync
-} from '../../actions/MarketActions';
+  resolveMarketASync,
+  withdrawPrizeAsync
+} from '../../actions/market/MarketActions';
 import store from '../../store';
 
 const mapStateToProps = (state, ownProps) => {
@@ -33,7 +34,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     placeBetAsync: (prediction, value) => dispatch(placeBetAsync(prediction, value)),
-    resolveMarketASync: (outcome) => dispatch(resolveMarketASync(outcome))
+    resolveMarketASync: (outcome) => dispatch(resolveMarketASync(outcome)),
+    withdrawPrizeAsync: (outcome) => dispatch(withdrawPrizeAsync())
   };
 };
 

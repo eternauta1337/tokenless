@@ -1,6 +1,6 @@
 import {
   INIT_WEB3
-} from '../actions/NetworkActions';
+} from '../actions/network/NetworkActions';
 
 const initialState = {
   web3: undefined

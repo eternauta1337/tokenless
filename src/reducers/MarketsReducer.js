@@ -1,6 +1,6 @@
 import {
   LOAD_MARKET
-} from '../actions/MarketActions';
+} from '../actions/market/MarketActions';
 
 const initialState = {
   /* ["0x05d2b3c177c974cb70492b8ad956e1caf64077f7"]: market */

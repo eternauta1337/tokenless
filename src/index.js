@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import {
   loadWeb3Async
-} from './actions/NetworkActions';
+} from './actions/network/NetworkActions';
 import './styles/index.css';
 
 // Layouts

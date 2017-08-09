@@ -39,13 +39,15 @@ class Market extends React.Component {
 
   renderWithdrawElements() {
     const {
-      market
+      market,
+      withdrawPrizeAsync
     } = this.props;
     if(market.meta.state === 2) {
       return (
         <div>
           <MarketWithdraw
             market={market}
+            withdrawPrizeAsync={withdrawPrizeAsync}
             />
         </div>
       );
@@ -78,7 +80,8 @@ class Market extends React.Component {
       return (
         <div>
           <h2>You own this market.</h2>
-          {market.meta.blocksRemaining <= 0 && market.meta.state === 1 &&
+          {market.meta.blocksRemaining <= 0 &&
+            market.meta.state !== 2 &&
             <MarketResolve
               resolveMarketASync={resolveMarketASync}
               />
