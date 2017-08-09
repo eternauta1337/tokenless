@@ -14,8 +14,9 @@ export function skipBlocks(numBlocks, web3) {
   for(let i = 0; i < numBlocks; i++) {
     web3.currentProvider.send({
       jsonrpc: '2.0',
-      method: 'evm_mine',
+      method: 'evm_mine'
     });
+    // web3.currentProvider.send({jsonrpc: '2.0',method: 'evm_mine'});
   }
 }
 
