@@ -4,11 +4,13 @@ import {
 
 const initialState = {
   /* ["0x05d2b3c177c974cb70492b8ad956e1caf64077f7"]: market */
-  focusedMarket: undefined
+  focusedMarket: undefined,
+  nonce: 0
 };
 
 export default function(state = initialState, action) {
-  // console.log('MarketsReducer', action);
+  console.log('MarketsReducer', action);
+
   switch(action.type) {
 
   case LOAD_MARKET:
@@ -16,7 +18,8 @@ export default function(state = initialState, action) {
     return {
       ...state,
       [market.address]: market,
-      focusedMarket: market
+      focusedMarket: market,
+      nonce: state.nonce + 1
     };
 
   default:

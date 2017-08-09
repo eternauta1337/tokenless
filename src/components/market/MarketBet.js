@@ -9,8 +9,9 @@ const MarketBet = ({ market, placeBetAsync }) => {
 
   return (
     <div>
-      Your current prediction: {market.meta.playerPrediction}
-      Your current prediction balance: {market.meta.playerBalance}
+      Your current prediction: {market.meta.playerPrediction ? 'yea' : 'nay'}
+      <br/>
+      Your current prediction balance: {market.meta.playerBalance} eth
       <br/>
       <h2>What is your prediction?</h2>
       <input placeholder='Place your bet here'></input>

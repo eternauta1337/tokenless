@@ -1,17 +1,14 @@
 import React from 'react';
+
 import MarketBet from './MarketBet';
 import MarketResolve from './MarketResolve';
 import MarketInfo from './MarketInfo';
-
-// TODO: remove
-/*
-  Test addresses:
-  0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a
-*/
+import MarketWithdraw from './MarketWithdraw';
 
 class Market extends React.Component {
 
   render() {
+    console.log('Market RENDER');
     return (
       <div>
         {this.renderConnecting()}
@@ -24,31 +21,67 @@ class Market extends React.Component {
     const {
       market,
       isConnected,
-      placeBetAsync 
+      nonce
     } = this.props;
     if(isConnected) {
       return (
         <div>
           <h1>{market.meta.statement}</h1>
+          Nonce: {nonce}
           <MarketInfo market={market}/>
+          {this.renderBetElements()}
+          {this.renderOwnerElements()}
+          {this.renderWithdrawElements()}
+        </div>
+      );
+    }
+  }
+
+  renderWithdrawElements() {
+    const {
+      market
+    } = this.props;
+    if(market.meta.state === 2) {
+      return (
+        <div>
+          <MarketWithdraw
+            market={market}
+            />
+        </div>
+      );
+    }
+  }
+
+  renderBetElements() {
+    const {
+      market,
+      placeBetAsync
+    } = this.props;
+    if(market.meta.blocksRemaining > 0) {
+      return (
+        <div>
           <MarketBet
             market={market}
             placeBetAsync={placeBetAsync}
             />
-          {this.renderOwnerElements()}
         </div>
       );
     }
   }
 
   renderOwnerElements() {
-    const { market } = this.props;
+    const {
+      market,
+      resolveMarketASync
+    } = this.props;
     if(market.meta.isOwnedByUser) {
       return (
         <div>
           <h2>You own this market.</h2>
-          {market.meta.blocksRemaining <= 0 &&
-            <MarketResolve/>
+          {market.meta.blocksRemaining <= 0 && market.meta.state === 1 &&
+            <MarketResolve
+              resolveMarketASync={resolveMarketASync}
+              />
           }
         </div>
       );

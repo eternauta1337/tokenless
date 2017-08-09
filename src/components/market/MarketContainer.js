@@ -2,12 +2,13 @@ import Market from './Market';
 import { connect } from 'react-redux';
 import {
   retrieveAndWatchMarketAt,
-  placeBetAsync
+  placeBetAsync,
+  resolveMarketASync
 } from '../../actions/MarketActions';
 import store from '../../store';
 
 const mapStateToProps = (state, ownProps) => {
-  // console.log('MarketContainer - state', state);
+  console.log('MarketContainer - state', state);
 
   const web3 = state.network.web3;
   const market = state.markets.focusedMarket;
@@ -24,13 +25,15 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isConnected: web3 && market,
     coinbase: state.network.coinbase,
+    nonce: state.markets.nonce,
     market
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    placeBetAsync: (prediction, value) => dispatch(placeBetAsync(prediction, value))
+    placeBetAsync: (prediction, value) => dispatch(placeBetAsync(prediction, value)),
+    resolveMarketASync: (outcome) => dispatch(resolveMarketASync(outcome))
   };
 };
 
