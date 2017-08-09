@@ -6,25 +6,32 @@ export function withdrawPrizeAsync() {
     const web3 = getState().network.web3;
     const market = getState().markets.focusedMarket;
 
-    // TODO: dispatch resolve action...
-    console.log('withdrawing prize...');
-    const initPlayerBalance = web3.fromWei((await market.getPlayerBalance({from: web3.coinbase})).toNumber(), 'ether');
-    console.log('init balance:', initPlayerBalance);
+    // Listen for withdraw event...
+    market.ClaimEvent().watch(async (error, result) => {
+      console.log('ClaimEvent', error, result);
+      if(error) {
+        // TODO: dispatch error...
+        console.log('error withdrawing funds');
+      }
+      else {
+        console.log('withdraw succesful!', result);
 
-    // Check balance to confirm withdrawal.
+        // Claim != withdrawal, still need to
+        // pull the ether out.
+        await market.withdrawPayments({
+          from: web3.eth.coinbase
+        });
+
+        util.refreshMarketData(market, dispatch, getState);
+      }
+    });
+
+    // TODO: dispatch resolve action...
+
+    // Withdraw
+    console.log('withdrawing prize...');
     await market.claimPrize({
       from: web3.eth.coinbase
     });
-    const newPlayerBalance = web3.fromWei((await market.getPlayerBalance({from: web3.coinbase})).toNumber(), 'ether');
-    console.log('new balance:', newPlayerBalance);
-
-    if(newPlayerBalance === 0) {
-      console.log('withdraw succesful!');
-      util.refreshMarketData(market, dispatch, getState);
-    }
-    else {
-      // TODO: dispatch error...
-      console.log('error withdrawing funds');
-    }
   };
 }

@@ -6,25 +6,28 @@ export function placeBetAsync(prediction, betEther) {
     const web3 = getState().network.web3;
     const market = getState().markets.focusedMarket;
 
+    // Listen for bet event...
+    market.BetEvent().watch((error, result) => {
+      console.log('BetEvent', error, result);
+      if(error) {
+        // TODO: dispatch error placing bet action...
+        console.log('placing bet failed');
+      }
+      else {
+        console.log('bet placed!', result);
+        util.refreshMarketData(market, dispatch, getState);
+      }
+    });
+
     // TODO: dispatch placing bet action...
 
-    // Check balance to confirm if the bet is succesful later.
+    // Place bet
     const playerAddress = web3.eth.coinbase;
-    const initPlayerBalance = await market.getPlayerBalance({from: playerAddress});
     const betWei = web3.toWei(betEther, 'ether');
     console.log('placing bet: ', prediction, betWei, playerAddress);
     await market.bet(prediction, {
       from: playerAddress,
       value: betWei
     });
-    const newPlayerBalance = await market.getPlayerBalance({from: playerAddress});
-    if(newPlayerBalance === initPlayerBalance) {
-      // TODO: dispatch error placing bet action...
-      console.log('placing bet failed');
-    }
-    else {
-      console.log('bet placed!');
-      util.refreshMarketData(market, dispatch, getState);
-    }
   };
 }

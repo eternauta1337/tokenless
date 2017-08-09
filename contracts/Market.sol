@@ -28,6 +28,8 @@ contract Market is Ownable, PullPayment {
     uint balance;
   }
 
+  event BetEvent(address indexed from, bool prediction, uint value);
+
   mapping(address => Bet) public bets;
   mapping(bool => uint) public totals;
 
@@ -37,6 +39,7 @@ contract Market is Ownable, PullPayment {
       balance: bets[msg.sender].balance.add(msg.value)
     });
     totals[prediction] = totals[prediction].add(msg.value);
+    BetEvent(msg.sender, prediction, msg.value);
   }
 
   function getPlayerBalance() constant returns (uint) {
@@ -57,14 +60,19 @@ contract Market is Ownable, PullPayment {
 
   bool public outcome;
 
+  event ResolveEvent(bool outcome);
+
   function resolve(bool _outcome) onlyOwner onlyInState(State.Closed) {
     outcome = _outcome;
     resolved = true;
+    ResolveEvent(outcome);
   }
 
   // --------------------------------------------------
   // Prize withdrawals
   // --------------------------------------------------
+
+  event ClaimEvent(address indexed from);
 
   function claimPrize() onlyInState(State.Resolved) {
 
@@ -92,6 +100,8 @@ contract Market is Ownable, PullPayment {
     asyncSend(msg.sender, prize);
     bet.balance = 0;
     bets[msg.sender] = bet;
+
+    ClaimEvent(msg.sender);
   }
 
   // --------------------------------------------------

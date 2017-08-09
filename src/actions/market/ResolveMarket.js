@@ -6,26 +6,25 @@ export function resolveMarketASync(outcome) {
     const web3 = getState().network.web3;
     const market = getState().markets.focusedMarket;
 
+    // Listen for resolve event...
+    market.ResolveEvent().watch((error, result) => {
+      console.log('ResolveEvent', error, result);
+      if(error) {
+        // TODO: dispatch error resolving...
+        console.log('error resolving contract');
+      }
+      else {
+        console.log('contract resolved!', result);
+        util.refreshMarketData(market, dispatch, getState);
+      }
+    });
+
     // TODO: dispatch resolve action...
 
+    // Resolve
     console.log('resolving market with outcome:', outcome);
-    const initState = (await market.getState()).toNumber();
-    console.log('init state: ', initState);
-
-    // Check state to confirm if the contract resolved.
     await market.resolve(outcome, {
       from: web3.eth.coinbase
     });
-    const newState = (await market.getState()).toNumber();
-    console.log('new state: ', newState);
-
-    if(newState === 2) {
-      console.log('contract resolved!');
-      util.refreshMarketData(market, dispatch, getState);
-    }
-    else {
-      // TODO: dispatch error resolving...
-      console.log('error resolving contract');
-    }
   };
 }
