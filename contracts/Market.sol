@@ -109,7 +109,7 @@ contract Market is Ownable, PullPayment {
 
   function getState() constant returns (State) {
     if(!resolved) {
-      if(block.number <= endBlock) {
+      if(block.number < endBlock) {
         return State.Open;
       }
       else {
