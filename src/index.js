@@ -1,29 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
-import {
-  loadWeb3Async
-} from './actions/network/NetworkActions';
-import './styles/index.css';
-
-// Layouts
-import App from './components/App';
-import Home from './components/Home';
-import MarketContainer from './components/market/MarketContainer';
-
 // Redux Store
-import store from './store';
-
-// Initialize react-router-redux.
+import { syncHistoryWithStore } from 'react-router-redux';
+import reducers from './reducers';
+import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const routingMiddleware = routerMiddleware(browserHistory);
+const store = createStore(
+  reducers,
+  composeEnhancers(
+    applyMiddleware(
+      thunkMiddleware,
+      routingMiddleware
+    )
+  )
+);
 const history = syncHistoryWithStore(browserHistory, store);
 
+// UI Entry point.
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import AppComponent from './components/AppComponent';
+import HomeComponent from './components/home/HomeComponent';
+import MarketContainer from './components/market/MarketContainer';
+import './styles/index.css';
 ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
-        <Route path="/" component={App}>
-          <IndexRoute component={Home}/>
+        <Route path="/" component={AppComponent}>
+          <IndexRoute component={HomeComponent}/>
           <Route path="market/:address" component={MarketContainer}/>
         </Route>
       </Router>
@@ -33,5 +40,7 @@ ReactDOM.render((
 );
 
 // Initialize web3 and store in state.
-const DEBUG = true;
-store.dispatch(loadWeb3Async(DEBUG));
+import {
+  startWeb3
+} from './actions/network';
+store.dispatch(startWeb3());

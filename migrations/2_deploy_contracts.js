@@ -4,11 +4,11 @@ var Market = artifacts.require("./Market.sol");
 
 module.exports = function(deployer) {
 
-  const statement = "The Mayans will return to earth on November 2017.";
-  const blockDuration = 150000;
+  const statement = "The first draft of tokenless will be delivered next Friday.";
+  const durationInBlocks = 20;
 
   deployer.deploy(Market,
     statement,
-    blockDuration
+    durationInBlocks
   );
 };

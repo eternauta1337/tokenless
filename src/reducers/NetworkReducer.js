@@ -1,20 +1,32 @@
 import {
-  INIT_WEB3
-} from '../actions/network/NetworkActions';
+  START_WEB3,
+  SET_ACTIVE_ACCOUNT_INDEX
+} from '../actions/network';
 
 const initialState = {
-  web3: undefined
+  isConnected: false,
+  web3: undefined,
+  activeAccountIndex: undefined,
+  activeAccount: undefined
 };
 
 export default function(state = initialState, action) {
-  // console.log('NetworkReducer', action);
+  console.log('NetworkReducer', action);
 
   switch(action.type) {
 
-  case INIT_WEB3:
+  case START_WEB3:
     return {
       ...state,
-      web3: action.payload
+      web3: action.payload,
+      isConnected: true
+    };
+
+  case SET_ACTIVE_ACCOUNT_INDEX:
+    return {
+      ...state,
+      activeAccountIndex: action.payload,
+      activeAccount: state.web3.eth.accounts[action.payload]
     };
 
   default:

@@ -1,3 +1,5 @@
+import * as EthUtil from 'ethereumjs-util';
+
 export async function getBlockNumber(web3) {
   return new Promise(resolve => {
     web3.eth.getBlockNumber(async (err, blockNumber) => {
@@ -30,3 +32,15 @@ export async function delay(ms) {
     setTimeout(resolve, ms);
   });
 }
+
+export function privateKeyToAddress(privateKeyHex) {
+  var privateKeyBytes = hexToBytes(privateKeyHex);
+  var addressBytes =  EthUtil.privateToAddress(privateKeyBytes);
+  return '0x' + addressBytes.toString('hex');
+};
+
+export function hexToBytes(hex) {
+  for (var bytes = [], c = 0; c < hex.length; c+=2)
+    bytes.push(parseInt(hex.substr(c, 2), 16));
+  return bytes;
+};

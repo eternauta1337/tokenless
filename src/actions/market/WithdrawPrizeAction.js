@@ -3,7 +3,6 @@ import * as util from './MarketActionUtils';
 export function withdrawPrizeAsync() {
   return async function(dispatch, getState) {
 
-    const web3 = getState().network.web3;
     const market = getState().markets.focusedMarket;
 
     // Listen for withdraw event...
@@ -19,7 +18,7 @@ export function withdrawPrizeAsync() {
         // Claim != withdrawal, still need to
         // pull the ether out.
         await market.withdrawPayments({
-          from: web3.eth.coinbase
+          from: getState().network.activeAccount
         });
 
         util.refreshMarketData(market, dispatch, getState);
@@ -31,7 +30,7 @@ export function withdrawPrizeAsync() {
     // Withdraw
     console.log('withdrawing prize...');
     await market.claimPrize({
-      from: web3.eth.coinbase
+      from: getState().network.activeAccount
     });
   };
 }

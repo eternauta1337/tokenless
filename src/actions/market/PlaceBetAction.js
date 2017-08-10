@@ -22,7 +22,7 @@ export function placeBetAsync(prediction, betEther) {
     // TODO: dispatch placing bet action...
 
     // Place bet
-    const playerAddress = web3.eth.coinbase;
+    const playerAddress = getState().network.activeAccount;
     const betWei = web3.toWei(betEther, 'ether');
     console.log('placing bet: ', prediction, betWei, playerAddress);
     await market.bet(prediction, {

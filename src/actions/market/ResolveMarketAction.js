@@ -3,7 +3,6 @@ import * as util from './MarketActionUtils';
 export function resolveMarketASync(outcome) {
   return async function(dispatch, getState) {
 
-    const web3 = getState().network.web3;
     const market = getState().markets.focusedMarket;
 
     // Listen for resolve event...
@@ -24,7 +23,7 @@ export function resolveMarketASync(outcome) {
     // Resolve
     console.log('resolving market with outcome:', outcome);
     await market.resolve(outcome, {
-      from: web3.eth.coinbase
+      from: getState().network.activeAccount
     });
   };
 }

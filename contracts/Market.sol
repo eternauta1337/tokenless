@@ -3,8 +3,9 @@ pragma solidity ^0.4.11;
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/payment/PullPayment.sol";
+import "zeppelin-solidity/contracts/lifecycle/Destructible.sol";
 
-contract Market is Ownable, PullPayment {
+contract Market is Ownable, PullPayment, Destructible {
 
   using SafeMath for uint;
 
@@ -13,10 +14,18 @@ contract Market is Ownable, PullPayment {
   // --------------------------------------------------
 
   string public statement;
+  uint public endBlock; // bets close at endBlock
+  uint public killBlock; // owner can withdraw fees at killBlock
 
   function Market(string _statement, uint _blockDuration) {
     statement = _statement;
     endBlock = block.number.add(_blockDuration);
+
+    /*uint _killBlock = _blockDuration / 4;*/
+    /*if(_killBlock < 10) _killBlock = 10;*/
+    /*if(_killBlock > 30000) _killBlock = 30000;*/
+    /*killBlock = endBlock.add(_killBlock);*/
+    killBlock = endBlock + 5;
   }
 
   // --------------------------------------------------
@@ -88,14 +97,21 @@ contract Market is Ownable, PullPayment {
     Bet memory bet = bets[msg.sender];
     if(bet.prediction != outcome) { revert(); }
     if(bet.balance == 0) { revert(); }
+    /*LogEvent('bet.balance', bet.balance);*/
 
     uint winningPot = totals[outcome];
+    /*LogEvent('winningPot', winningPot);*/
     uint losingPot = totals[!outcome];
+    /*LogEvent('losingPot', losingPot);*/
 
     uint winPercentage = bet.balance.div(winningPot);
+    /*LogEvent('winPercentage', winPercentage);*/
     uint loserChunk = winPercentage.mul(losingPot);
+    /*LogEvent('loserChunk', loserChunk);*/
     uint fee = loserChunk.mul(feePercent).div(100);
+    /*LogEvent('fee', fee);*/
     uint prize = loserChunk.sub(fee).add(bet.balance);
+    /*LogEvent('prize', prize);*/
 
     asyncSend(msg.sender, prize);
     bet.balance = 0;
@@ -108,12 +124,11 @@ contract Market is Ownable, PullPayment {
   // State
   // --------------------------------------------------
 
-  uint public endBlock;
   bool private resolved;
-  enum State { Open, Closed, Resolved }
+  enum State { Open, Closed, Resolved, Finished }
 
   modifier onlyInState(State _state) {
-    if(getState() != _state) { revert(); }
+    if(_state != getState()) { revert(); }
     _;
   }
 
@@ -127,24 +142,34 @@ contract Market is Ownable, PullPayment {
       }
     }
     else {
-      return State.Resolved;
+      if(block.number < killBlock) {
+        return State.Resolved;
+      }
+      else {
+        return State.Finished;
+      }
     }
-  }
-
-  // --------------------------------------------------
-  // Debugging methods
-  // (could be removed without hurting the contract)
-  // --------------------------------------------------
-
-  function getBlockNumber() constant returns (uint) {
-    return block.number;
   }
 
   // --------------------------------------------------
   // Destruction
   // --------------------------------------------------
 
-  /*function destroy() onlyOwner stateIs(State.Finished) {
+  event DestroyEvent(address indexed from);
+
+  function destroy() onlyOwner onlyInState(State.Finished) {
+    DestroyEvent(msg.sender);
     super.destroy();
-  }*/
+  }
+
+  // --------------------------------------------------
+  // Debugging elements
+  // (could be removed without hurting the contract)
+  // --------------------------------------------------
+
+  event LogEvent(string msg, uint value);
+
+  function getBlockNumber() constant returns (uint) {
+    return block.number;
+  }
 }

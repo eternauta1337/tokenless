@@ -8,9 +8,6 @@ const MarketWithdraw = ({ market, withdrawPrizeAsync }) => {
 
   return (
     <div>
-      Funds available to withdraw: {market.meta.playerBalance}
-      <br/>
-      <br/>
       <button
         disabled={market.meta.playerBalance <= 0}
         onClick={(evt) => handleButtonClick()}>Withdraw prize</button>

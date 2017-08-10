@@ -10,7 +10,7 @@ const MarketResolve = ({ resolveMarketASync }) => {
     <div>
       <h2>Resolve this market now:</h2>
       <button onClick={(evt) => handleButtonClick(true)}>Yea</button>
-      <button onClick={(evt) => handleButtonClick(true)}>Nay</button>
+      <button onClick={(evt) => handleButtonClick(false)}>Nay</button>
     </div>
   );
 };

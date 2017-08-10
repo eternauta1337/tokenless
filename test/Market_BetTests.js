@@ -4,6 +4,10 @@ import * as util from '../src/utils/Web3Util';
 
 contract('Market (Bets)', function(accounts) {
 
+  before(() => {
+    console.log('accounts:', web3.eth.accounts);
+  });
+
   it('should accepts funds via bets', async function() {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
