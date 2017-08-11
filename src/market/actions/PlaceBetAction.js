@@ -1,32 +1,29 @@
-import * as util from './MarketActionUtils';
+import { connectMarket } from '.';
 
-export function placeBetAsync(prediction, betEther) {
+export function placeBet(prediction, betEther) {
+  console.log('placeBet()', prediction, betEther);
   return async function(dispatch, getState) {
 
     const web3 = getState().network.web3;
-    const market = getState().markets.focusedMarket;
+    const market = getState().market.contract;
 
     // Listen for bet event...
     market.BetEvent().watch((error, result) => {
       console.log('BetEvent', error, result);
       if(error) {
-        // TODO: dispatch error placing bet action...
         console.log('placing bet failed');
       }
       else {
         console.log('bet placed!', result);
-        util.refreshMarketData(market, dispatch, getState);
+        dispatch(connectMarket(market.address));
       }
     });
 
-    // TODO: dispatch placing bet action...
-
     // Place bet
-    const playerAddress = getState().network.activeAccount;
     const betWei = web3.toWei(betEther, 'ether');
-    console.log('placing bet: ', prediction, betWei, playerAddress);
+    console.log('placing bet: ', prediction, betWei, getState().network.activeAccountAddress);
     await market.bet(prediction, {
-      from: playerAddress,
+      from: getState().network.activeAccountAddress,
       value: betWei
     });
   };

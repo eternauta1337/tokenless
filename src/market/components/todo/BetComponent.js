@@ -2,7 +2,7 @@ import React from 'react';
 
 const MarketBet = ({ market, placeBetAsync }) => {
 
-  const handleButtonClick = (prediction) => {
+  const handleBetButtonClick = (prediction) => {
     // TODO: use input value
     placeBetAsync(prediction, 1);
   };
@@ -16,8 +16,8 @@ const MarketBet = ({ market, placeBetAsync }) => {
         <br/>
         <h2>What is your prediction?</h2>
         <input placeholder='Place your bet here'></input>
-        <button onClick={(evt) => handleButtonClick(true)}>Yea</button>
-        <button onClick={(evt) => handleButtonClick(false)}>Nay</button>
+        <button onClick={(evt) => handleBetButtonClick(true)}>Yea</button>
+        <button onClick={(evt) => handleBetButtonClick(false)}>Nay</button>
       </div>
     );
   }

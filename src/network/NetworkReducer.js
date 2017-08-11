@@ -1,17 +1,19 @@
 import {
   START_WEB3,
-  SET_ACTIVE_ACCOUNT_INDEX
-} from '../actions/network';
+  SET_ACTIVE_ACCOUNT_INDEX,
+  UPDATE_NETWORK
+} from './actions';
 
 const initialState = {
   isConnected: false,
   web3: undefined,
   activeAccountIndex: undefined,
-  activeAccount: undefined
+  activeAccountAddress: undefined,
+  /* additional blockchain params */
 };
 
 export default function(state = initialState, action) {
-  console.log('NetworkReducer', action);
+  // console.log('NetworkReducer', action);
 
   switch(action.type) {
 
@@ -22,11 +24,18 @@ export default function(state = initialState, action) {
       isConnected: true
     };
 
+  case UPDATE_NETWORK:
+    const blockchain = action.payload;
+    return {
+      ...state,
+      ...blockchain
+    };
+
   case SET_ACTIVE_ACCOUNT_INDEX:
     return {
       ...state,
       activeAccountIndex: action.payload,
-      activeAccount: state.web3.eth.accounts[action.payload]
+      activeAccountAddress: state.web3.eth.accounts[action.payload]
     };
 
   default:

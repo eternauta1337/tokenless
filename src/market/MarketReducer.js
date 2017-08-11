@@ -1,21 +1,24 @@
 import {
   CONNECT_MARKET
-} from '../actions/market';
+} from './actions';
 
 const initialState = {
   marketContract: undefined,
-  isConnected: false
+  isConnected: false,
+  statement: undefined
+  /* additional market params */
 };
 
 export default function(state = initialState, action) {
-  console.log('MarketReducer', action);
+  // console.log('MarketReducer', action);
 
   switch(action.type) {
 
   case CONNECT_MARKET:
+    const market = action.payload;
     return {
       ...state,
-      marketContract: action.payload,
+      ...market,
       isConnected: true
     };
 

@@ -4,8 +4,8 @@ var Market = artifacts.require("./Market.sol");
 
 module.exports = function(deployer) {
 
-  const statement = "The first draft of tokenless will be delivered next Friday.";
-  const durationInBlocks = 20;
+  const statement = "Bitcoin will be worth $5000 by October 2017.";
+  const durationInBlocks = 2;
 
   deployer.deploy(Market,
     statement,

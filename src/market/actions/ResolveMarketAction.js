@@ -1,29 +1,26 @@
-import * as util from './MarketActionUtils';
+import { connectMarket } from '.';
 
-export function resolveMarketASync(outcome) {
+export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
 
-    const market = getState().markets.focusedMarket;
+    const market = getState().market.contract;
 
     // Listen for resolve event...
     market.ResolveEvent().watch((error, result) => {
       console.log('ResolveEvent', error, result);
       if(error) {
-        // TODO: dispatch error resolving...
         console.log('error resolving contract');
       }
       else {
         console.log('contract resolved!', result);
-        util.refreshMarketData(market, dispatch, getState);
+        dispatch(connectMarket(market.address));
       }
     });
-
-    // TODO: dispatch resolve action...
 
     // Resolve
     console.log('resolving market with outcome:', outcome);
     await market.resolve(outcome, {
-      from: getState().network.activeAccount
+      from: getState().network.activeAccountAddress
     });
   };
 }

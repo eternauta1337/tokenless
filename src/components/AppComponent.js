@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import DebugContainer from './debug/DebugContainer';
+import DebugComponent from '../debug/components/DebugComponent';
 
 class App extends Component {
   render() {
@@ -14,7 +14,7 @@ class App extends Component {
         <br/>
         {this.props.children}
         <br/>
-        <DebugContainer/>
+        <DebugComponent/>
       </div>
     );
   }

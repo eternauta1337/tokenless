@@ -1083,10 +1083,174 @@
         }
       },
       "links": {},
-      "address": "0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a",
-      "updated_at": 1502394249826
+      "address": "0x232e1128a21bbffbc8d6befacb10137f37a653a0",
+      "updated_at": 1502416295595
+    },
+    "1502416535405": {
+      "events": {
+        "0x6913a989695d925ca51048d411bf2a90d34206730f73659e3429133fd1572d52": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "prediction",
+              "type": "bool"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "BetEvent",
+          "type": "event"
+        },
+        "0x0c76fa47944dce94d0f84963e1e1d59bd04921c7917b5aceda24407f47bd1774": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "outcome",
+              "type": "bool"
+            }
+          ],
+          "name": "ResolveEvent",
+          "type": "event"
+        },
+        "0xff7519ef63893ebb3be776f1d1a90d152560bc0084202b5f497e9d0a64f16b75": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "name": "ClaimEvent",
+          "type": "event"
+        },
+        "0x5158809353c1d603d8c77564e8556eea254ce047d03c767920eeb497481c1e4f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "name": "DestroyEvent",
+          "type": "event"
+        },
+        "0xb3baf5e190f6dba2d267361169dc414d32435a61ea6d5e0e851a6f8d0b0c248a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "msg",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogEvent",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa6421a7f48498cee3aeb6428a8a2dd5faa3ace2f",
+      "updated_at": 1502417944848
+    },
+    "1502418084179": {
+      "events": {
+        "0x6913a989695d925ca51048d411bf2a90d34206730f73659e3429133fd1572d52": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "prediction",
+              "type": "bool"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "BetEvent",
+          "type": "event"
+        },
+        "0x0c76fa47944dce94d0f84963e1e1d59bd04921c7917b5aceda24407f47bd1774": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "outcome",
+              "type": "bool"
+            }
+          ],
+          "name": "ResolveEvent",
+          "type": "event"
+        },
+        "0xff7519ef63893ebb3be776f1d1a90d152560bc0084202b5f497e9d0a64f16b75": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "name": "ClaimEvent",
+          "type": "event"
+        },
+        "0x5158809353c1d603d8c77564e8556eea254ce047d03c767920eeb497481c1e4f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "name": "DestroyEvent",
+          "type": "event"
+        },
+        "0xb3baf5e190f6dba2d267361169dc414d32435a61ea6d5e0e851a6f8d0b0c248a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "msg",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogEvent",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6732c278c58fc90542cce498981844a073d693d7",
+      "updated_at": 1502419658311
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1502394249826
+  "updated_at": 1502419658311
 }
