@@ -16,15 +16,16 @@ class Market extends React.Component {
 
   constructor() {
     super();
-
     this.state = {
       lastRecordedBlockNumber: 0
     };
   }
 
   componentWillMount() {
+    this.refreshMarket();
+  }
 
-    // Fetch market?
+  refreshMarket() {
     if(this.props.isNetworkConnected) {
       const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
       if(!this.props.isConnected || blockAdvanced) {
@@ -56,7 +57,6 @@ class Market extends React.Component {
   }
 
   render() {
-
     if(!this.props.isConnected) {
       return (
         <div>

@@ -10,22 +10,28 @@ import {
 
 class ListMarkets extends React.Component {
 
-  componentWillMount() {
+  constructor() {
+    super();
+    this.state = {
+      lastRecordedBlockNumber: 0
+    };
+  }
 
-    // Fetch factory?
-    console.log('ListMarketsComponent - componentWillReceiveProps()',
-      this.props.isNetworkConnected,
-      this.props.isConnected
-    );
+  componentWillMount() {
+    this.refreshFactory();
+  }
+
+  refreshFactory() {
     if(this.props.isNetworkConnected) {
-      if(!this.props.isConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!this.props.isConnected || blockAdvanced) {
+        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
         this.props.connectFactory();
       }
     }
   }
 
   render() {
-
     if(!this.props.isConnected) {
       return (
         <div>
@@ -55,6 +61,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     markets: state.factory.marketAddresses,
     isNetworkConnected: state.network.isConnected,
+    blockNumber: state.network.blockNumber,
     ...state.factory
   };
 };
