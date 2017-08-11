@@ -71,7 +71,10 @@ class Market extends React.Component {
 
     return (
       <div>
+
         <h1>{this.props.statement}</h1>
+
+        {/* INFO */}
         <span>Market info:</span>
         <ul>
           <li>Total balance: {totalBalance} ETH</li>
@@ -86,6 +89,8 @@ class Market extends React.Component {
             <li>You own this market.</li>
           }
         </ul>
+        
+        {/* BET */}
         {this.props.marketState === 0 &&
           <div>
             <br/>
@@ -100,6 +105,8 @@ class Market extends React.Component {
             <button onClick={(evt) => this.handleBetButtonClick(false)}>Nay</button>
           </div>
         }
+
+        {/* RESOLVE */}
         {isOwned && this.props.marketState === 1 &&
           <div>
             <h2>Resolve this market now:</h2>
@@ -107,18 +114,23 @@ class Market extends React.Component {
             <button onClick={(evt) => this.handleResolveButtonClick(false)}>Nay</button>
           </div>
         }
+
+        {/* WITHDRAW */}
         {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
           <div>
             <button
               onClick={(evt) => this.handleWithdrawButtonClick()}>Withdraw prize</button>
           </div>
         }
+
+        {/* DESTROY */}
         {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
           <div>
             <button
               onClick={(evt) => this.handleDestroyButtonClick()}>Destroy</button>
           </div>
         }
+
       </div>
     );
   }

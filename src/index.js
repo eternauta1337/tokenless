@@ -3,9 +3,11 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import NetworkReducer from './network/NetworkReducer';
 import MarketReducer from './market/MarketReducer';
+import FactoryReducer from './factory/FactoryReducer';
 const reducer = combineReducers({
   routing: routerReducer,
   network: NetworkReducer,
+  factory: FactoryReducer,
   market: MarketReducer
 });
 
@@ -35,6 +37,7 @@ import { Provider } from 'react-redux';
 import AppComponent from './components/AppComponent';
 import HomeComponent from './components/home/HomeComponent';
 import MarketComponent from './market/components/MarketComponent';
+import CreateMarketComponent from './factory/components/CreateMarketComponent';
 import './styles/index.css';
 ReactDOM.render((
     <Provider store={store}>
@@ -42,6 +45,7 @@ ReactDOM.render((
         <Route path="/" component={AppComponent}>
           <IndexRoute component={HomeComponent}/>
           <Route path="market/:address" component={MarketComponent}/>
+          <Route path="create" component={CreateMarketComponent}/>
         </Route>
       </Router>
     </Provider>
