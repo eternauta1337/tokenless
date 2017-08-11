@@ -38,14 +38,16 @@ import AppComponent from './components/AppComponent';
 import HomeComponent from './components/home/HomeComponent';
 import MarketComponent from './market/components/MarketComponent';
 import CreateMarketComponent from './factory/components/CreateMarketComponent';
+import ListMarketsComponent from './factory/components/ListMarketsComponent';
 import './styles/index.css';
 ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={AppComponent}>
           <IndexRoute component={HomeComponent}/>
-          <Route path="market/:address" component={MarketComponent}/>
-          <Route path="create" component={CreateMarketComponent}/>
+          <Route path="/list" component={ListMarketsComponent}/>
+          <Route path="/create" component={CreateMarketComponent}/>
+          <Route path="/market/:address" component={MarketComponent}/>
         </Route>
       </Router>
     </Provider>

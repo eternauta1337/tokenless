@@ -16,7 +16,7 @@ export function connectMarket(address) {
     const contract = await Market.at(address);
     market.contract = contract;
 
-    // Extract static market info.
+    // Extract market info.
     market.statement = await contract.statement.call();
     market.positivePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(true)).toNumber());
     market.negativePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(false)).toNumber());

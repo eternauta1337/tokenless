@@ -5,6 +5,7 @@ import './Market.sol';
 contract MarketFactory {
 
   address[] markets;
+
   event MarketCreatedEvent(Market marketAddress);
 
   function createMarket(string statement, uint blockDuration) {

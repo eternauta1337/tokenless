@@ -7,16 +7,22 @@ export function connectFactory() {
   return async function(dispatch, getState) {
     console.log('connectFactory()');
 
+    const factory = {};
     const web3 = getState().network.web3;
 
     // Retrieve factory.
     const Factory = TruffleContract(FactoryArtifacts);
     Factory.setProvider(web3.currentProvider);
-    const contract = await Factory.at('0xeb5785c94a8b2b6302764a4d6db8463337fd7bc6');
+    const ADDRESS = '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a';
+    const contract = await Factory.at(ADDRESS);
+    factory.contract = contract;
+
+    // Get factory info.
+    factory.markets = await contract.getMarkets();
 
     dispatch({
       type: CONNECT_FACTORY,
-      payload: contract
+      payload: factory
     });
   };
 }

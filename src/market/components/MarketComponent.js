@@ -22,14 +22,14 @@ class Market extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillMount() {
 
     // Fetch market?
-    if(nextProps.isNetworkConnected) {
-      const blockAdvanced = nextProps.blockNumber && (nextProps.blockNumber > this.state.lastRecordedBlockNumber);
-      if(!nextProps.isConnected || blockAdvanced) {
-        if(nextProps.blockNumber) this.setState({ lastRecordedBlockNumber: nextProps.blockNumber });
-        this.props.connectMarket(nextProps.routeParams.address);
+    if(this.props.isNetworkConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!this.props.isConnected || blockAdvanced) {
+        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
+        this.props.connectMarket(this.props.routeParams.address);
       }
     }
   }
@@ -89,7 +89,7 @@ class Market extends React.Component {
             <li>You own this market.</li>
           }
         </ul>
-        
+
         {/* BET */}
         {this.props.marketState === 0 &&
           <div>

@@ -3,7 +3,8 @@ import {
 } from './actions';
 
 const initialState = {
-  factoryContract: undefined
+  contract: undefined,
+  isConnected: false
 };
 
 export default function(state = initialState, action) {
@@ -12,9 +13,11 @@ export default function(state = initialState, action) {
   switch(action.type) {
 
   case CONNECT_FACTORY:
+    const factory = action.payload;
     return {
       ...state,
-      factoryContract: action.payload
+      ...factory,
+      isConnected: true
     };
 
   default:

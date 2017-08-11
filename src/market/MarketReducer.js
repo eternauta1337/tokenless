@@ -3,7 +3,7 @@ import {
 } from './actions';
 
 const initialState = {
-  marketContract: undefined,
+  contract: undefined,
   isConnected: false,
   statement: undefined
   /* additional market params */

@@ -39,7 +39,7 @@ contract('MarketFactory (General)', function(accounts) {
     assert.notEqual(marketOwner, factory.address, 'invalid owner');
   });
 
-  it.only('should keep track of multiple markets', async function() {
+  it('should keep track of multiple markets', async function() {
     const factory = await MarketFactory.new();
 
     // Create a few markets and recall their addresse.

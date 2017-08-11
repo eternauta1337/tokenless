@@ -23,7 +23,7 @@ export function startWeb3() {
         payload: web3
       });
 
-      // Retrieve the main market factory.
+      // Fetch factory contract.
       dispatch(connectFactory());
 
       // Watch blockchain parameters...

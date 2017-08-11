@@ -8,8 +8,8 @@ class App extends Component {
       <div>
         <nav className="navbar pure-menu pure-menu-horizontal">
           <Link to="/">Home</Link>&nbsp;
-          <Link to="/">Browse Markets</Link>&nbsp;
-          <Link to="/">Create a Market</Link>&nbsp;
+          <Link to="/list">Browse Markets</Link>&nbsp;
+          <Link to="/create">Create a Market</Link>&nbsp;
         </nav>
         <br/>
         {this.props.children}
