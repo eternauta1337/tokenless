@@ -38,4 +38,27 @@ contract('MarketFactory (General)', function(accounts) {
     assert.notEqual(marketOwner, 0, 'invalid owner');
     assert.notEqual(marketOwner, factory.address, 'invalid owner');
   });
+
+  it.only('should keep track of multiple markets', async function() {
+    const factory = await MarketFactory.new();
+
+    // Create a few markets and recall their addresse.
+    const localAddresses = [];
+    localAddresses.push((await factory.createMarket(
+      'Market 0.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+    localAddresses.push((await factory.createMarket(
+      'Market 1.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+    localAddresses.push((await factory.createMarket(
+      'Market 2.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+    // console.log('localAddresses', localAddresses);
+
+    // Ask the factory for its addresses.
+    const remoteAddresses = await factory.getMarkets();
+    // console.log('remoteAddresses', remoteAddresses);
+
+    assert.equal(localAddresses.length, remoteAddresses.length, 'num addresses mismatch');
+  });
 });

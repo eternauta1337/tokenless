@@ -4,7 +4,7 @@ import './Market.sol';
 
 contract MarketFactory {
 
-  address[] public markets;
+  address[] markets;
   event MarketCreatedEvent(Market marketAddress);
 
   function createMarket(string statement, uint blockDuration) {
@@ -18,5 +18,9 @@ contract MarketFactory {
       market.transferOwnership(msg.sender);
 
       MarketCreatedEvent(market);
+  }
+
+  function getMarkets() constant returns (address[]) {
+    return markets;
   }
 }
