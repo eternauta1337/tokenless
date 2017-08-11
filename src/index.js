@@ -1,48 +1,21 @@
-// Reducers.
-import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
-import NetworkReducer from './network/NetworkReducer';
-import MarketReducer from './market/MarketReducer';
-import FactoryReducer from './factory/FactoryReducer';
-const reducer = combineReducers({
-  routing: routerReducer,
-  network: NetworkReducer,
-  factory: FactoryReducer,
-  market: MarketReducer
-});
-
-// Redux Store.
+import store from './common/store';
 import { syncHistoryWithStore } from 'react-router-redux';
-import thunkMiddleware from 'redux-thunk';
-import { routerMiddleware } from 'react-router-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const routingMiddleware = routerMiddleware(browserHistory);
-const store = createStore(
-  reducer,
-  composeEnhancers(
-    applyMiddleware(
-      thunkMiddleware,
-      routingMiddleware
-    )
-  )
-);
-const history = syncHistoryWithStore(browserHistory, store);
-
-// UI Entry point.
+import { browserHistory } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import AppComponent from './components/AppComponent';
-import HomeComponent from './components/home/HomeComponent';
+import AppComponent from './AppComponent';
+import HomeComponent from './home/components/HomeComponent';
 import MarketComponent from './market/components/MarketComponent';
 import CreateMarketComponent from './factory/components/CreateMarketComponent';
 import ListMarketsComponent from './factory/components/ListMarketsComponent';
 import './styles/index.css';
+
+// UI entry point and routes.
 ReactDOM.render((
     <Provider store={store}>
-      <Router history={history}>
+      <Router history={syncHistoryWithStore(browserHistory, store)}>
         <Route path="/" component={AppComponent}>
           <IndexRoute component={HomeComponent}/>
           <Route path="/list" component={ListMarketsComponent}/>

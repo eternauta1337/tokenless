@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import DebugComponent from '../debug/components/DebugComponent';
+import DebugComponent from './debug/components/DebugComponent';
 
 class App extends Component {
   render() {

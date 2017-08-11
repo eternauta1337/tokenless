@@ -9,7 +9,7 @@ import {
   destroyMarket
 } from '../actions';
 
-import ConnectComponent from '../../components/common/ConnectComponent';
+import ConnectComponent from '../../common/components/ConnectComponent';
 import '../../styles/index.css';
 
 class Market extends React.Component {
