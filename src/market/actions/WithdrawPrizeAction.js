@@ -1,15 +1,14 @@
-import * as util from './MarketActionUtils';
+import { connectMarket } from '.';
 
-export function withdrawPrizeAsync() {
+export function withdrawPrize() {
   return async function(dispatch, getState) {
 
-    const market = getState().markets.focusedMarket;
+    const market = getState().market.contract;
 
     // Listen for withdraw event...
     market.ClaimEvent().watch(async (error, result) => {
       console.log('ClaimEvent', error, result);
       if(error) {
-        // TODO: dispatch error...
         console.log('error withdrawing funds');
       }
       else {
@@ -18,19 +17,17 @@ export function withdrawPrizeAsync() {
         // Claim != withdrawal, still need to
         // pull the ether out.
         await market.withdrawPayments({
-          from: getState().network.activeAccount
+          from: getState().network.activeAccountAddress
         });
 
-        util.refreshMarketData(market, dispatch, getState);
+        dispatch(connectMarket(market.address));
       }
     });
-
-    // TODO: dispatch resolve action...
 
     // Withdraw
     console.log('withdrawing prize...');
     await market.claimPrize({
-      from: getState().network.activeAccount
+      from: getState().network.activeAccountAddress
     });
   };
 }

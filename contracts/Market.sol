@@ -21,11 +21,10 @@ contract Market is Ownable, PullPayment, Destructible {
     statement = _statement;
     endBlock = block.number.add(_blockDuration);
 
-    /*uint _killBlock = _blockDuration / 4;*/
-    /*if(_killBlock < 10) _killBlock = 10;*/
-    /*if(_killBlock > 30000) _killBlock = 30000;*/
-    /*killBlock = endBlock.add(_killBlock);*/
-    killBlock = endBlock + 5;
+    uint _killBlock = _blockDuration / 4;
+    if(_killBlock < 5) _killBlock = 5;
+    if(_killBlock > 30000) _killBlock = 30000;
+    killBlock = endBlock.add(_killBlock);
   }
 
   // --------------------------------------------------
@@ -134,7 +133,7 @@ contract Market is Ownable, PullPayment, Destructible {
 
   function getState() constant returns (State) {
     if(!resolved) {
-      if(block.number < endBlock) {
+      if(block.number <= endBlock) {
         return State.Open;
       }
       else {
@@ -142,7 +141,7 @@ contract Market is Ownable, PullPayment, Destructible {
       }
     }
     else {
-      if(block.number < killBlock) {
+      if(block.number <= killBlock) {
         return State.Resolved;
       }
       else {

@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import {
   connectMarket,
   placeBet,
-  resolveMarket
+  resolveMarket,
+  withdrawPrize,
+  destroyMarket
 } from '../actions';
 
 import ConnectComponent from '../../components/common/ConnectComponent';
@@ -12,18 +14,23 @@ import '../../styles/index.css';
 
 class Market extends React.Component {
 
+  constructor() {
+    super();
+
+    this.state = {
+      lastRecordedBlockNumber: 0
+    };
+  }
+
   componentWillReceiveProps(nextProps) {
 
-    const {
-      isNetworkConnected,
-      isConnected,
-      connectMarket,
-      routeParams
-    } = nextProps;
-
     // Fetch market?
-    if(isNetworkConnected && !isConnected) {
-      connectMarket(routeParams.address);
+    if(nextProps.isNetworkConnected) {
+      const blockAdvanced = nextProps.blockNumber && (nextProps.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!nextProps.isConnected || blockAdvanced) {
+        if(nextProps.blockNumber) this.setState({ lastRecordedBlockNumber: nextProps.blockNumber });
+        this.props.connectMarket(nextProps.routeParams.address);
+      }
     }
   }
 
@@ -36,6 +43,14 @@ class Market extends React.Component {
     this.props.resolveMarket(outcome);
   };
 
+  handleWithdrawButtonClick() {
+    this.props.withdrawPrize();
+  };
+
+  handleDestroyButtonClick() {
+    this.props.destroyMarket();
+  };
+
   setBetInputField(input) {
     this.betInputField = input;
   }
@@ -43,7 +58,12 @@ class Market extends React.Component {
   render() {
 
     if(!this.props.isConnected) {
-      return <ConnectComponent/>;
+      return (
+        <div>
+          Attempting to connect with market:
+          <ConnectComponent/>
+        </div>
+      );
     }
 
     const isOwned = this.props.activeAccountAddress === this.props.owner;
@@ -58,12 +78,10 @@ class Market extends React.Component {
           <li>Positive balance: {this.props.positivePredicionBalance} ETH</li>
           <li>Negative balance: {this.props.negativePredicionBalance} ETH</li>
           <li>Market state: {this.props.marketStateStr}</li>
+          <li>outcome: {this.props.outcome ? 'yea' : 'nay'}</li>
           <li>endBlock: {this.props.endBlock}</li>
           <li>killBlock: {this.props.killBlock}</li>
           <li>current block number: {this.props.blockNumber}</li>
-          {this.props.marketState === 0 &&
-            <li>Blocks until bets close: {this.props.blocksUntilBetsClose}</li>
-          }
           {isOwned &&
             <li>You own this market.</li>
           }
@@ -71,10 +89,13 @@ class Market extends React.Component {
         {this.props.marketState === 0 &&
           <div>
             <br/>
+            <label>Place your bet:</label>
+            <br/>
             <input
               placeholder='Place your bet'
+              value='1'
               ref={ref => this.setBetInputField(ref)}
-              ></input>
+              />
             <button onClick={(evt) => this.handleBetButtonClick(true)}>Yea</button>
             <button onClick={(evt) => this.handleBetButtonClick(false)}>Nay</button>
           </div>
@@ -86,75 +107,25 @@ class Market extends React.Component {
             <button onClick={(evt) => this.handleResolveButtonClick(false)}>Nay</button>
           </div>
         }
+        {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
+          <div>
+            <button
+              onClick={(evt) => this.handleWithdrawButtonClick()}>Withdraw prize</button>
+          </div>
+        }
+        {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
+          <div>
+            <button
+              onClick={(evt) => this.handleDestroyButtonClick()}>Destroy</button>
+          </div>
+        }
       </div>
     );
-  }
-
-  renderBetElements() {
-    // const {
-    //   market,
-    //   placeBetAsync
-    // } = this.props;
-    // return (
-    //   <div>
-    //     <MarketBet
-    //       market={market}
-    //       placeBetAsync={placeBetAsync}
-    //       />
-    //   </div>
-    // );
-  }
-
-  renderOwnerElements() {
-    // const {
-    //   market,
-    //   resolveMarketASync,
-    //   destroyMarketAsync
-    // } = this.props;
-    // if(market.meta.isOwnedByUser) {
-    //   return (
-    //     <div>
-    //       <h2>You own this market.</h2>
-    //       {market.meta.blocksRemaining <= 0 &&
-    //         market.meta.state < 2 &&
-    //         <MarketResolve
-    //           resolveMarketASync={resolveMarketASync}
-    //           />
-    //       }
-    //       {market.meta.blocksRemaining < -5 &&
-    //         market.meta.state >= 2 &&
-    //         <MarketDestroy
-    //           destroyMarketAsync={destroyMarketAsync}
-    //           />
-    //       }
-    //     </div>
-    //   );
-    // }
-  }
-
-  renderWithdrawElements() {
-    // const {
-    //   market,
-    //   withdrawPrizeAsync
-    // } = this.props;
-    // if(
-    //   market.meta.state === 2 &&
-    //   market.meta.outcome === market.meta.playerPrediction
-    // ) {
-    //   return (
-    //     <div>
-    //       <MarketWithdraw
-    //         market={market}
-    //         withdrawPrizeAsync={withdrawPrizeAsync}
-    //         />
-    //     </div>
-    //   );
-    // }
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('MarketContainer - state', state);
+  // console.log('MarketComponent - state', state);
   return {
     isNetworkConnected: state.network.isConnected,
     activeAccountAddress: state.network.activeAccountAddress,
@@ -167,7 +138,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     connectMarket: (address) => dispatch(connectMarket(address)),
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
-    resolveMarket: (outcome) => dispatch(resolveMarket(outcome))
+    resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
+    withdrawPrize: () => dispatch(withdrawPrize()),
+    destroyMarket: () => dispatch(destroyMarket())
   };
 };
 

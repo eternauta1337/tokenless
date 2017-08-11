@@ -14,7 +14,7 @@ export function placeBet(prediction, betEther) {
         console.log('placing bet failed');
       }
       else {
-        console.log('bet placed!', result);
+        console.log('bet placed!');
         dispatch(connectMarket(market.address));
       }
     });
