@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux';
+
 export function createMarket(statement, duration) {
   console.log('createMarket()', statement, duration);
   return async function(dispatch, getState) {
@@ -19,6 +21,7 @@ export function createMarket(statement, duration) {
     const marketAddress = creationEventArgs.marketAddress;
     if(marketAddress) {
       console.log('market created at:', marketAddress);
+      dispatch(push(`/market/${marketAddress}`));
     }
     else {
       // TODO: handle error
