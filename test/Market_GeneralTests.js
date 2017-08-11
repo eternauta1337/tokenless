@@ -4,7 +4,6 @@ const Market = artifacts.require('./Market.sol');
 contract('Market (General)', function(accounts) {
 
   it('should contain a valid text statement', async function() {
-
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
     const statement = await contract.statement.call();
@@ -14,7 +13,6 @@ contract('Market (General)', function(accounts) {
   });
 
   it('should have a valid end date', async function() {
-
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
     // Assumes that tests are ran immediately after contract creation.
