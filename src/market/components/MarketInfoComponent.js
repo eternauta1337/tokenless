@@ -10,6 +10,8 @@ const MarketInfoComponent = ({
 }) => {
   return (
     <div>
+
+      {/* BET BALANCES */}
       <h4>
         <span className="label label-default align-middle">
           <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;
@@ -21,8 +23,11 @@ const MarketInfoComponent = ({
           {negativePredicionBalance}&nbsp;ETH
         </span>
       </h4>
-      <br/>
-      <ul className='list-inline'>
+
+      {/* MISC */}
+      <ul className='list'>
+
+        {/* OWNED */}
         {isOwned &&
           <li className='list-inline-item'>
             <span className="label label-primary">
@@ -30,6 +35,8 @@ const MarketInfoComponent = ({
             </span>
           </li>
         }
+
+        {/* RESOLVED */}
         {marketState >= 2 &&
           <li className='list-inline-item'>
             <span className="label label-warning">
@@ -37,12 +44,18 @@ const MarketInfoComponent = ({
             </span>
           </li>
         }
+
+        {/* STATE + BLOCKS REMAINING */}
         <li className='list-inline-item'>
           <span className={`label label-${marketState === 0 ? 'info' : 'warning'}`}>
             {marketStateStr} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
           </span>
         </li>
+
       </ul>
+
+      <br/>
+
     </div>
   );
 };

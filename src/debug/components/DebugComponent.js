@@ -41,7 +41,6 @@ class Debug extends React.Component {
   render() {
     return (
       <div className='debugPanel'>
-        <label>Active account:&nbsp;</label>
         <select
           onChange={(event) => this.onAccountSelected(event.target.value)}
           defaultValue={0}>

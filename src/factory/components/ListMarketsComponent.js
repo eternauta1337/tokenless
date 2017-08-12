@@ -32,13 +32,9 @@ class ListMarkets extends React.Component {
   }
 
   render() {
+    
     if(!this.props.isConnected) {
-      return (
-        <div>
-          Attempting to connect with market factory:
-          <ConnectComponent/>
-        </div>
-      );
+      return <ConnectComponent title="Connecting with market factory..."/>;
     }
 
     console.log('markets:', this.props.markets);

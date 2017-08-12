@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ConnectComponent from '../../common/components/ConnectComponent';
 import MarketInfoComponent from './MarketInfoComponent';
+import MarketBetComponent from './MarketBetComponent';
 import '../../styles/index.css';
 import {
   connectMarket,
@@ -40,14 +41,9 @@ class Market extends React.Component {
 
   render() {
 
-    {/* CONNECTING... */}
+    // CONNECTING...
     if(!this.props.isConnected) {
-      return (
-        <div>
-          Attempting to connect with market:
-          <ConnectComponent/>
-        </div>
-      );
+      return <ConnectComponent title="Connecting with market..."/>;
     }
 
     // Pre-process some of the market's data for display.
@@ -67,69 +63,60 @@ class Market extends React.Component {
       <div>
 
         {/* STATEMENT */}
-        <h1 className="market-statement">
-          "{this.props.statement}"
-        </h1>
+        <div className="jumbotron">
+          <h1 className="market-statement">
+            "{this.props.statement}"
+          </h1>
+        </div>
 
-        {/* INFO */}
-        <MarketInfoComponent
-          positivePredicionBalance={this.props.positivePredicionBalance}
-          negativePredicionBalance={this.props.negativePredicionBalance}
-          isOwned={isOwned}
-          marketState={this.props.marketState}
-          marketStateStr={this.props.marketStateStr}
-          remainingBlocks={remainingBlocks}
-          />
+        <div className="row">
 
-        {/* BET */}
-        {this.props.marketState === 0 &&
-          <div>
-            <br/>
-            <label>Place your bet:</label>
-            <br/>
-            <input
-              placeholder='Place your bet'
-              value='1'
-              ref={ref => this.setBetInputField(ref)}
+          {/* INFO */}
+          <MarketInfoComponent
+            positivePredicionBalance={this.props.positivePredicionBalance}
+            negativePredicionBalance={this.props.negativePredicionBalance}
+            isOwned={isOwned}
+            marketState={this.props.marketState}
+            marketStateStr={this.props.marketStateStr}
+            remainingBlocks={remainingBlocks}
+            />
+
+          {/* BET */}
+          {this.props.marketState === 0 &&
+            <MarketBetComponent
+              placeBet={this.props.placeBet}
               />
-            <button onClick={(evt) => this.handleBetButtonClick(true)}>Yea</button>
-            <button onClick={(evt) => this.handleBetButtonClick(false)}>Nay</button>
-          </div>
-        }
+          }
 
-        {/* RESOLVE */}
-        {isOwned && this.props.marketState === 1 &&
-          <div>
-            <h2>Resolve this market now:</h2>
-            <button onClick={(evt) => this.handleResolveButtonClick(true)}>Yea</button>
-            <button onClick={(evt) => this.handleResolveButtonClick(false)}>Nay</button>
-          </div>
-        }
+          {/* RESOLVE */}
+          {isOwned && this.props.marketState === 1 &&
+            <div>
+              <h2>Resolve this market now:</h2>
+              <button onClick={(evt) => this.handleResolveButtonClick(true)}>Yea</button>
+              <button onClick={(evt) => this.handleResolveButtonClick(false)}>Nay</button>
+            </div>
+          }
 
-        {/* WITHDRAW */}
-        {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
-          <div>
-            <button
-              onClick={(evt) => this.handleWithdrawButtonClick()}>Withdraw prize</button>
-          </div>
-        }
+          {/* WITHDRAW */}
+          {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
+            <div>
+              <button
+                onClick={(evt) => this.handleWithdrawButtonClick()}>Withdraw prize</button>
+            </div>
+          }
 
-        {/* DESTROY */}
-        {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
-          <div>
-            <button
-              onClick={(evt) => this.handleDestroyButtonClick()}>Destroy</button>
-          </div>
-        }
+          {/* DESTROY */}
+          {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
+            <div>
+              <button
+                onClick={(evt) => this.handleDestroyButtonClick()}>Destroy</button>
+            </div>
+          }
+        </div>
 
       </div>
     );
   }
-
-  handleBetButtonClick(prediction) {
-    console.log(this.betInputField.value);
-    this.props.placeBet(prediction, this.betInputField.value);
-  };
 
   handleResolveButtonClick(outcome) {
     this.props.resolveMarket(outcome);
@@ -142,10 +129,6 @@ class Market extends React.Component {
   handleDestroyButtonClick() {
     this.props.destroyMarket();
   };
-
-  setBetInputField(input) {
-    this.betInputField = input;
-  }
 }
 
 const mapStateToProps = (state, ownProps) => {

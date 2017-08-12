@@ -1,11 +1,11 @@
-import store from './common/store';
+import store from './main/store';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import { Router, Route, IndexRoute } from 'react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import AppComponent from './AppComponent';
+import AppComponent from './main/components/AppComponent';
 import HomeComponent from './home/components/HomeComponent';
 import MarketComponent from './market/components/MarketComponent';
 import CreateMarketComponent from './factory/components/CreateMarketComponent';
