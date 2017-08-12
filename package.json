@@ -2,6 +2,13 @@
   "name": "react-auth-box",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "sim": "truffle exec scripts/marketsim.js",
+    "test": "node scripts/test.js --env=jsdom",
+    "testrpc": "./scripts/testrpc.sh"
+  },
   "devDependencies": {
     "autoprefixer": "6.5.1",
     "babel-core": "6.17.0",
@@ -66,12 +73,6 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "zeppelin-solidity": "^1.2.0"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "testrpc": "./scripts/testrpc.sh"
   },
   "jest": {
     "collectCoverageFrom": [

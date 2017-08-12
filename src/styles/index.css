@@ -1,5 +1,5 @@
 body {
-  padding-top: 70px;
+  padding-top: 50px;
   font-family: sans-serif;
 }
 
@@ -14,7 +14,6 @@ body {
 
 .debugPanel {
   background-color: lightgray;
-  margin: 10px;
   padding: 10px;
 }
 

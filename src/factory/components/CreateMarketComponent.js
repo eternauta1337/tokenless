@@ -25,7 +25,7 @@ class CreateMarketComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
 
         {/* TITLE */}
         <div className="page-header">

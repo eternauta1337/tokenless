@@ -40,7 +40,7 @@ class ListMarkets extends React.Component {
     }
 
     return (
-      <div>
+      <div className="container">
 
         {/* TITLE */}
         <div className="page-header">

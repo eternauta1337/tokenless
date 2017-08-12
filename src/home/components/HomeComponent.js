@@ -5,8 +5,10 @@ class Home extends Component {
     return(
       <div>
         <div className='jumbotron'>
-          <h1>Tokenless</h1>
-          <p>A simple prediction market. No tokens. Just the market.</p>
+          <div className="container">
+            <h1>Tokenless</h1>
+            <p>A simple prediction market. No tokens. Just the market.</p>
+          </div>
         </div>
       </div>
     );

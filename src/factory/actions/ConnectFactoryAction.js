@@ -20,6 +20,7 @@ export function connectFactory() {
 
     // Get factory info.
     factory.marketAddresses = await contract.getMarkets();
+    factory.marketAddresses = await contract.getMarkets();
     factory.marketPreviews = {};
     for(let i = 0; i < factory.marketAddresses.length; i++) {
       const address = factory.marketAddresses[i];

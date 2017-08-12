@@ -62,7 +62,7 @@ class Market extends React.Component {
     }
 
     return (
-      <div>
+      <div className="container">
 
         {/* STATEMENT */}
         <div className="page-header">
@@ -84,11 +84,10 @@ class Market extends React.Component {
             />
 
           {/* BET */}
-          {this.props.marketState === 0 &&
-            <MarketBetComponent
-              placeBet={this.props.placeBet}
-              />
-          }
+          <MarketBetComponent
+            marketState={this.props.marketState}
+            placeBet={this.props.placeBet}
+            />
 
           {/* RESOLVE */}
           {isOwned && this.props.marketState === 1 &&

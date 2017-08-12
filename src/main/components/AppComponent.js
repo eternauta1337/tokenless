@@ -14,16 +14,25 @@ class App extends Component {
         <NavigationComponent path={this.props.location.pathname}/>
 
         {/* BODY */}
-        <div className="container">
-
+        <div className="">
+          {/* CONTENT MANAGED BY ROUTES */}
           {this.props.children}
-
-          {/* DEBUG UI */}
-          {DEBUG_MODE &&
-            <DebugComponent/>
-          }
-
         </div>
+
+        {/* FOOTER */}
+        <footer className="footer navbar-fixed-bottom">
+          <div className="row">
+            <div className="text-center">
+              <small className="text-muted">
+                Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team
+              </small>
+            </div>
+            {/* DEBUG UI */}
+            {DEBUG_MODE &&
+              <DebugComponent/>
+            }
+          </div>
+        </footer>
 
       </div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketBetComponent = ({ placeBet }) => {
+const MarketBetComponent = ({ placeBet, marketState }) => {
 
   let betInputField;
   let predictionSelector;
@@ -23,10 +23,13 @@ const MarketBetComponent = ({ placeBet }) => {
     placeBet(prediction, betInputField.value);
   };
 
+  // const isActive = marketState === 0;
+  const isActive = false;
+
   return (
-    <div className="panel panel-primary">
+    <div className={`panel panel-${isActive ? 'primary' : 'default'}`}>
       <div className="panel-heading">
-        <span>Feel like making a prediction?</span>
+        <span>{isActive ? 'Feel like making a prediction?' : 'Bets are closed.'}</span>
       </div>
       <div className="panel-body">
         <form className="">
