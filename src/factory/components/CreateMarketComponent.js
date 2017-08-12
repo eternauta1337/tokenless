@@ -7,7 +7,7 @@ import {
 
 class CreateMarketComponent extends React.Component {
 
-  handleSubmitButtonClick() {
+  handleCreateSubmit() {
 
     const statement = this.statementInputField.value;
     const duration = this.durationInputField.value;
@@ -26,19 +26,53 @@ class CreateMarketComponent extends React.Component {
   render() {
     return (
       <div>
-        <label>Create a market:</label>
-        <br/>
-        <input
-          placeholder='Enter a statement'
-          ref={ref => this.setStatementInputField(ref)}
-          />
-        <br/>
-        <input
-          placeholder='Enter a duration (blocks)'
-          ref={ref => this.setDurationInputField(ref)}
-          />
-        <br/>
-        <button onClick={(evt) => this.handleSubmitButtonClick()}>Create</button>
+
+        {/* TITLE */}
+        <div className="page-header">
+          <h1>Create a Market</h1>
+        </div>
+
+        {/* CREATE MARKET PANEL */}
+        <div className="row">
+          <div className="panel panel-primary">
+
+            {/* PANEL TITLE */}
+
+            <div className="panel-body">
+              <form className="">
+
+                {/* STATEMENT */}
+                <div className="form-group">
+                  <label>Statement:</label>
+                  <input
+                    className="form-control"
+                    placeholder='Eg. "Ether will surpass bitcoin in 2018."'
+                    ref={ref => this.setStatementInputField(ref)}
+                    />
+                </div>
+
+                {/* DURATION */}
+                <div className="form-group">
+                  <label>Duration:</label>
+                  <input
+                    className="form-control"
+                    placeholder='Enter a duration in blocks.'
+                    ref={ref => this.setDurationInputField(ref)}
+                    />
+                </div>
+
+                {/* SUBMIT */}
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={(evt) => this.handleCreateSubmit()}>
+                  Create Market
+                </button>
+
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

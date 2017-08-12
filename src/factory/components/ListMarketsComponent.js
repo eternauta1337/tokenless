@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
 import ConnectComponent from '../../common/components/ConnectComponent';
 
@@ -32,22 +33,41 @@ class ListMarkets extends React.Component {
   }
 
   render() {
-    
+
+    // CONNECTING...
     if(!this.props.isConnected) {
       return <ConnectComponent title="Connecting with market factory..."/>;
     }
 
-    console.log('markets:', this.props.markets);
-
     return (
       <div>
-        <ul>
-          {this.props.markets.map((market) => {
-            return (
-              <li key={market}><Link to={`/market/${market}`}>{market}</Link></li>
-            );
-          })}
-        </ul>
+
+        {/* TITLE */}
+        <div className="page-header">
+          <h1>Browse Markets</h1>
+        </div>
+
+        {/* CREATE MARKET PANEL */}
+        <div className="row">
+          <ul className="list-group">
+            {_.map(this.props.previews, (preview) => {
+              return (
+                <li className="list-group-item" key={preview.address}>
+                  <Link to={`/market/${preview.address}`}>
+                    {preview.statement} <span className="pull-right">{preview.balance} ETH</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* LINK TO CREATE */}
+        <Link to="/create">
+          <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+          Create a Market
+        </Link>
+
       </div>
     );
   }
@@ -55,7 +75,7 @@ class ListMarkets extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    markets: state.factory.marketAddresses,
+    previews: state.factory.previews,
     isNetworkConnected: state.network.isConnected,
     blockNumber: state.network.blockNumber,
     ...state.factory

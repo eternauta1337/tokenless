@@ -1,12 +1,12 @@
 import {
-  CONNECT_MARKET
+  CONNECT_MARKET,
+  RESET_MARKET
 } from './actions';
 
 const initialState = {
   contract: undefined,
   isConnected: false,
-  statement: undefined
-  /* additional market params */
+  /* additional market params are decomposed */
 };
 
 export default function(state = initialState, action) {
@@ -21,6 +21,9 @@ export default function(state = initialState, action) {
       ...market,
       isConnected: true
     };
+
+  case RESET_MARKET:
+    return initialState;
 
   default:
     return state;

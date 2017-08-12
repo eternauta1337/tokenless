@@ -5,6 +5,7 @@ import MarketInfoComponent from './MarketInfoComponent';
 import MarketBetComponent from './MarketBetComponent';
 import '../../styles/index.css';
 import {
+  resetMarket,
   connectMarket,
   placeBet,
   resolveMarket,
@@ -22,6 +23,7 @@ class Market extends React.Component {
   }
 
   componentWillMount() {
+    this.props.resetMarket();
     this.refreshMarket();
   }
 
@@ -63,7 +65,7 @@ class Market extends React.Component {
       <div>
 
         {/* STATEMENT */}
-        <div className="jumbotron">
+        <div className="page-header">
           <h1 className="market-statement">
             "{this.props.statement}"
           </h1>
@@ -147,7 +149,8 @@ const mapDispatchToProps = (dispatch) => {
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
     withdrawPrize: () => dispatch(withdrawPrize()),
-    destroyMarket: () => dispatch(destroyMarket())
+    destroyMarket: () => dispatch(destroyMarket()),
+    resetMarket: () => dispatch(resetMarket()),
   };
 };
 
