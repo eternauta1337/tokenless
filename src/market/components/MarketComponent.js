@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConnectComponent from '../../common/components/ConnectComponent';
+import MarketInfoComponent from './MarketInfoComponent';
 import '../../styles/index.css';
 import {
   connectMarket,
@@ -19,7 +20,27 @@ class Market extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.refreshMarket();
+  }
+
+  componentWillReceiveProps() {
+    this.refreshMarket();
+  }
+
+  refreshMarket() {
+    if(this.props.isNetworkConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!this.props.isConnected || blockAdvanced) {
+        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
+        this.props.connectMarket(this.props.routeParams.address);
+      }
+    }
+  }
+
   render() {
+
+    {/* CONNECTING... */}
     if(!this.props.isConnected) {
       return (
         <div>
@@ -29,6 +50,7 @@ class Market extends React.Component {
       );
     }
 
+    // Pre-process some of the market's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
     let remainingBlocks = 0;
@@ -44,43 +66,20 @@ class Market extends React.Component {
     return (
       <div>
 
+        {/* STATEMENT */}
         <h1 className="market-statement">
           "{this.props.statement}"
         </h1>
 
         {/* INFO */}
-        <h4>
-          <span className="label label-default align-middle">
-            <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;
-            {this.props.positivePredicionBalance}&nbsp;ETH
-          </span>
-          &nbsp;|&nbsp;
-          <span className="label label-default">
-            <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>&nbsp;&nbsp;
-            {this.props.negativePredicionBalance}&nbsp;ETH
-          </span>
-        </h4>
-        <ul className='list-inline'>
-          {isOwned &&
-            <li className='list-inline-item'>
-              <span className="label label-primary">
-                You own this market
-              </span>
-            </li>
-          }
-          {this.props.marketState >= 2 &&
-            <li className='list-inline-item'>
-              <span className="label label-warning">
-                Resolved
-              </span>
-            </li>
-          }
-          <li className='list-inline-item'>
-            <span className={`label label-${this.props.marketState === 0 ? 'info' : 'warning'}`}>
-              {this.props.marketStateStr} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
-            </span>
-          </li>
-        </ul>
+        <MarketInfoComponent
+          positivePredicionBalance={this.props.positivePredicionBalance}
+          negativePredicionBalance={this.props.negativePredicionBalance}
+          isOwned={isOwned}
+          marketState={this.props.marketState}
+          marketStateStr={this.props.marketStateStr}
+          remainingBlocks={remainingBlocks}
+          />
 
         {/* BET */}
         {this.props.marketState === 0 &&
@@ -125,24 +124,6 @@ class Market extends React.Component {
 
       </div>
     );
-  }
-
-  componentWillMount() {
-    this.refreshMarket();
-  }
-
-  componentWillReceiveProps() {
-    this.refreshMarket();
-  }
-
-  refreshMarket() {
-    if(this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if(!this.props.isConnected || blockAdvanced) {
-        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
-        this.props.connectMarket(this.props.routeParams.address);
-      }
-    }
   }
 
   handleBetButtonClick(prediction) {
