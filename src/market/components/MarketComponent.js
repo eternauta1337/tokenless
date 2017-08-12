@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import ConnectComponent from '../../common/components/ConnectComponent';
+import '../../styles/index.css';
 import {
   connectMarket,
   placeBet,
@@ -9,9 +10,6 @@ import {
   destroyMarket
 } from '../actions';
 
-import ConnectComponent from '../../common/components/ConnectComponent';
-import '../../styles/index.css';
-
 class Market extends React.Component {
 
   constructor() {
@@ -19,41 +17,6 @@ class Market extends React.Component {
     this.state = {
       lastRecordedBlockNumber: 0
     };
-  }
-
-  componentWillMount() {
-    this.refreshMarket();
-  }
-
-  refreshMarket() {
-    if(this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if(!this.props.isConnected || blockAdvanced) {
-        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
-        this.props.connectMarket(this.props.routeParams.address);
-      }
-    }
-  }
-
-  handleBetButtonClick(prediction) {
-    console.log(this.betInputField.value);
-    this.props.placeBet(prediction, this.betInputField.value);
-  };
-
-  handleResolveButtonClick(outcome) {
-    this.props.resolveMarket(outcome);
-  };
-
-  handleWithdrawButtonClick() {
-    this.props.withdrawPrize();
-  };
-
-  handleDestroyButtonClick() {
-    this.props.destroyMarket();
-  };
-
-  setBetInputField(input) {
-    this.betInputField = input;
   }
 
   render() {
@@ -66,28 +29,57 @@ class Market extends React.Component {
       );
     }
 
-    const isOwned = this.props.activeAccountAddress === this.props.owner;
-    const totalBalance = this.props.positivePredicionBalance + this.props.negativePredicionBalance;
+    const isOwned =
+      this.props.activeAccountAddress === this.props.owner;
+    let remainingBlocks = 0;
+    if(this.props.blockNumber) {
+      if(this.props.marketState === 0) {
+        remainingBlocks = this.props.endBlock - this.props.blockNumber;
+      }
+      else if(this.props.marketState >= 1) {
+        remainingBlocks = this.props.killBlock - this.props.blockNumber;
+      }
+    }
 
     return (
       <div>
 
-        <h1>{this.props.statement}</h1>
+        <h1 className="market-statement">
+          "{this.props.statement}"
+        </h1>
 
         {/* INFO */}
-        <span>Market info:</span>
-        <ul>
-          <li>Total balance: {totalBalance} ETH</li>
-          <li>Positive balance: {this.props.positivePredicionBalance} ETH</li>
-          <li>Negative balance: {this.props.negativePredicionBalance} ETH</li>
-          <li>Market state: {this.props.marketStateStr}</li>
-          <li>outcome: {this.props.outcome ? 'yea' : 'nay'}</li>
-          <li>endBlock: {this.props.endBlock}</li>
-          <li>killBlock: {this.props.killBlock}</li>
-          <li>current block number: {this.props.blockNumber}</li>
+        <h4>
+          <span className="label label-default align-middle">
+            <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;
+            {this.props.positivePredicionBalance}&nbsp;ETH
+          </span>
+          &nbsp;|&nbsp;
+          <span className="label label-default">
+            <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>&nbsp;&nbsp;
+            {this.props.negativePredicionBalance}&nbsp;ETH
+          </span>
+        </h4>
+        <ul className='list-inline'>
           {isOwned &&
-            <li>You own this market.</li>
+            <li className='list-inline-item'>
+              <span className="label label-primary">
+                You own this market
+              </span>
+            </li>
           }
+          {this.props.marketState >= 2 &&
+            <li className='list-inline-item'>
+              <span className="label label-warning">
+                Resolved
+              </span>
+            </li>
+          }
+          <li className='list-inline-item'>
+            <span className={`label label-${this.props.marketState === 0 ? 'info' : 'warning'}`}>
+              {this.props.marketStateStr} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
+            </span>
+          </li>
         </ul>
 
         {/* BET */}
@@ -133,6 +125,45 @@ class Market extends React.Component {
 
       </div>
     );
+  }
+
+  componentWillMount() {
+    this.refreshMarket();
+  }
+
+  componentWillReceiveProps() {
+    this.refreshMarket();
+  }
+
+  refreshMarket() {
+    if(this.props.isNetworkConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!this.props.isConnected || blockAdvanced) {
+        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
+        this.props.connectMarket(this.props.routeParams.address);
+      }
+    }
+  }
+
+  handleBetButtonClick(prediction) {
+    console.log(this.betInputField.value);
+    this.props.placeBet(prediction, this.betInputField.value);
+  };
+
+  handleResolveButtonClick(outcome) {
+    this.props.resolveMarket(outcome);
+  };
+
+  handleWithdrawButtonClick() {
+    this.props.withdrawPrize();
+  };
+
+  handleDestroyButtonClick() {
+    this.props.destroyMarket();
+  };
+
+  setBetInputField(input) {
+    this.betInputField = input;
   }
 }
 

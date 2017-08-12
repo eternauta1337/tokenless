@@ -4,7 +4,10 @@ class Home extends Component {
   render() {
     return(
       <div>
-        <h1>Tokenless</h1>
+        <div className='jumbotron'>
+          <h1>Tokenless</h1>
+          <p>A simple prediction market. No tokens. Just the market.</p>
+        </div>
       </div>
     );
   }

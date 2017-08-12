@@ -1,7 +1,10 @@
 body {
-  margin: 50;
-  padding: 0;
+  padding-top: 60px;
   font-family: sans-serif;
+}
+
+.market-statement {
+  font-style: italic;;
 }
 
 .hidden {
@@ -11,4 +14,9 @@ body {
 
 .debugPanel {
   background-color: lightgray;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }

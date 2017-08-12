@@ -41,19 +41,16 @@ class Debug extends React.Component {
   render() {
     return (
       <div className='debugPanel'>
-        <h3>Debug Panel</h3>
-        <form>
-          <label>Active account:&nbsp;</label>
-          <select
-            onChange={(event) => this.onAccountSelected(event.target.value)}
-            defaultValue={0}>
-            >
-            {this.props.accounts && this.props.accounts.map((account, index) => {
-              return <option value={index} key={index}>account {index}: {account}</option>;
-            })}
-          </select>
-          &nbsp;{this.state.accountBalance} ETH
-        </form>
+        <label>Active account:&nbsp;</label>
+        <select
+          onChange={(event) => this.onAccountSelected(event.target.value)}
+          defaultValue={0}>
+          >
+          {this.props.accounts && this.props.accounts.map((account, index) => {
+            return <option value={index} key={index}>account {index}: {account}</option>;
+          })}
+        </select>
+        &nbsp;{this.state.accountBalance} ETH
       </div>
     );
   }

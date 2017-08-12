@@ -1,5 +1,6 @@
 import TruffleContract from 'truffle-contract';
 import FactoryArtifacts from '../../../build/contracts/MarketFactory.json';
+import { MARKET_FACTORY_ADDRESS } from '../../constants';
 
 export const CONNECT_FACTORY = 'factory/CONNECT_FACTORY';
 
@@ -13,8 +14,7 @@ export function connectFactory() {
     // Retrieve factory.
     const Factory = TruffleContract(FactoryArtifacts);
     Factory.setProvider(web3.currentProvider);
-    const ADDRESS = '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a';
-    const contract = await Factory.at(ADDRESS);
+    const contract = await Factory.at(MARKET_FACTORY_ADDRESS);
     factory.contract = contract;
 
     // Get factory info.

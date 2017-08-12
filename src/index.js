@@ -10,7 +10,14 @@ import HomeComponent from './home/components/HomeComponent';
 import MarketComponent from './market/components/MarketComponent';
 import CreateMarketComponent from './factory/components/CreateMarketComponent';
 import ListMarketsComponent from './factory/components/ListMarketsComponent';
+import {
+  PATH_MARKET,
+  PATH_LIST,
+  PATH_CREATE
+} from './constants';
 import './styles/index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
 
 // UI entry point and routes.
 ReactDOM.render((
@@ -18,9 +25,9 @@ ReactDOM.render((
       <Router history={syncHistoryWithStore(browserHistory, store)}>
         <Route path="/" component={AppComponent}>
           <IndexRoute component={HomeComponent}/>
-          <Route path="/list" component={ListMarketsComponent}/>
-          <Route path="/create" component={CreateMarketComponent}/>
-          <Route path="/market/:address" component={MarketComponent}/>
+          <Route path={PATH_LIST} component={ListMarketsComponent}/>
+          <Route path={PATH_CREATE} component={CreateMarketComponent}/>
+          <Route path={PATH_MARKET} component={MarketComponent}/>
         </Route>
       </Router>
     </Provider>
