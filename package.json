@@ -5,7 +5,6 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "sim": "truffle exec scripts/marketsim.js",
     "test": "node scripts/test.js --env=jsdom",
     "testrpc": "./scripts/testrpc.sh"
   },
