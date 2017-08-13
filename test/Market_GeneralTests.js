@@ -23,7 +23,7 @@ contract('Market (General)', function(accounts) {
     assert.isAbove(lifeSpan, 0, 'contract was just created but has no time left');
   });
 
-  it.only('it should correctly track its state', async function() {
+  it('it should correctly track its state', async function() {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 5);
     let state = 0;

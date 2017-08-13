@@ -33,6 +33,17 @@ contract('Market (Bets)', function(accounts) {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
+    let playerNullBalance = web3.fromWei(await contract.getPlayerBalance(true, {
+      from: accounts[1]
+    }), 'ether').toNumber();
+    // console.log('player 1 null balance: ', playerBalance);
+    assert.equal(0, playerNullBalance, 'player balance supposed to be 0');
+    playerNullBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+      from: accounts[1]
+    }), 'ether').toNumber();
+    // console.log('player 1 null balance: ', playerBalance);
+    assert.equal(0, playerNullBalance, 'player balance supposed to be 0');
+
     await contract.bet(true, {
       from: accounts[1],
       value: web3.toWei(1, 'ether')
@@ -59,7 +70,10 @@ contract('Market (Bets)', function(accounts) {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    const playerBalance = web3.fromWei(await contract.getPlayerBalance(Math.random() > 0.5, {
+    let playerBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+      from: accounts[2]
+    }), 'ether');
+    playerBalance = web3.fromWei(await contract.getPlayerBalance(true, {
       from: accounts[2]
     }), 'ether');
     // console.log('player 2 balance: ', player2Balance);
@@ -89,13 +103,65 @@ contract('Market (Bets)', function(accounts) {
       // console.log('negative bet');
     }
 
-    const positivePredicionBalance = web3.fromWei((await contract.getPredictionBalance(true)).toNumber());
-    const negativePredicionBalance = web3.fromWei((await contract.getPredictionBalance(false)).toNumber());
+    const positivePredicionBalance = web3.fromWei((await contract.totals.call(true)).toNumber());
+    const negativePredicionBalance = web3.fromWei((await contract.totals.call(false)).toNumber());
     // console.log('positivePredicionBalance', positivePredicionBalance);
     // console.log('negativePredicionBalance', negativePredicionBalance);
 
     assert.equal(positivePredicionBalance, 5, 'incorrect prediction balance');
     assert.equal(negativePredicionBalance, 3, 'incorrect prediction balance');
+  });
+
+  it('should support 2 balances for each player', async function() {
+
+    let i;
+
+    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+
+    // Implement the following structure in the contract.
+    const datas = [
+      {playerIdx: 0, pos: 1, neg: 2},
+      {playerIdx: 1, pos: 3, neg: 0},
+      {playerIdx: 2, pos: 1, neg: 1},
+      {playerIdx: 3, pos: 4, neg: 1},
+      {playerIdx: 4, pos: 0, neg: 0},
+      {playerIdx: 5, pos: 0, neg: 7.2}
+    ];
+    for(i = 0; i < datas.length; i++) {
+
+      const data = datas[i];
+      const addr = accounts[data.playerIdx];
+
+      // Place bets.
+      // console.log('placing pos bet:', data.pos);
+      if(data.pos !== 0) {
+        await contract.bet(true, {
+          from: addr,
+          value: web3.toWei(data.pos, 'ether')
+        });
+      }
+      // console.log('placing neg bet:', data.neg);
+      if(data.neg !== 0) {
+        await contract.bet(false, {
+          from: addr,
+          value: web3.toWei(data.neg, 'ether')
+        });
+      }
+
+      // Read balance.
+      const pos = web3.fromWei(await contract.getPlayerBalance(true, {
+        from: addr
+      }), 'ether').toNumber();
+      // console.log('pos:', pos);
+      const neg = web3.fromWei(await contract.getPlayerBalance(false, {
+        from: addr
+      }), 'ether').toNumber();
+      // console.log('neg:', neg);
+
+      // Compare contract state with expected state.
+      assert.equal(pos, data.pos, 'unmatching balance');
+      assert.equal(neg, data.neg, 'unmatching balance');
+    }
   });
 
 });

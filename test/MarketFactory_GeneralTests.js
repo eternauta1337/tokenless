@@ -80,7 +80,7 @@ contract('MarketFactory (General)', function(accounts) {
 
     // Verify num.
     let remoteAddresses = await factory.getMarkets();
-    console.log('markets:', remoteAddresses);
+    // console.log('markets:', remoteAddresses);
     assert.equal(remoteAddresses.length, 3, 'num addresses mismatch');
 
     // Remove 1 market.
@@ -88,7 +88,7 @@ contract('MarketFactory (General)', function(accounts) {
 
     // Verify num.
     remoteAddresses = await factory.getMarkets();
-    console.log('markets:', remoteAddresses);
+    // console.log('markets:', remoteAddresses);
     assert.equal(remoteAddresses.length, 2, 'num addresses mismatch');
 
   });
