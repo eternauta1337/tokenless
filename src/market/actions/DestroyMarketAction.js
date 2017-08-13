@@ -1,4 +1,6 @@
 import { push } from 'react-router-redux';
+import { forgetMarket } from '../../factory/actions/ForgetMarketAction';
+import { resetMarket } from './ResetMarketAction';
 
 export function destroyMarket() {
   return async function(dispatch, getState) {
@@ -13,6 +15,14 @@ export function destroyMarket() {
       }
       else {
         console.log('market destroyed!');
+
+        // Resets the focused market state.
+        dispatch(resetMarket());
+
+        // Removes the market from the factory.
+        dispatch(forgetMarket(market.address));
+
+        // Navigate to home.
         dispatch(push('/'));
       }
     });
