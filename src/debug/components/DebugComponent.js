@@ -4,6 +4,7 @@ import * as web3Util from '../../utils/Web3Util';
 import {
   setActiveAccountIndex
 } from '../../network/actions';
+import * as web3util from '../../utils/Web3Util';
 
 class Debug extends React.Component {
 
@@ -41,15 +42,25 @@ class Debug extends React.Component {
   render() {
     return (
       <div className='debugPanel'>
-        <select
+
+        {/* ACCOUNT SELECTOR */}
+        <select className=""
           onChange={(event) => this.onAccountSelected(event.target.value)}
           defaultValue={0}>
           >
           {this.props.accounts && this.props.accounts.map((account, index) => {
-            return <option value={index} key={index}>account {index}: {account}</option>;
+            return <option value={index} key={index}>ACCT {index}: {account} | {this.state.accountBalance} ETH</option>;
           })}
         </select>
-        &nbsp;{this.state.accountBalance} ETH
+
+        {/* SKIP BLOCK */}
+        <button onClick={(evt) => {
+            web3util.skipBlocks(1, this.props.globalState.network.web3);
+          }}>SKIP 1</button>
+        <button onClick={(evt) => {
+            web3util.skipBlocks(10, this.props.globalState.network.web3);
+          }}>SKIP 10</button>
+
       </div>
     );
   }

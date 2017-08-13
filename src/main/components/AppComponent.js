@@ -24,18 +24,19 @@ class App extends Component {
         <br/>
 
         {/* FOOTER */}
-        <footer className="footer navbar-fixed-bottom">
-          <div className="row">
-            <div className="text-center">
-              <small className="text-muted">
-                Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team.
-              </small>
-            </div>
-            {/* DEBUG UI */}
-            {DEBUG_MODE &&
-              <DebugComponent/>
-            }
+        <div className="row footer">
+          <div className="text-center">
+            <small className="text-muted">
+              Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team
+            </small>
           </div>
+        </div>
+
+        {/* DEBUG UI */}
+        <footer className="footer navbar-fixed-bottom">
+          {DEBUG_MODE &&
+            <DebugComponent/>
+          }
         </footer>
 
       </div>

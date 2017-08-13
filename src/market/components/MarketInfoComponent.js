@@ -17,7 +17,7 @@ const MarketInfoComponent = ({
     <div>
 
       {/* BET BALANCES */}
-      <h4>
+      <h3>
         <span className="label label-default align-middle">
           <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;
           {positivePredicionBalance}&nbsp;ETH
@@ -27,7 +27,7 @@ const MarketInfoComponent = ({
           <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>&nbsp;&nbsp;
           {negativePredicionBalance}&nbsp;ETH
         </span>
-      </h4>
+      </h3>
 
       {/* MISC */}
       <ul className='list'>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import {
   createMarket
 } from '../actions';
@@ -49,6 +48,11 @@ class CreateMarketComponent extends React.Component {
                     placeholder='Eg. "Ether will surpass bitcoin in 2018."'
                     ref={ref => this.setStatementInputField(ref)}
                     />
+                  <small className="text-muted">
+                    Please enter a falsable and measurable
+                    statement that can be reduced to yes/no
+                    once the prediction is resolved.
+                  </small>
                 </div>
 
                 {/* DURATION */}
@@ -56,9 +60,13 @@ class CreateMarketComponent extends React.Component {
                   <label>Duration:</label>
                   <input
                     className="form-control"
-                    placeholder='Enter a duration in blocks.'
+                    placeholder='Enter a duration in blocks'
                     ref={ref => this.setDurationInputField(ref)}
                     />
+                  <small className="text-muted">
+                    Keep in mind that during this resolution event,
+                    the market will have to be resolved to yes/no.
+                  </small>
                 </div>
 
                 {/* SUBMIT */}

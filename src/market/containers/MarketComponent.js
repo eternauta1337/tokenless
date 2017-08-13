@@ -7,6 +7,7 @@ import MarketResolveComponent from '../components/MarketResolveComponent';
 import MarketWithdrawComponent from '../components/MarketWithdrawComponent';
 import MarketDestroyComponent from '../components/MarketDestroyComponent';
 import MarketWaitComponent from '../components/MarketWaitComponent';
+import _ from 'lodash';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -31,8 +32,19 @@ class Market extends React.Component {
     this.refreshMarket();
   }
 
-  componentWillReceiveProps() {
-    this.refreshMarket();
+  componentWillReceiveProps(nextProps) {
+
+    // Request market fetch only when certain properties change.
+    const changedProps = _.reduce(this.props, (res, val, key) => {
+      return _.isEqual(val, nextProps[key]) ? res : res.concat(key);
+    }, []);
+    console.log('delta props: ', changedProps);
+    if(
+      changedProps.includes('blockNumber') ||
+      changedProps.includes('isNetworkConnected')
+    ) {
+      this.refreshMarket();
+    }
   }
 
   refreshMarket() {
@@ -75,7 +87,7 @@ class Market extends React.Component {
           </h1>
         </div>
 
-        <div className="row">
+        <div className="">
 
           {/* INFO */}
           <MarketInfoComponent

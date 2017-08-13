@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
+import {
+  getMarketPreview
+} from '../actions';
 
 import ConnectComponent from '../../common/components/ConnectComponent';
 
@@ -32,12 +35,23 @@ class ListMarkets extends React.Component {
     }
   }
 
+  refreshPreviews() {
+    _.each(this.props.addresses, (address) => {
+      if(!this.props.previews[address]) {
+        this.props.getMarketPreview(address);
+        return false;
+      }
+    });
+  }
+
   render() {
 
     // CONNECTING...
     if(!this.props.isConnected) {
       return <ConnectComponent title="Connecting with market factory..."/>;
     }
+
+    this.refreshPreviews();
 
     return (
       <div className="container">
@@ -50,11 +64,14 @@ class ListMarkets extends React.Component {
         {/* CREATE MARKET PANEL */}
         <div className="row">
           <ul className="list-group">
-            {_.map(this.props.previews, (preview) => {
+            {_.map(this.props.addresses, (address) => {
+              const preview = this.props.previews[address];
+              const title = preview ? preview.statement : address;
+              const balance = preview ? preview.balance : 0;
               return (
-                <li className="list-group-item" key={preview.address}>
-                  <Link to={`/market/${preview.address}`}>
-                    {preview.statement} <span className="pull-right">{preview.balance} ETH</span>
+                <li className="list-group-item" key={address}>
+                  <Link to={`/market/${address}`}>
+                    {title} <span className="pull-right">{balance} ETH</span>
                   </Link>
                 </li>
               );
@@ -75,6 +92,7 @@ class ListMarkets extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    addresses: state.factory.marketAddresses,
     previews: state.factory.previews,
     isNetworkConnected: state.network.isConnected,
     blockNumber: state.network.blockNumber,
@@ -84,7 +102,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    connectFactory: () => dispatch(connectFactory())
+    connectFactory: () => dispatch(connectFactory()),
+    getMarketPreview: (address) => dispatch(getMarketPreview(address))
   };
 };
 

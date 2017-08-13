@@ -1,7 +1,6 @@
 import TruffleContract from 'truffle-contract';
 import FactoryArtifacts from '../../../build/contracts/MarketFactory.json';
 import { MARKET_FACTORY_ADDRESS } from '../../constants';
-import { getMarketPreview } from './GetMarketPreview';
 
 export const CONNECT_FACTORY = 'factory/CONNECT_FACTORY';
 
@@ -20,12 +19,6 @@ export function connectFactory() {
 
     // Get factory info.
     factory.marketAddresses = await contract.getMarkets();
-    factory.marketAddresses = await contract.getMarkets();
-    factory.marketPreviews = {};
-    for(let i = 0; i < factory.marketAddresses.length; i++) {
-      const address = factory.marketAddresses[i];
-      dispatch(getMarketPreview(address));
-    }
 
     dispatch({
       type: CONNECT_FACTORY,

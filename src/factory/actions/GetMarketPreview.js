@@ -15,21 +15,25 @@ export function getMarketPreview(address) {
     // slow when there are a lot of markets
     // ---------------------
 
+    // Skip if preview has already been obtained.
+    if(getState().factory.previews[address]) {
+      console.log('preview already fetched');
+      return;
+    }
+
     // Retrieve market.
-    // const Market = TruffleContract(MarketArtifacts);
-    // Market.setProvider(web3.currentProvider);
-    // const contract = await Market.at(address);
-    // market.contract = contract;
+    const Market = TruffleContract(MarketArtifacts);
+    Market.setProvider(web3.currentProvider);
+    const contract = await Market.at(address);
+    market.contract = contract;
 
     // Extract market info.
     market.address = address;
-    // const positivePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(true)).toNumber());
-    // const negativePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(false)).toNumber());
-    // market.balance = positivePredicionBalance + negativePredicionBalance;
-    // market.statement = await contract.statement.call();
-    // console.log('market: ', market);
-    market.balance = 0;
-    market.statement = market.address;
+    const positivePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(true)).toNumber());
+    const negativePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(false)).toNumber());
+    market.balance = positivePredicionBalance + negativePredicionBalance;
+    market.statement = await contract.statement.call();
+    console.log('market: ', market);
 
     dispatch({
       type: GET_MARKET_PREVIEW,
