@@ -14,13 +14,14 @@ contract Market is Ownable, PullPayment, Destructible {
   // --------------------------------------------------
 
   string public statement;
-  uint public endBlock; // bets close at endBlock
-  uint public killBlock; // owner can withdraw fees at killBlock
+  uint public endBlock; // Bets close at endBlock.
+  uint public killBlock; // Owner will be able to destroy contract after killBlock.
 
   function Market(string _statement, uint _blockDuration) {
     statement = _statement;
     endBlock = block.number.add(_blockDuration);
 
+    // Calculate kill block as a percentage of total duration.
     uint _killBlock = _blockDuration / 4;
     if(_killBlock < 5) _killBlock = 5;
     if(_killBlock > 30000) _killBlock = 30000;
@@ -33,7 +34,7 @@ contract Market is Ownable, PullPayment, Destructible {
 
   event BetEvent(address indexed from, bool prediction, uint value);
 
-  mapping(bool => mapping(address => uint)) public bets;
+  mapping(bool => mapping(address => uint)) bets;
   mapping(bool => uint) public totals;
 
   function bet(bool prediction) payable onlyInState(State.Open) {

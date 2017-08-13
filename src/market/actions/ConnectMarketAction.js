@@ -33,8 +33,8 @@ export function connectMarket(address) {
     console.log('getting market data... player:', player);
     // --------------------------------------------------
     // TODO: CRASHES
-    // market.playerPositiveBalance = +web3.fromWei(await contract.getPlayerBalance(true, {from: player}), 'ether').toNumber();
-    // market.playerNegativeBalance = +web3.fromWei(await contract.getPlayerBalance(false, {from: player}), 'ether').toNumber();
+    // market.playerPositiveBalance = +web3.fromWei(await contract.getPlayerBalance(true), 'ether').toNumber();
+    // market.playerNegativeBalance = +web3.fromWei(await contract.getPlayerBalance(false), 'ether').toNumber();
     market.playerPositiveBalance = 0.05;
     market.playerNegativeBalance = 5;
     // --------------------------------------------------

@@ -27,7 +27,7 @@ class App extends Component {
         <div className="row footer">
           <div className="text-center">
             <small className="text-muted">
-              Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team
+              Created with <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp; by the Zeppelin team
             </small>
           </div>
         </div>
