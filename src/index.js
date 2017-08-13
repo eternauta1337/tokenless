@@ -7,9 +7,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import AppComponent from './main/components/AppComponent';
 import HomeComponent from './home/components/HomeComponent';
-import MarketComponent from './market/components/MarketComponent';
-import CreateMarketComponent from './factory/components/CreateMarketComponent';
-import ListMarketsComponent from './factory/components/ListMarketsComponent';
+import MarketComponent from './market/containers/MarketComponent';
+import CreateMarketComponent from './factory/containers/CreateMarketComponent';
+import ListMarketsComponent from './factory/containers/ListMarketsComponent';
 import {
   PATH_MARKET,
   PATH_LIST,

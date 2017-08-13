@@ -19,12 +19,16 @@ class App extends Component {
           {this.props.children}
         </div>
 
+        <br/>
+        <br/>
+        <br/>
+
         {/* FOOTER */}
         <footer className="footer navbar-fixed-bottom">
           <div className="row">
             <div className="text-center">
               <small className="text-muted">
-                Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team
+                Created with <span className="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; by the Zeppelin team.
               </small>
             </div>
             {/* DEBUG UI */}

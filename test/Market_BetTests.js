@@ -5,7 +5,7 @@ import * as util from '../src/utils/Web3Util';
 contract('Market (Bets)', function(accounts) {
 
   before(() => {
-    console.log('accounts:', web3.eth.accounts);
+    // console.log('accounts:', web3.eth.accounts);
   });
 
   it('should accepts funds via bets', async function() {

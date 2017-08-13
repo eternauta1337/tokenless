@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import MarketInfoComponent from './MarketInfoComponent';
-import MarketBetComponent from './MarketBetComponent';
+import MarketInfoComponent from '../components/MarketInfoComponent';
+import MarketBetComponent from '../components/MarketBetComponent';
+import MarketResolveComponent from '../components/MarketResolveComponent';
+import MarketWithdrawComponent from '../components/MarketWithdrawComponent';
+import MarketDestroyComponent from '../components/MarketDestroyComponent';
+import MarketWaitComponent from '../components/MarketWaitComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -83,53 +87,44 @@ class Market extends React.Component {
             remainingBlocks={remainingBlocks}
             />
 
-          {/* BET */}
-          <MarketBetComponent
-            marketState={this.props.marketState}
-            placeBet={this.props.placeBet}
-            />
-
-          {/* RESOLVE */}
-          {isOwned && this.props.marketState === 1 &&
-            <div>
-              <h2>Resolve this market now:</h2>
-              <button onClick={(evt) => this.handleResolveButtonClick(true)}>Yea</button>
-              <button onClick={(evt) => this.handleResolveButtonClick(false)}>Nay</button>
-            </div>
+          {/* DESTROY */}
+          {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
+            <MarketDestroyComponent
+              destroyMarket={this.props.destroyMarket}
+              />
           }
 
           {/* WITHDRAW */}
           {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
-            <div>
-              <button
-                onClick={(evt) => this.handleWithdrawButtonClick()}>Withdraw prize</button>
-            </div>
+            <MarketWithdrawComponent
+              withdrawPrize={this.props.withdrawPrize}
+              />
           }
 
-          {/* DESTROY */}
-          {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
-            <div>
-              <button
-                onClick={(evt) => this.handleDestroyButtonClick()}>Destroy</button>
-            </div>
+          {/* RESOLVE */}
+          {isOwned && this.props.marketState === 1 &&
+            <MarketResolveComponent
+              resolveMarket={this.props.resolveMarket}
+              />
           }
+
+          {/* WAIT */}
+          {!isOwned && this.props.marketState === 1 &&
+            <MarketWaitComponent/>
+          }
+
+          {/* BET */}
+          {this.props.marketState === 0 &&
+            <MarketBetComponent
+              placeBet={this.props.placeBet}
+              />
+          }
+
         </div>
 
       </div>
     );
   }
-
-  handleResolveButtonClick(outcome) {
-    this.props.resolveMarket(outcome);
-  };
-
-  handleWithdrawButtonClick() {
-    this.props.withdrawPrize();
-  };
-
-  handleDestroyButtonClick() {
-    this.props.destroyMarket();
-  };
 }
 
 const mapStateToProps = (state, ownProps) => {

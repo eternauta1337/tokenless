@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketBetComponent = ({ placeBet, marketState }) => {
+const MarketBetComponent = ({ placeBet }) => {
 
   let betInputField;
   let predictionSelector;
@@ -8,7 +8,8 @@ const MarketBetComponent = ({ placeBet, marketState }) => {
   const handleBetSubmit = function(evt) {
 
     const bet = betInputField.value;
-    const prediction = +predictionSelector.value;
+    const prediction = +predictionSelector.options[
+      predictionSelector.selectedIndex].value;
 
     // TODO: proper validation
     if(prediction !== 0 && prediction !== 1) {
@@ -23,13 +24,10 @@ const MarketBetComponent = ({ placeBet, marketState }) => {
     placeBet(prediction, betInputField.value);
   };
 
-  // const isActive = marketState === 0;
-  const isActive = false;
-
   return (
-    <div className={`panel panel-${isActive ? 'primary' : 'default'}`}>
+    <div className='panel panel-info'>
       <div className="panel-heading">
-        <span>{isActive ? 'Feel like making a prediction?' : 'Bets are closed.'}</span>
+        <span>Would you like to make a prediction?</span>
       </div>
       <div className="panel-body">
         <form className="">

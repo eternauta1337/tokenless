@@ -124,7 +124,7 @@ contract Market is Ownable, PullPayment, Destructible {
   // --------------------------------------------------
 
   bool private resolved;
-  enum State { Open, Closed, Resolved, Finished }
+  enum State { Open, Closed, Resolved }
 
   modifier onlyInState(State _state) {
     if(_state != getState()) { revert(); }
@@ -141,12 +141,7 @@ contract Market is Ownable, PullPayment, Destructible {
       }
     }
     else {
-      if(block.number <= killBlock) {
-        return State.Resolved;
-      }
-      else {
-        return State.Finished;
-      }
+      return State.Resolved;
     }
   }
 
@@ -156,7 +151,10 @@ contract Market is Ownable, PullPayment, Destructible {
 
   event DestroyEvent(address indexed from);
 
-  function destroy() onlyOwner onlyInState(State.Finished) {
+  function destroy() onlyOwner {
+    if(block.number <= killBlock) {
+      revert();
+    }
     DestroyEvent(msg.sender);
     super.destroy();
   }

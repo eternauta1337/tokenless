@@ -3,12 +3,7 @@
 var TruffleContract = require('truffle-contract');
 var FactoryArtifacts = require('../build/contracts/MarketFactory.json');
 var MarketArtifacts = require('../build/contracts/Market.json');
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
+var util = require('../src/utils/Web3Util');
 
 module.exports = async function(callback) {
 
@@ -23,14 +18,21 @@ module.exports = async function(callback) {
   // Create a bunch of markets.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
-  for(let i = 0; i < 10; i++) {
-    const duration = getRandomInt(1, 100);
-    console.log('creating market:', i, duration);
-
-    // Create market.
+  const markets = [
+    {statement: 'Whrachikov will win the election.',
+      duration: 1},
+    {statement: 'The Mayans will return to earth in 2018',
+      duration: 10},
+    {statement: 'Bitcoin will be worth $5000 by October 2017',
+      duration: 100},
+    {statement: 'Bitcoin will fork again in 2017',
+      duration: 1000},
+  ];
+  for(let i = 0; i < markets.length; i++) {
+    const market = markets[i];
     const creationTransaction = await factory.createMarket(
-      `This is sample market: ${i}`,
-      duration, {
+      market.statement,
+      market.duration, {
         from: '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39',
         gas: 1000000
       }
@@ -43,4 +45,6 @@ module.exports = async function(callback) {
   }
 
   callback();
+
+  require('repl').start({});
 };
