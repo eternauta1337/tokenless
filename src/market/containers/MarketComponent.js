@@ -38,7 +38,7 @@ class Market extends React.Component {
     const changedProps = _.reduce(this.props, (res, val, key) => {
       return _.isEqual(val, nextProps[key]) ? res : res.concat(key);
     }, []);
-    console.log('delta props: ', changedProps);
+    // console.log('delta props: ', changedProps);
     if(
       changedProps.includes('blockNumber') ||
       changedProps.includes('isNetworkConnected')
