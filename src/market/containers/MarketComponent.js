@@ -7,6 +7,7 @@ import MarketResolveComponent from '../components/MarketResolveComponent';
 import MarketWithdrawComponent from '../components/MarketWithdrawComponent';
 import MarketDestroyComponent from '../components/MarketDestroyComponent';
 import MarketWaitComponent from '../components/MarketWaitComponent';
+import MarketBalancesComponent from '../components/MarketBalancesComponent';
 import _ from 'lodash';
 import '../../styles/index.css';
 import {
@@ -98,6 +99,14 @@ class Market extends React.Component {
             marketStateStr={this.props.marketStateStr}
             remainingBlocks={remainingBlocks}
             />
+
+          {/* BALANCES */}
+            {this.props.marketState === 0 &&
+              <MarketBalancesComponent
+                playerPositiveBalance={this.props.playerPositiveBalance}
+                playerNegativeBalance={this.props.playerNegativeBalance}
+                />
+            }
 
           {/* DESTROY */}
           {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&

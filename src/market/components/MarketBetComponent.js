@@ -27,7 +27,7 @@ const MarketBetComponent = ({ placeBet }) => {
   return (
     <div className='panel panel-info'>
       <div className="panel-heading">
-        <span>Would you like to make a prediction?</span>
+        <span>Would you like to make a new prediction?</span>
       </div>
       <div className="panel-body">
         <form className="">

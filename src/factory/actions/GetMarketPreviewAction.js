@@ -29,8 +29,8 @@ export function getMarketPreview(address) {
 
     // Extract market info.
     market.address = address;
-    const positivePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(true)).toNumber());
-    const negativePredicionBalance = +web3.fromWei((await contract.getPredictionBalance(false)).toNumber());
+    const positivePredicionBalance = +web3.fromWei((await contract.totals.call(true)).toNumber());
+    const negativePredicionBalance = +web3.fromWei((await contract.totals.call(false)).toNumber());
     market.balance = positivePredicionBalance + negativePredicionBalance;
     market.statement = await contract.statement.call();
     console.log('market: ', market);
