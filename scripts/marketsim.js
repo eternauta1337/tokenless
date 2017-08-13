@@ -6,6 +6,7 @@ var FactoryArtifacts = require('../build/contracts/MarketFactory.json');
 var MarketArtifacts = require('../build/contracts/Market.json');
 var util = require('../src/utils/Web3Util');
 
+var addrMarket = '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a';
 var addr0 = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39';
 
 module.exports = async function(callback) {
@@ -15,7 +16,7 @@ module.exports = async function(callback) {
   // Retrieve deployed market factory.
   const Factory = TruffleContract(FactoryArtifacts);
   Factory.setProvider(web3.currentProvider);
-  const factory = await Factory.at('0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a');
+  const factory = await Factory.at(addrMarket);
   console.log('market factory retrieved');
 
   // Create a bunch of markets.

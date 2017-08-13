@@ -49,9 +49,12 @@ class Debug extends React.Component {
           defaultValue={0}>
           >
           {this.props.accounts && this.props.accounts.map((account, index) => {
-            return <option value={index} key={index}>ACCT {index}: {account} | {this.state.accountBalance} ETH</option>;
+            return <option value={index} key={index}>ACCT {index}: {account}</option>;
           })}
-        </select>
+        </select>&nbsp;
+
+        {/* BALANCE */}
+        {this.state.accountBalance} ETH&nbsp;
 
         {/* SKIP BLOCK */}
         <button onClick={(evt) => {

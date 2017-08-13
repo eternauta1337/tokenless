@@ -15,7 +15,6 @@ const MarketInfoComponent = ({
 
   return (
     <div>
-
       {/* BET BALANCES */}
       <h3>
         <span className="label label-default align-middle">
