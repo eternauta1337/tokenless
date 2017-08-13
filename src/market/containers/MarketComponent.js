@@ -98,6 +98,7 @@ class Market extends React.Component {
             marketState={this.props.marketState}
             marketStateStr={this.props.marketStateStr}
             remainingBlocks={remainingBlocks}
+            outcome={this.props.outcome}
             />
 
           {/* BALANCES */}
@@ -118,6 +119,7 @@ class Market extends React.Component {
           {/* WITHDRAW */}
           {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
             <MarketWithdrawComponent
+              estimatePrize={this.props.estimatePrize}
               withdrawPrize={this.props.withdrawPrize}
               />
           }

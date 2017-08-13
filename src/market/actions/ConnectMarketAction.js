@@ -31,7 +31,7 @@ export function connectMarket(address) {
     // Extract market info.
     console.log('getting market data... player:', player);
     // --------------------------------------------------
-    // TODO: these 2 are crashing...
+    // TODO: CRASHES
     // market.playerPositiveBalance = +web3.fromWei(await contract.getPlayerBalance(true, {from: player}), 'ether').toNumber();
     // market.playerNegativeBalance = +web3.fromWei(await contract.getPlayerBalance(false, {from: player}), 'ether').toNumber();
     market.playerPositiveBalance = 0.05;
@@ -46,6 +46,13 @@ export function connectMarket(address) {
     market.outcome = await contract.outcome.call();
     market.endBlock = (await contract.endBlock.call()).toNumber();
     market.killBlock = (await contract.killBlock.call()).toNumber();
+    if(market.marketState === 2) {
+      // --------------------------------------------------
+      // TODO: CRASHES
+      // market.estimatePrize = +web3.fromWei(await contract.calculatePrize(market.outcome), 'ether').toNumber();
+      market.estimatePrize = 7.234234;
+      // --------------------------------------------------
+    }
     console.log('market: ', market);
 
     dispatch({

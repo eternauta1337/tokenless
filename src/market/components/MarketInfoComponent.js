@@ -6,7 +6,8 @@ const MarketInfoComponent = ({
   isOwned,
   marketState,
   marketStateStr,
-  remainingBlocks
+  remainingBlocks,
+  outcome
 }) => {
 
   let marketStateClass = 'success';
@@ -15,6 +16,7 @@ const MarketInfoComponent = ({
 
   return (
     <div>
+
       {/* BET BALANCES */}
       <h3>
         <span className="label label-default align-middle">
@@ -40,10 +42,10 @@ const MarketInfoComponent = ({
           </li>
         }
 
-        {/* STATE + BLOCKS REMAINING */}
+        {/* STATE + OUTCOME + BLOCKS REMAINING */}
         <li className='list-inline-item'>
           <span className={`label label-${marketStateClass}`}>
-            {marketStateStr} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
+            {marketStateStr} for {outcome ? 'Yea' : 'Nay'} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
           </span>
         </li>
 
