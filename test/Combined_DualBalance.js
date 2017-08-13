@@ -80,6 +80,10 @@ contract('', function(accounts) {
     const contract = await Market.at(marketAddress);
     console.log('market created');
 
+    const statement = await contract.statement.call();
+    console.log('statement:', statement);
+    assert.notEqual(statement.length, 0, 'invalid statement');
+
     let i;
 
     // Implement the following structure in the contract.
