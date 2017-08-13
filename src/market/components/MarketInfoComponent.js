@@ -12,7 +12,10 @@ const MarketInfoComponent = ({
 
   let marketStateClass = 'success';
   if(marketState === 1) marketStateClass = 'warning';
-  if(marketState === 2) marketStateClass = 'success';
+  if(marketState === 2 && outcome === false) marketStateClass = 'danger';
+
+  let stateStr = marketStateStr;
+  if(marketState === 2) stateStr = `${marketStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
 
   return (
     <div>
@@ -45,7 +48,7 @@ const MarketInfoComponent = ({
         {/* STATE + OUTCOME + BLOCKS REMAINING */}
         <li className='list-inline-item'>
           <span className={`label label-${marketStateClass}`}>
-            {marketStateStr} for {outcome ? 'Yea' : 'Nay'} {remainingBlocks !== 0 ? `(${remainingBlocks})` : ''}
+            {stateStr} ({remainingBlocks})
           </span>
         </li>
 

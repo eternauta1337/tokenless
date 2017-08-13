@@ -34,18 +34,7 @@ class Market extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
-    // Request market fetch only when certain properties change.
-    const changedProps = _.reduce(this.props, (res, val, key) => {
-      return _.isEqual(val, nextProps[key]) ? res : res.concat(key);
-    }, []);
-    // console.log('delta props: ', changedProps);
-    if(
-      changedProps.includes('blockNumber') ||
-      changedProps.includes('isNetworkConnected')
-    ) {
-      this.refreshMarket();
-    }
+    this.refreshMarket();
   }
 
   refreshMarket() {
@@ -112,6 +101,7 @@ class Market extends React.Component {
           {/* DESTROY */}
           {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
             <MarketDestroyComponent
+              balance={this.props.balance}
               destroyMarket={this.props.destroyMarket}
               />
           }

@@ -1,5 +1,6 @@
 import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Market.json';
+import * as web3util from '../../utils/Web3Util';
 
 export const CONNECT_MARKET = 'market/CONNECT';
 
@@ -46,6 +47,7 @@ export function connectMarket(address) {
     market.outcome = await contract.outcome.call();
     market.endBlock = (await contract.endBlock.call()).toNumber();
     market.killBlock = (await contract.killBlock.call()).toNumber();
+    market.balance = web3util.getBalanceInEther(address, web3);
     if(market.marketState === 2) {
       // --------------------------------------------------
       // TODO: CRASHES

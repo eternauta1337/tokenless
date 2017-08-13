@@ -1,6 +1,9 @@
 import React from 'react';
 
-const MarketDestroyComponent = ({destroyMarket}) => {
+const MarketDestroyComponent = ({
+  destroyMarket,
+  balance
+}) => {
 
   const handleDestroyButtonClick = function() {
     destroyMarket();
@@ -9,7 +12,7 @@ const MarketDestroyComponent = ({destroyMarket}) => {
   return (
     <div className='panel panel-danger'>
       <div className="panel-heading">
-        <span>Destroy this market and retrieve your fees</span>
+        <span>Would you like to withdraw your feeds?</span>
       </div>
       <div className="panel-body">
         <form className="">
@@ -17,7 +20,7 @@ const MarketDestroyComponent = ({destroyMarket}) => {
             type="button"
             className="btn btn-danger"
             onClick={(evt) => handleDestroyButtonClick()}>
-            Destroy Market
+            Destroy Market and Withdraw {balance} ETH
           </button>
         </form>
       </div>
