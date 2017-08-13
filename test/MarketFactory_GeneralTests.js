@@ -61,4 +61,35 @@ contract('MarketFactory (General)', function(accounts) {
 
     assert.equal(localAddresses.length, remoteAddresses.length, 'num addresses mismatch');
   });
+
+  it('should be able to forget markets', async function() {
+
+    const factory = await MarketFactory.new();
+
+    // Create a few markets and recall their addresse.
+    const localAddresses = [];
+    localAddresses.push((await factory.createMarket(
+      'Market 0.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+    localAddresses.push((await factory.createMarket(
+      'Market 1.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+    localAddresses.push((await factory.createMarket(
+      'Market 2.', 10, {from: accounts[0]}
+    )).logs[0].args.marketAddress);
+
+    // Verify num.
+    let remoteAddresses = await factory.getMarkets();
+    console.log('markets:', remoteAddresses);
+    assert.equal(remoteAddresses.length, 3, 'num addresses mismatch');
+
+    // Remove 1 market.
+    await factory.forgetMarket(localAddresses[1]);
+
+    // Verify num.
+    remoteAddresses = await factory.getMarkets();
+    console.log('markets:', remoteAddresses);
+    assert.equal(remoteAddresses.length, 2, 'num addresses mismatch');
+
+  });
 });

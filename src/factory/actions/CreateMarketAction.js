@@ -5,7 +5,6 @@ export function createMarket(statement, duration) {
   return async function(dispatch, getState) {
 
     const factory = getState().factory.contract;
-    console.log('factory:', factory);
 
     console.log('creating market:', statement, duration);
     const creationTransaction = await factory.createMarket(

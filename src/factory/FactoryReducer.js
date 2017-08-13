@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import {
   CONNECT_FACTORY,
-  GET_MARKET_PREVIEW
+  GET_MARKET_PREVIEW,
+  MARKET_FORGOTTEN
 } from './actions';
 
 const initialState = {
@@ -30,6 +32,14 @@ export default function(state = initialState, action) {
         ...state.previews,
         [market.address]: market
       }
+    };
+
+  case MARKET_FORGOTTEN:
+    const forgottenAddress = action.payload;
+    const newPreviews = _.omit(state.previews, forgottenAddress);
+    return {
+      ...state,
+      previews: newPreviews
     };
 
   default:
