@@ -33,58 +33,38 @@ contract('Market (Bets)', function(accounts) {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    for(let i = 0; i < 2; i++) {
-      await contract.bet(true, {
-        from: accounts[1],
-        value: web3.toWei(1, 'ether')
-      });
-    }
+    await contract.bet(true, {
+      from: accounts[1],
+      value: web3.toWei(1, 'ether')
+    });
+    await contract.bet(false, {
+      from: accounts[1],
+      value: web3.toWei(2, 'ether')
+    });
 
-    const playerBalance = web3.fromWei(await contract.getPlayerBalance({
+    const playerPosBalance = web3.fromWei(await contract.getPlayerBalance(true, {
       from: accounts[1]
     }), 'ether').toNumber();
-    // console.log('player 1 balance: ', playerBalance);
+    // console.log('player 1 pos balance: ', playerBalance);
+    assert.equal(1, playerPosBalance, 'player balance was not tracked');
 
-    assert.equal(2, playerBalance, 'player balance was not tracked');
+    const playerNegBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+      from: accounts[1]
+    }), 'ether').toNumber();
+    // console.log('player 1 neg balance: ', playerBalance);
+    assert.equal(2, playerNegBalance, 'player balance was not tracked');
   });
 
   it('should not keep a balance for a player that didnt bet', async function() {
 
     const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    const playerBalance = web3.fromWei(await contract.getPlayerBalance({
+    const playerBalance = web3.fromWei(await contract.getPlayerBalance(Math.random() > 0.5, {
       from: accounts[2]
     }), 'ether');
     // console.log('player 2 balance: ', player2Balance);
 
     assert.equal(0, playerBalance, 'player wasnt supposed to have a balance');
-  });
-
-  it('should keep track of player predictions', async function() {
-
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
-
-    await contract.bet(true, {
-      from: accounts[1],
-      value: web3.toWei(1, 'ether')
-    });
-
-    let prediction = await contract.getPlayerPrediction({
-      from: accounts[1]
-    });
-
-    assert.equal(prediction, true, 'prediction should be true');
-
-    await contract.bet(false, {
-      from: accounts[1],
-      value: web3.toWei(1, 'ether')
-    });
-
-    prediction = await contract.getPlayerPrediction({
-      from: accounts[1]
-    });
-
-    assert.equal(prediction, false, 'prediction should be false');
   });
 
   it('should expose pot totals', async function() {

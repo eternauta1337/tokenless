@@ -44,9 +44,6 @@ contract('Market (Withdraw)', function(accounts) {
     assert.approximately(newPlayerBalance, expectedNewPlayerBalance, 0.01, 'expected winner balance is incorrect');
 
     // Winners should not be able to withdraw twice.
-    web3.fromWei(await contract.getPlayerBalance({
-      from: accounts[1]
-    }), 'ether').toNumber();
     await expectThrow(contract.claimPrize({from: accounts[1]}));
   });
 

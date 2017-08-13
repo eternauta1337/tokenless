@@ -31,31 +31,27 @@ contract Market is Ownable, PullPayment, Destructible {
   // Placing bets
   // --------------------------------------------------
 
-  struct Bet {
-    bool prediction;
-    uint balance;
-  }
-
   event BetEvent(address indexed from, bool prediction, uint value);
 
-  mapping(address => Bet) public bets;
+  mapping(address => mapping(bool => uint)) public bets;
   mapping(bool => uint) public totals;
 
   function bet(bool prediction) payable onlyInState(State.Open) {
-    bets[msg.sender] = Bet({
-      prediction: prediction,
-      balance: bets[msg.sender].balance.add(msg.value)
-    });
+
+    // Update user's balances.
+    uint pos = bets[msg.sender][true];
+    uint neg = bets[msg.sender][false];
+    bets[msg.sender][true] = prediction ? pos.add(msg.value) : pos;
+    bets[msg.sender][false] = !prediction ? neg.add(msg.value) : neg;
+
+    // Keep track in totals pot.
     totals[prediction] = totals[prediction].add(msg.value);
+
     BetEvent(msg.sender, prediction, msg.value);
   }
 
-  function getPlayerBalance() constant returns (uint) {
-    return bets[msg.sender].balance;
-  }
-
-  function getPlayerPrediction() constant returns (bool) {
-    return bets[msg.sender].prediction;
+  function getPlayerBalance(bool outcome) constant returns (uint) {
+    return bets[msg.sender][outcome];
   }
 
   function getPredictionBalance(bool prediction) constant returns (uint) {
@@ -84,6 +80,21 @@ contract Market is Ownable, PullPayment, Destructible {
 
   function claimPrize() onlyInState(State.Resolved) {
 
+    // Calculate total prize.
+    uint prize = calculatePrize(outcome);
+    LogEvent('prize', prize);
+    if(prize == 0) revert();
+
+    // Assign funds.
+    asyncSend(msg.sender, prize);
+    bets[msg.sender][true] = 0;
+    bets[msg.sender][false] = 0;
+
+    ClaimEvent(msg.sender);
+  }
+
+  function calculatePrize(bool prediction) constant returns (uint) {
+
     /*
       The balance is split between a losing and a winning pot.
       Winners take chunks away from the losing pot according to the percentage
@@ -91,32 +102,33 @@ contract Market is Ownable, PullPayment, Destructible {
       A small fee of the loser takeaway chunk is retained for the contract owner.
     */
 
-    uint feePercent = 2;
+    // Cant predict the future.
+    if(!resolved) return 0;
 
-    Bet memory bet = bets[msg.sender];
-    if(bet.prediction != outcome) { revert(); }
-    if(bet.balance == 0) { revert(); }
+    // No prize if outcome is not matched.
+    if(prediction != outcome) return 0;
+
+    uint balance = bets[msg.sender][prediction];
+    if(balance == 0) return 0;
     /*LogEvent('bet.balance', bet.balance);*/
+
+    uint feePercent = 2;
 
     uint winningPot = totals[outcome];
     /*LogEvent('winningPot', winningPot);*/
     uint losingPot = totals[!outcome];
     /*LogEvent('losingPot', losingPot);*/
 
-    uint winPercentage = bet.balance.div(winningPot);
+    uint winPercentage = balance.div(winningPot);
     /*LogEvent('winPercentage', winPercentage);*/
     uint loserChunk = winPercentage.mul(losingPot);
     /*LogEvent('loserChunk', loserChunk);*/
     uint fee = loserChunk.mul(feePercent).div(100);
     /*LogEvent('fee', fee);*/
-    uint prize = loserChunk.sub(fee).add(bet.balance);
+    uint prize = loserChunk.sub(fee).add(balance);
     /*LogEvent('prize', prize);*/
 
-    asyncSend(msg.sender, prize);
-    bet.balance = 0;
-    bets[msg.sender] = bet;
-
-    ClaimEvent(msg.sender);
+    return prize;
   }
 
   // --------------------------------------------------
