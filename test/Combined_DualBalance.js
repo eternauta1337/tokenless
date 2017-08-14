@@ -60,7 +60,7 @@ contract('', function(accounts) {
   it('(factory+market) should support 2 balances for each player on contracts deployed by the factory', async function() {
 
     const factory = await MarketFactory.new();
-    console.log('factory address:', factory.address);
+    // console.log('factory address:', factory.address);
 
     // Create market.
     const creationTransaction = await factory.createMarket(
@@ -74,14 +74,14 @@ contract('', function(accounts) {
     // Part of the logs is an event contained in the transaction.
     const creationEventArgs = creationTransaction.logs[0].args;
     const marketAddress = creationEventArgs.marketAddress;
-    console.log('marketAddress:', marketAddress);
+    // console.log('marketAddress:', marketAddress);
 
     // Retrieve market.
     const contract = await Market.at(marketAddress);
-    console.log('market created');
+    // console.log('market created');
 
     const statement = await contract.statement.call();
-    console.log('statement:', statement);
+    // console.log('statement:', statement);
     assert.notEqual(statement.length, 0, 'invalid statement');
 
     let i;
