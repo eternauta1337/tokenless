@@ -32,8 +32,8 @@ body {
   fill: gray;
 }
 
-.brand {
-  line-height: 5px;
+.navbar .navbar-brand {
+  padding-top: 13px;
 }
 
 .brand * {
