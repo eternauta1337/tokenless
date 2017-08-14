@@ -133,6 +133,13 @@ class Market extends React.Component {
               />
           }
 
+          {/* COMMENTS */}
+          <div className="well">
+            <div className="text-muted">
+              -> todo: add disqus comments plugin
+            </div>
+          </div>
+
         </div>
 
       </div>

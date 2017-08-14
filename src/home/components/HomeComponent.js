@@ -16,6 +16,13 @@ class Home extends Component {
 
         <div className="container">
 
+          {/* LATEST */}
+          <div className="well">
+            <div className="text-muted">
+              -> todo: display latest or more popular markets...
+            </div>
+          </div>
+
           {/* HOW DOES IT WORK */}
           <div className='panel panel-default'>
             <div className="panel-heading">
