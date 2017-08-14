@@ -12,7 +12,7 @@ const MarketWithdrawComponent = ({
   return (
     <div className='panel panel-info'>
       <div className="panel-heading">
-        <span>Would you like to withdraw your prize?</span>
+        <strong>Would you like to withdraw your prize?</strong>
       </div>
       <div className="panel-body">
         {estimatePrize > 0 &&

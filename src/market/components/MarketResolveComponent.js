@@ -20,7 +20,7 @@ const MarketResolveComponent = ({ resolveMarket }) => {
   return (
     <div className='panel panel-warning'>
       <div className="panel-heading">
-        <span>Resolve this market now</span>
+        <strong>Resolve this market now</strong>
       </div>
       <div className="panel-body">
         <form className="">

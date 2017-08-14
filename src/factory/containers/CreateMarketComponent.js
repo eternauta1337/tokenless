@@ -36,6 +36,9 @@ class CreateMarketComponent extends React.Component {
           <div className="panel panel-primary">
 
             {/* PANEL TITLE */}
+            <div className="panel-heading">
+              <strong>Create your market</strong>
+            </div>
 
             <div className="panel-body">
               <form className="">
@@ -64,7 +67,7 @@ class CreateMarketComponent extends React.Component {
                     ref={ref => this.setDurationInputField(ref)}
                     />
                   <small className="text-muted">
-                    Keep in mind that during this resolution event,
+                    Keep in mind that in this resolution event,
                     the market will have to be resolved to yes/no.
                   </small>
                 </div>

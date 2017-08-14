@@ -4,7 +4,7 @@ const MarketWaitComponent = () => {
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
-        <span>Waiting for market resolution</span>
+        <strong>Waiting for market resolution</strong>
       </div>
       <div className="panel-body">
         <p>

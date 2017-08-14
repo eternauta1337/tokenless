@@ -10,10 +10,12 @@ import HomeComponent from './home/components/HomeComponent';
 import MarketComponent from './market/containers/MarketComponent';
 import CreateMarketComponent from './factory/containers/CreateMarketComponent';
 import ListMarketsComponent from './factory/containers/ListMarketsComponent';
+import AboutComponent from './about/components/AboutComponent';
 import {
   PATH_MARKET,
   PATH_LIST,
-  PATH_CREATE
+  PATH_CREATE,
+  PATH_ABOUT
 } from './constants';
 import './styles/index.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -28,6 +30,7 @@ ReactDOM.render((
           <Route path={PATH_LIST} component={ListMarketsComponent}/>
           <Route path={PATH_CREATE} component={CreateMarketComponent}/>
           <Route path={PATH_MARKET} component={MarketComponent}/>
+          <Route path={PATH_ABOUT} component={AboutComponent}/>
         </Route>
       </Router>
     </Provider>

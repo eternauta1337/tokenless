@@ -12,7 +12,7 @@ const MarketDestroyComponent = ({
   return (
     <div className='panel panel-danger'>
       <div className="panel-heading">
-        <span>Would you like to withdraw your feeds?</span>
+        <strong>Would you like to withdraw your feeds?</strong>
       </div>
       <div className="panel-body">
         <form className="">

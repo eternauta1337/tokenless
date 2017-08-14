@@ -10,7 +10,7 @@ class Home extends Component {
         <div className='jumbotron'>
           <div className="container">
             <h1>Tokenless</h1>
-            <p>A simple prediction market. No tokens. Just the market.</p>
+            <p>No tokens, just ether.</p>
           </div>
         </div>
 
@@ -19,9 +19,10 @@ class Home extends Component {
           {/* HOW DOES IT WORK */}
           <div className='panel panel-default'>
             <div className="panel-heading">
-              <span>How does it work?</span>
+              <strong>What is tokenless?</strong>
             </div>
             <div className="panel-body">
+              Tokenless is a prediction market...<br/><br/>
               Nostrud fugiat irure nisi sit voluptate pariatur magna tempor mollit incididunt id occaecat ex. Commodo non commodo officia consectetur esse sunt velit veniam consequat consequat exercitation adipisicing adipisicing. Ullamco aliqua culpa ad Lorem adipisicing. Consequat id velit exercitation velit est ullamco nulla id laborum consectetur labore incididunt. Id laborum aliquip sint eiusmod laboris consequat eiusmod pariatur aliqua irure minim nostrud. Tempor dolore amet consequat exercitation nostrud proident ullamco tempor Lorem occaecat. Culpa culpa do ipsum dolore. Eu tempor eu in proident dolor consequat veniam. Esse eiusmod pariatur veniam cupidatat tempor id. Ad adipisicing magna culpa mollit deserunt sint.
             </div>
           </div>
@@ -29,7 +30,7 @@ class Home extends Component {
           {/* HOW TO PLAY  */}
           <div className='panel panel-default'>
             <div className="panel-heading">
-              <span>How to play?</span>
+              <strong>How to play?</strong>
             </div>
             <div className="panel-body">
               Nostrud fugiat irure nisi sit voluptate pariatur magna tempor mollit incididunt id occaecat ex. Commodo non commodo officia consectetur esse sunt velit veniam consequat consequat exercitation adipisicing adipisicing. Ullamco aliqua culpa ad Lorem adipisicing. Consequat id velit exercitation velit est ullamco nulla id laborum consectetur labore incididunt. Id laborum aliquip sint eiusmod laboris consequat eiusmod pariatur aliqua irure minim nostrud. Tempor dolore amet consequat exercitation nostrud proident ullamco tempor Lorem occaecat. Culpa culpa do ipsum dolore. Eu tempor eu in proident dolor consequat veniam. Esse eiusmod pariatur veniam cupidatat tempor id. Ad adipisicing magna culpa mollit deserunt sint.
@@ -38,10 +39,14 @@ class Home extends Component {
           </div>
 
           {/* LINK TO CREATE */}
-          <Link to="/list">
-            <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;
-            Browse Markets
-          </Link>
+          <div className="">
+            <Link to="/list">
+              <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;
+              Browse Markets
+            </Link>
+            <br/>
+            <br/>
+          </div>
 
           {/* LATEST */}
           <div className="well">

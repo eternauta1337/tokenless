@@ -4,7 +4,8 @@ import EthIconComponent from '../../common/components/EthIconComponent';
 import {
   PATH_LIST,
   PATH_CREATE,
-  PATH_ROOT
+  PATH_ROOT,
+  PATH_ABOUT
 } from '../../constants';
 
 const NavigationComponent = ({ path }) => {
@@ -29,12 +30,17 @@ const NavigationComponent = ({ path }) => {
 
               {/* MARKET LIST */}
               <li className={`${path === PATH_LIST ? 'active' : ''}`}>
-                <Link to="/list">Browse Markets</Link>
+                <Link to={PATH_LIST}>Browse Markets</Link>
               </li>
 
               {/* CREATE MARKET */}
               <li className={path === PATH_CREATE ? 'active' : ''}>
-                <Link to="/create">Create a Market</Link>
+                <Link to={PATH_CREATE}>Create a Market</Link>
+              </li>
+
+              {/* ABOUT */}
+              <li className={path === PATH_ABOUT ? 'active' : ''}>
+                <Link to={PATH_ABOUT}>About</Link>
               </li>
 
             </ul>

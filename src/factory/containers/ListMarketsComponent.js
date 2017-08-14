@@ -31,26 +31,6 @@ class ListMarkets extends React.Component {
     this.refreshPreviews(this.props);
   }
 
-  refreshFactory() {
-    if(this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if(!this.props.isConnected || blockAdvanced) {
-        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
-        this.props.connectFactory();
-      }
-    }
-  }
-
-  refreshPreviews(props) {
-    _.each(props.addresses, (address) => {
-        if(!props.previews[address]) {
-          props.getMarketPreview(address);
-          return false;
-        }
-        else if(props.previews[address].isFetching) return false;
-    });
-  }
-
   render() {
 
     // CONNECTING...
@@ -96,6 +76,26 @@ class ListMarkets extends React.Component {
 
       </div>
     );
+  }
+
+  refreshFactory() {
+    if(this.props.isNetworkConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if(!this.props.isConnected || blockAdvanced) {
+        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
+        this.props.connectFactory();
+      }
+    }
+  }
+
+  refreshPreviews(props) {
+    _.each(props.addresses, (address) => {
+        if(!props.previews[address]) {
+          props.getMarketPreview(address);
+          return false;
+        }
+        else if(props.previews[address].isFetching) return false;
+    });
   }
 }
 

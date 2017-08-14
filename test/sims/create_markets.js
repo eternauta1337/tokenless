@@ -22,8 +22,8 @@ module.exports = async function(callback) {
   // Create a bunch of markets.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
-  createDeterministicMarkets(factory, Market);
-  // createRandomMarkets(20, factory, Market);
+  // createDeterministicMarkets(factory, Market);
+  createRandomMarkets(20, factory, Market);
 
   callback();
 };
