@@ -54,7 +54,7 @@ class Prediction extends React.Component {
 
     // CONNECTING...
     if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with prediction contract..."/>;
+      return <ConnectComponent title="Connecting with the prediction smart contract..."/>;
     }
 
     // Pre-process some of the prediction's data for display.

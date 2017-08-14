@@ -5,7 +5,7 @@ const ConnectComponent = ({title}) => {
   return (
     <div className="container">
       <div className="page-header">
-        <h4>{title}</h4>
+        <p className="text-muted">{title}</p>
       </div>
       <div className="row">
         <BubblePreloader

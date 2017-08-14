@@ -36,7 +36,7 @@ class ListMarkets extends React.Component {
 
     // CONNECTING...
     if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with prediction market contract..."/>;
+      return <ConnectComponent title="Connecting with the prediction market smart contract..."/>;
     }
 
     return (
