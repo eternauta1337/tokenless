@@ -1,5 +1,6 @@
 import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Market.json';
+import * as web3util from '../../utils/Web3Util';
 
 export const GET_MARKET_PREVIEW = 'factory/GET_MARKET_PREVIEW';
 
@@ -7,7 +8,7 @@ export function getMarketPreview(address) {
   return async function(dispatch, getState) {
     console.log('getMarketPreview()', address);
 
-    const market = {};
+    const preview = {};
     const web3 = getState().network.web3;
 
     // ---------------------
@@ -25,19 +26,25 @@ export function getMarketPreview(address) {
     const Market = TruffleContract(MarketArtifacts);
     Market.setProvider(web3.currentProvider);
     const contract = await Market.at(address);
-    market.contract = contract;
 
     // Extract market info.
-    market.address = address;
-    const positivePredicionBalance = +web3.fromWei((await contract.totals.call(true)).toNumber());
-    const negativePredicionBalance = +web3.fromWei((await contract.totals.call(false)).toNumber());
-    market.balance = positivePredicionBalance + negativePredicionBalance;
-    market.statement = await contract.statement.call();
-    console.log('market: ', market);
+    preview.address = address;
+    preview.balance = 0;
+    preview.isFetching = true;
+    // console.log('market: ', market);
 
     dispatch({
       type: GET_MARKET_PREVIEW,
-      payload: market
+      payload: preview
+    });
+
+    preview.balance = web3util.getBalanceInEther(address, web3);
+    preview.statement = await contract.statement.call();
+    preview.isFetching = false;
+
+    dispatch({
+      type: GET_MARKET_PREVIEW,
+      payload: preview
     });
   };
 }

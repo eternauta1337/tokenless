@@ -22,8 +22,13 @@ class ListMarkets extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.refreshPreviews(nextProps);
+  }
+
   componentWillMount() {
     this.refreshFactory();
+    this.refreshPreviews(this.props);
   }
 
   refreshFactory() {
@@ -36,12 +41,13 @@ class ListMarkets extends React.Component {
     }
   }
 
-  refreshPreviews() {
-    _.each(this.props.addresses, (address) => {
-      if(!this.props.previews[address]) {
-        this.props.getMarketPreview(address);
-        return false;
-      }
+  refreshPreviews(props) {
+    _.each(props.addresses, (address) => {
+        if(!props.previews[address]) {
+          props.getMarketPreview(address);
+          return false;
+        }
+        else if(props.previews[address].isFetching) return false;
     });
   }
 
@@ -51,8 +57,6 @@ class ListMarkets extends React.Component {
     if(!this.props.isConnected) {
       return <ConnectComponent title="Connecting with market factory..."/>;
     }
-
-    this.refreshPreviews();
 
     return (
       <div className="container">
@@ -75,7 +79,7 @@ class ListMarkets extends React.Component {
             <ul className="list-group">
               {_.map(this.props.addresses, (address) => {
                 const preview = this.props.previews[address];
-                if(preview) {
+                if(preview && !preview.isFetching) {
                   const title = preview ? preview.statement : address;
                   const balance = preview ? preview.balance : 0;
                   return (
@@ -86,7 +90,7 @@ class ListMarkets extends React.Component {
                     </li>
                   );
                 }
-                else {
+                else if(preview && preview.isFetching) {
                   return (
                     <li className="list-group-item" key={address}>
                       <BubblePreloader
@@ -95,6 +99,15 @@ class ListMarkets extends React.Component {
                         className=""
                         colors={['#ccc', '#aaa', '#999']}
                       />
+                    </li>
+                  );
+                }
+                else {
+                  return (
+                    <li className="list-group-item" key={address}>
+                      <Link to={`/market/${address}`}>
+                        {address}
+                      </Link>
                     </li>
                   );
                 }
