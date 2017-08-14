@@ -16,14 +16,14 @@ module.exports = async function(callback) {
   // Retrieve deployed prediction prediction.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
-  const market = await Market.at(constants.MARKET_FACTORY_ADDRESS);
-  console.log('market retrieved');
+  const prediction = await Market.at(constants.MARKET_ADDRESS);
+  console.log('prediction retrieved');
 
   // Create a bunch of predictions.
   const Prediction = TruffleContract(PredictionArtifacts);
   Prediction.setProvider(web3.currentProvider);
   // createDeterministicPredictions(prediction, Prediction);
-  createRandomPredictions(20, market, Prediction);
+  createRandomPredictions(20, prediction, Prediction);
 
   callback();
 };
@@ -32,7 +32,7 @@ module.exports = async function(callback) {
 // DETERMINISTIC
 // ---------------------
 
-async function createDeterministicPredictions(market, Prediction) {
+async function createDeterministicPredictions(prediction, Prediction) {
   console.log('createDeterministicPredictions()');
   const predictions = [
     {statement: 'Whrachikov will win the election.',
@@ -48,7 +48,7 @@ async function createDeterministicPredictions(market, Prediction) {
 
     // Create prediction.
     const prediction = predictions[i];
-    const creationTransaction = await market.createPrediction(
+    const creationTransaction = await prediction.createPrediction(
       prediction.statement,
       prediction.duration, {
         from: addr0,
@@ -67,12 +67,12 @@ async function createDeterministicPredictions(market, Prediction) {
 // RANDOM
 // ---------------------
 
-async function createRandomPredictions(num, market, Prediction) {
+async function createRandomPredictions(num, prediction, Prediction) {
   console.log('createRandomPredictions()', num);
   for(let i = 0; i < num; i++) {
 
     // Create prediction.
-    const creationTransaction = await market.createPrediction(
+    const creationTransaction = await prediction.createPrediction(
       "Random prediction " + i,
       getRandomInt(1, 1000), {
         from: addr0,

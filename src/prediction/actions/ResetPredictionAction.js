@@ -1,4 +1,4 @@
-export const RESET_MARKET = 'market/RESET';
+export const RESET_MARKET = 'prediction/RESET';
 
 export function resetMarket() {
   console.log('resetMarket()');

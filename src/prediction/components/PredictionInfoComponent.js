@@ -4,18 +4,18 @@ const MarketInfoComponent = ({
   positivePredicionBalance,
   negativePredicionBalance,
   isOwned,
-  marketState,
-  marketStateStr,
+  predictionState,
+  predictionStateStr,
   remainingBlocks,
   outcome
 }) => {
 
-  let marketStateClass = 'success';
-  if(marketState === 1) marketStateClass = 'warning';
-  if(marketState === 2 && outcome === false) marketStateClass = 'danger';
+  let predictionStateClass = 'success';
+  if(predictionState === 1) predictionStateClass = 'warning';
+  if(predictionState === 2 && outcome === false) predictionStateClass = 'danger';
 
-  let stateStr = marketStateStr;
-  if(marketState === 2) stateStr = `${marketStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
+  let stateStr = predictionStateStr;
+  if(predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
 
   return (
     <div>
@@ -40,14 +40,14 @@ const MarketInfoComponent = ({
         {isOwned &&
           <li className='list-inline-item'>
             <span className="label label-primary">
-              You own this market
+              You own this prediction
             </span>
           </li>
         }
 
         {/* STATE + OUTCOME + BLOCKS REMAINING */}
         <li className='list-inline-item'>
-          <span className={`label label-${marketStateClass}`}>
+          <span className={`label label-${predictionStateClass}`}>
             {stateStr} ({remainingBlocks})
           </span>
         </li>

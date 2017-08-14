@@ -14,7 +14,7 @@ const MarketListItemComponent = ({
     return (
       <Link
         key={address}
-        to={`/market/${address}`}
+        to={`/prediction/${address}`}
         className="list-group-item">
         {title} <span className="pull-right">{balance} ETH</span>
       </Link>
@@ -39,7 +39,7 @@ const MarketListItemComponent = ({
   else {
     return (
       <Link
-        to={`/market/${address}`}
+        to={`/prediction/${address}`}
         className="list-group-item"
         key={address}>
         {address}

@@ -1,8 +1,8 @@
 import TruffleContract from 'truffle-contract';
-import MarketArtifacts from '../../../build/contracts/Market.json';
+import MarketArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
 
-export const GET_MARKET_PREVIEW = 'factory/GET_MARKET_PREVIEW';
+export const GET_PREDICTION_PREVIEW = 'prediction/GET_PREDICTION_PREVIEW';
 
 export function getMarketPreview(address) {
   return async function(dispatch, getState) {
@@ -13,7 +13,7 @@ export function getMarketPreview(address) {
 
     // ---------------------
     // TODO: previews disabled because they make teh app
-    // slow when there are a lot of markets
+    // slow when there are a lot of predictions
     // ---------------------
 
     // Skip if preview has already been obtained.
@@ -22,19 +22,19 @@ export function getMarketPreview(address) {
       return;
     }
 
-    // Retrieve market.
+    // Retrieve prediction.
     const Market = TruffleContract(MarketArtifacts);
     Market.setProvider(web3.currentProvider);
     const contract = await Market.at(address);
 
-    // Extract market info.
+    // Extract prediction info.
     preview.address = address;
     preview.balance = 0;
     preview.isFetching = true;
-    // console.log('market: ', market);
+    // console.log('prediction: ', prediction);
 
     dispatch({
-      type: GET_MARKET_PREVIEW,
+      type: GET_PREDICTION_PREVIEW,
       payload: preview
     });
 
@@ -43,7 +43,7 @@ export function getMarketPreview(address) {
     preview.isFetching = false;
 
     dispatch({
-      type: GET_MARKET_PREVIEW,
+      type: GET_PREDICTION_PREVIEW,
       payload: preview
     });
   };

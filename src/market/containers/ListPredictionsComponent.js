@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Link } from 'react-router';
-import MarketListItemComponent from '../components/MarketListItemComponent';
+import MarketListItemComponent from '../components/PredictionListItemComponent';
 import {
   getMarketPreview
 } from '../actions';
@@ -36,7 +36,7 @@ class ListMarkets extends React.Component {
 
     // CONNECTING...
     if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with market factory..."/>;
+      return <ConnectComponent title="Connecting with prediction market contract..."/>;
     }
 
     return (
@@ -44,7 +44,7 @@ class ListMarkets extends React.Component {
 
         {/* TITLE */}
         <div className="page-header">
-          <h1>Browse Markets</h1>
+          <h1>Browse Predictions</h1>
         </div>
 
         {/* LIST MARKETS PANEL */}
@@ -52,7 +52,7 @@ class ListMarkets extends React.Component {
           {!this.state.fetching && this.props.addresses.length === 0 &&
             <div className="alert alert-info">
               <strong>
-                Sorry, there are currently no markets... Would you like to create one?
+                Sorry, there are currently no predictions... Would you like to create one?
               </strong>
             </div>
           }
@@ -72,7 +72,7 @@ class ListMarkets extends React.Component {
         {/* LINK TO CREATE */}
         <Link to="/create">
           <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-          Create a Market
+          Create a Prediction
         </Link>
 
       </div>
@@ -107,11 +107,11 @@ class ListMarkets extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    addresses: state.factory.marketAddresses,
-    previews: state.factory.previews,
+    addresses: state.market.predictionAddresses,
+    previews: state.market.previews,
     isNetworkConnected: state.network.isConnected,
     blockNumber: state.network.blockNumber,
-    ...state.factory
+    ...state.market
   };
 };
 
@@ -122,9 +122,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ListMarketsComponent = connect(
+const ListPredictionsComponent = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ListMarkets);
 
-export default ListMarketsComponent;
+export default ListPredictionsComponent;

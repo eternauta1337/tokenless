@@ -30,12 +30,12 @@ const NavigationComponent = ({ path }) => {
 
               {/* MARKET LIST */}
               <li className={`${path === PATH_LIST ? 'active' : ''}`}>
-                <Link to={PATH_LIST}>Browse Markets</Link>
+                <Link to={PATH_LIST}>Browse Predictions</Link>
               </li>
 
               {/* CREATE MARKET */}
               <li className={path === PATH_CREATE ? 'active' : ''}>
-                <Link to={PATH_CREATE}>Create a Market</Link>
+                <Link to={PATH_CREATE}>Create a Prediction</Link>
               </li>
 
               {/* ABOUT */}

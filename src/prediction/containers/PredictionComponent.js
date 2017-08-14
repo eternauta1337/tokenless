@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import MarketInfoComponent from '../components/MarketInfoComponent';
-import MarketBetComponent from '../components/MarketBetComponent';
-import MarketResolveComponent from '../components/MarketResolveComponent';
-import MarketWithdrawComponent from '../components/MarketWithdrawComponent';
-import MarketDestroyComponent from '../components/MarketDestroyComponent';
-import MarketWaitComponent from '../components/MarketWaitComponent';
-import MarketBalancesComponent from '../components/MarketBalancesComponent';
-import MarketDiscussComponent from '../components/MarketDiscussComponent';
-import _ from 'lodash';
+import MarketInfoComponent from '../components/PredictionInfoComponent';
+import MarketBetComponent from '../components/PredictionBetComponent';
+import MarketResolveComponent from '../components/PredictionResolveComponent';
+import MarketWithdrawComponent from '../components/PredictionWithdrawComponent';
+import MarketDestroyComponent from '../components/PredictionDestroyComponent';
+import MarketWaitComponent from '../components/PredictionWaitComponent';
+import MarketBalancesComponent from '../components/PredictionBalancesComponent';
+import MarketDiscussComponent from '../components/PredictionDiscussComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -55,18 +54,18 @@ class Market extends React.Component {
 
     // CONNECTING...
     if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with market..."/>;
+      return <ConnectComponent title="Connecting with prediction contract..."/>;
     }
 
-    // Pre-process some of the market's data for display.
+    // Pre-process some of the prediction's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
     let remainingBlocks = 0;
     if(this.props.blockNumber) {
-      if(this.props.marketState === 0) {
+      if(this.props.predictionState === 0) {
         remainingBlocks = this.props.endBlock - this.props.blockNumber;
       }
-      else if(this.props.marketState >= 1) {
+      else if(this.props.predictionState >= 1) {
         remainingBlocks = this.props.killBlock - this.props.blockNumber;
       }
     }
@@ -76,7 +75,7 @@ class Market extends React.Component {
 
         {/* STATEMENT */}
         <div className="page-header">
-          <h1 className="market-statement">
+          <h1 className="prediction-statement">
             "{this.props.statement}"
           </h1>
         </div>
@@ -88,14 +87,14 @@ class Market extends React.Component {
             positivePredicionBalance={this.props.positivePredicionBalance}
             negativePredicionBalance={this.props.negativePredicionBalance}
             isOwned={isOwned}
-            marketState={this.props.marketState}
-            marketStateStr={this.props.marketStateStr}
+            predictionState={this.props.predictionState}
+            predictionStateStr={this.props.predictionStateStr}
             remainingBlocks={remainingBlocks}
             outcome={this.props.outcome}
             />
 
           {/* BALANCES */}
-            {this.props.marketState === 0 &&
+            {this.props.predictionState === 0 &&
               <MarketBalancesComponent
                 playerPositiveBalance={this.props.playerPositiveBalance}
                 playerNegativeBalance={this.props.playerNegativeBalance}
@@ -103,7 +102,7 @@ class Market extends React.Component {
             }
 
           {/* DESTROY */}
-          {isOwned && this.props.marketState >= 2 && this.props.blockNumber >= this.props.killBlock &&
+          {isOwned && this.props.predictionState >= 2 && this.props.blockNumber >= this.props.killBlock &&
             <MarketDestroyComponent
               balance={this.props.balance}
               destroyMarket={this.props.destroyMarket}
@@ -111,7 +110,7 @@ class Market extends React.Component {
           }
 
           {/* WITHDRAW */}
-          {this.props.marketState === 2 && this.props.blockNumber < this.props.killBlock &&
+          {this.props.predictionState === 2 && this.props.blockNumber < this.props.killBlock &&
             <MarketWithdrawComponent
               estimatePrize={this.props.estimatePrize}
               withdrawPrize={this.props.withdrawPrize}
@@ -119,19 +118,19 @@ class Market extends React.Component {
           }
 
           {/* RESOLVE */}
-          {isOwned && this.props.marketState === 1 &&
+          {isOwned && this.props.predictionState === 1 &&
             <MarketResolveComponent
               resolveMarket={this.props.resolveMarket}
               />
           }
 
           {/* WAIT */}
-          {!isOwned && this.props.marketState === 1 &&
+          {!isOwned && this.props.predictionState === 1 &&
             <MarketWaitComponent/>
           }
 
           {/* BET */}
-          {this.props.marketState === 0 &&
+          {this.props.predictionState === 0 &&
             <MarketBetComponent
               placeBet={this.props.placeBet}
               />
@@ -148,12 +147,12 @@ class Market extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // console.log('MarketComponent - state', state);
+  // console.log('PredictionComponent - state', state);
   return {
     isNetworkConnected: state.network.isConnected,
     activeAccountAddress: state.network.activeAccountAddress,
     blockNumber: state.network.blockNumber,
-    ...state.market
+    ...state.prediction
   };
 };
 

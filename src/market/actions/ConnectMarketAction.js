@@ -1,63 +1,28 @@
 import TruffleContract from 'truffle-contract';
-import MarketArtifacts from '../../../build/contracts/Market.json';
-import * as web3util from '../../utils/Web3Util';
+import MarketArtifacts from '../../../build/contracts/PredictionMarket.json';
+import { MARKET_ADDRESS } from '../../constants';
 
-export const CONNECT_MARKET = 'market/CONNECT';
+export const CONNECT_MARKET = 'prediction/CONNECT_MARKET';
 
-export function connectMarket(address) {
+export function connectFactory() {
   return async function(dispatch, getState) {
-    console.log('connectMarket()', address);
+    console.log('connectFactory()');
 
     const market = {};
     const web3 = getState().network.web3;
-    const player = getState().network.activeAccountAddress;
 
-    // Retrieve market.
+    // Retrieve prediction.
     const Market = TruffleContract(MarketArtifacts);
     Market.setProvider(web3.currentProvider);
-    const contract = await Market.at(address);
+    const contract = await Market.at(MARKET_ADDRESS);
     market.contract = contract;
 
-    // Listen for event (FOR DEBUGGING)...
-    contract.LogAddressEvent().watch((error, result) => {
-      console.log('Event', error, result);
-      if(error) {
-        console.log(error);
-      }
-      else {
-        console.log(result);
-      }
-    });
-
-    // Extract market info.
-    // console.log('getting market data... player:', player);
-    market.playerPositiveBalance = +web3.fromWei(await contract.getPlayerBalance(true, {from: player}), 'ether').toNumber();
-    market.playerNegativeBalance = +web3.fromWei(await contract.getPlayerBalance(false, {from: player}), 'ether').toNumber();
-    market.statement = await contract.statement.call();
-    market.positivePredicionBalance = +web3.fromWei(await contract.totals.call(true), 'ether').toNumber();
-    market.negativePredicionBalance = +web3.fromWei(await contract.totals.call(false), 'ether').toNumber();
-    market.owner = await contract.owner.call();
-    market.marketState = (await contract.getState()).toNumber();
-    market.marketStateStr = marketStateToStr(market.marketState);
-    market.outcome = await contract.outcome.call();
-    market.endBlock = (await contract.endBlock.call()).toNumber();
-    market.killBlock = (await contract.killBlock.call()).toNumber();
-    market.balance = web3util.getBalanceInEther(address, web3);
-    if(market.marketState === 2) {
-      market.estimatePrize = +web3.fromWei(await contract.calculatePrize(market.outcome, {from: player}), 'ether').toNumber();
-    }
-    // console.log('market: ', market);
+    // Get prediction info.
+    market.predictionAddresses = await contract.getPredictions();
 
     dispatch({
       type: CONNECT_MARKET,
       payload: market
     });
   };
-}
-
-function marketStateToStr(state) {
-  if(state === 0) return 'Open';
-  if(state === 1) return 'Closed';
-  if(state === 2) return 'Resolved';
-  return 'Unknwon';
 }

@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import * as web3Util from '../../utils/Web3Util';
 import { setActiveAccountIndex } from './SetActiveAccountAction';
-import { connectFactory } from '../../factory/actions/ConnectFactoryAction';
+import { connectFactory } from '../../market/actions/ConnectMarketAction';
 
 export const START_WEB3 = 'network/START_WEB3';
 export const UPDATE_NETWORK = 'network/UPDATE_NETWORK';
@@ -23,7 +23,7 @@ export function startWeb3() {
         payload: web3
       });
 
-      // Fetch factory contract.
+      // Fetch prediction contract.
       dispatch(connectFactory());
 
       // Watch blockchain parameters...

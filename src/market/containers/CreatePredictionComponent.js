@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  createMarket
+  createPrediction
 } from '../actions';
 
-class CreateMarketComponent extends React.Component {
+class CreatePredictionComponent extends React.Component {
 
   handleCreateSubmit() {
 
     const statement = this.statementInputField.value;
     const duration = this.durationInputField.value;
 
-    this.props.createMarket(statement, duration);
+    this.props.createPrediction(statement, duration);
   }
 
   setStatementInputField(input) {
@@ -28,16 +28,16 @@ class CreateMarketComponent extends React.Component {
 
         {/* TITLE */}
         <div className="page-header">
-          <h1>Create a Market</h1>
+          <h1>Create a Prediction</h1>
         </div>
 
-        {/* CREATE MARKET PANEL */}
+        {/* CREATE PREDICTION PANEL */}
         <div className="row">
           <div className="panel panel-primary">
 
             {/* PANEL TITLE */}
             <div className="panel-heading">
-              <strong>Create your market</strong>
+              <strong>Create your prediction</strong>
             </div>
 
             <div className="panel-body">
@@ -68,7 +68,7 @@ class CreateMarketComponent extends React.Component {
                     />
                   <small className="text-muted">
                     Keep in mind that in this resolution event,
-                    the market will have to be resolved to yes/no.
+                    the prediction will have to be resolved to yes/no.
                   </small>
                 </div>
 
@@ -77,7 +77,7 @@ class CreateMarketComponent extends React.Component {
                   type="button"
                   className="btn btn-primary"
                   onClick={(evt) => this.handleCreateSubmit()}>
-                  Create Market
+                  Create Prediction
                 </button>
 
               </form>
@@ -97,13 +97,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createMarket: (statement, duration) => dispatch(createMarket(statement, duration)),
+    createPrediction: (statement, duration) => dispatch(createPrediction(statement, duration)),
   };
 };
 
 const CreateMarketContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateMarketComponent);
+)(CreatePredictionComponent);
 
 export default CreateMarketContainer;

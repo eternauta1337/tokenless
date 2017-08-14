@@ -1,6 +1,5 @@
-export { CONNECT_MARKET, connectMarket } from './ConnectMarketAction';
-export { RESET_MARKET, resetMarket } from './ResetMarketAction';
-export { placeBet } from './PlaceBetAction';
-export { resolveMarket } from './ResolveMarketAction';
-export { withdrawPrize } from './WithdrawPrizeAction';
-export { destroyMarket } from './DestroyMarketAction';
+export { createPrediction } from './CreatePredictionAction';
+export { CONNECT_MARKET, connectFactory } from './ConnectMarketAction';
+export { GET_PREDICTION_PREVIEW, getMarketPreview } from './GetPredictionPreviewAction';
+export { PREDICTION_FORGOTTEN, forgetMarket } from './ForgetPredictionAction';
+export { FORGET_PREVIEW, forgetPreview } from './ForgetPredictionPreviewAction';

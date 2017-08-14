@@ -23,7 +23,7 @@ contract PredictionMarket {
       predictions.push(prediction);
 
       // Transfer ownership to whoever called for
-      // the creation of the prediction (i.e. not this factory).
+      // the creation of the prediction (i.e. not this prediction).
       prediction.transferOwnership(msg.sender);
 
       PredictionCreatedEvent(prediction);

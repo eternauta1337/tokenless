@@ -1,13 +1,13 @@
 import { connectMarket } from '.';
-import { forgetPreview } from '../../factory/actions/ForgetMarketPreviewAction';
+import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 
 export function withdrawPrize() {
   return async function(dispatch, getState) {
 
-    const market = getState().market.contract;
+    const prediction = getState().prediction.contract;
 
     // Listen for withdraw event...
-    market.ClaimEvent().watch(async (error, result) => {
+    prediction.ClaimEvent().watch(async (error, result) => {
       console.log('ClaimEvent', error, result);
       if(error) {
         console.log('error withdrawing funds');
@@ -17,18 +17,18 @@ export function withdrawPrize() {
 
         // Claim != withdrawal, still need to
         // pull the ether out.
-        await market.withdrawPayments({
+        await prediction.withdrawPayments({
           from: getState().network.activeAccountAddress
         });
 
-        dispatch(forgetPreview(market.address));
-        dispatch(connectMarket(market.address));
+        dispatch(forgetPreview(prediction.address));
+        dispatch(connectMarket(prediction.address));
       }
     });
 
     // Withdraw
     console.log('withdrawing prize...');
-    await market.claimPrize({
+    await prediction.claimPrize({
       from: getState().network.activeAccountAddress
     });
   };

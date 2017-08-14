@@ -1,5 +1,5 @@
 # tokenless
-A tokenless prediction market based on OpenZeppelin/tokenless that uses truffle-box with React + Redux + Truffle+ Router (etc).
+A tokenless prediction prediction based on OpenZeppelin/tokenless that uses truffle-box with React + Redux + Truffle+ Router (etc).
 
 ## Built on top of truffle-box
 

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDisqusThread from 'react-disqus-thread';
 
 const MarketDiscussComponent = ({
-  marketAddress
+  predictionAddress
 }) => {
 
   const handleNewComment = function() {
@@ -13,9 +13,9 @@ const MarketDiscussComponent = ({
     <div>
       <ReactDisqusThread
 				shortname="tokenless"
-				identifier={`tokenless-market-${marketAddress}`}
+				identifier={`tokenless-prediction-${predictionAddress}`}
 				title="Market Discussion"
-				url={`http://www.example.com/market${marketAddress}`}
+				url={`http://www.example.com/prediction${predictionAddress}`}
 				category_id=""
 				onNewComment={handleNewComment}/>
     </div>

@@ -22,7 +22,7 @@ class Home extends Component {
               <strong>What is tokenless?</strong>
             </div>
             <div className="panel-body">
-              Tokenless is a prediction market...<br/><br/>
+              Tokenless is a prediction prediction...<br/><br/>
               Nostrud fugiat irure nisi sit voluptate pariatur magna tempor mollit incididunt id occaecat ex. Commodo non commodo officia consectetur esse sunt velit veniam consequat consequat exercitation adipisicing adipisicing. Ullamco aliqua culpa ad Lorem adipisicing. Consequat id velit exercitation velit est ullamco nulla id laborum consectetur labore incididunt. Id laborum aliquip sint eiusmod laboris consequat eiusmod pariatur aliqua irure minim nostrud. Tempor dolore amet consequat exercitation nostrud proident ullamco tempor Lorem occaecat. Culpa culpa do ipsum dolore. Eu tempor eu in proident dolor consequat veniam. Esse eiusmod pariatur veniam cupidatat tempor id. Ad adipisicing magna culpa mollit deserunt sint.
             </div>
           </div>
@@ -42,7 +42,7 @@ class Home extends Component {
           <div className="">
             <Link to="/list">
               <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;
-              Browse Markets
+              Browse Predictions
             </Link>
             <br/>
             <br/>
@@ -51,7 +51,7 @@ class Home extends Component {
           {/* LATEST */}
           <div className="well">
             <div className="text-muted">
-              -> todo: display latest or more popular markets...
+              -> todo: display latest or more popular predictions...
             </div>
           </div>
 

@@ -57,14 +57,14 @@ contract('', function(accounts) {
     }
   });
 
-  it('(market+prediction) should support 2 balances for each user on contracts deployed by the market', async function() {
+  it('(prediction+prediction) should support 2 balances for each user on contracts deployed by the prediction', async function() {
 
-    const market = await PredictionMarket.new();
-    // console.log('market address:', market.address);
+    const prediction = await PredictionMarket.new();
+    // console.log('prediction address:', prediction.address);
 
     // Create prediction.
-    const creationTransaction = await market.createPrediction(
-      'The prediction market contract will work.', 10, {
+    const creationTransaction = await prediction.createPrediction(
+      'The prediction prediction contract will work.', 10, {
         from: accounts[3]
       }
     );
@@ -76,9 +76,9 @@ contract('', function(accounts) {
     const predictionAddress = creationEventArgs.predictionAddress;
     // console.log('predictionAddress:', predictionAddress);
 
-    // Retrieve market.
+    // Retrieve prediction.
     const contract = await Prediction.at(predictionAddress);
-    // console.log('market created');
+    // console.log('prediction created');
 
     const statement = await contract.statement.call();
     // console.log('statement:', statement);

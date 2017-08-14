@@ -1,13 +1,13 @@
-export const MARKET_FORGOTTEN = 'factory/MARKET_FORGOTTEN';
+export const PREDICTION_FORGOTTEN = 'prediction/PREDICTION_FORGOTTEN';
 
 export function forgetMarket(address) {
   console.log('forgetMarket()', address);
   return async function(dispatch, getState) {
 
-    const factory = getState().factory.contract;
+    const market = getState().factory.contract;
 
-    console.log('forgetting market:', address);
-    const transaction = await factory.forgetMarket(
+    console.log('forgetting prediction:', address);
+    const transaction = await market.forgetMarket(
       address, {
         from: getState().network.activeAccountAddress
       }
@@ -16,12 +16,12 @@ export function forgetMarket(address) {
     // Market address is obtained by analysing the transaction logs.
     // Part of the logs is an event contained in the transaction.
     const eventArgs = transaction.logs[0].args;
-    const marketAddress = eventArgs.marketAddress;
-    if(marketAddress) {
-      console.log('market forgotten at:', marketAddress);
+    const predictionAddress = eventArgs.predictionAddress;
+    if(predictionAddress) {
+      console.log('prediction forgotten at:', predictionAddress);
       dispatch({
-        type: MARKET_FORGOTTEN,
-        payload: marketAddress
+        type: PREDICTION_FORGOTTEN,
+        payload: predictionAddress
       });
     }
     else {

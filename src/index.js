@@ -7,12 +7,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import AppComponent from './main/components/AppComponent';
 import HomeComponent from './home/components/HomeComponent';
-import MarketComponent from './market/containers/MarketComponent';
-import CreateMarketComponent from './factory/containers/CreateMarketComponent';
-import ListMarketsComponent from './factory/containers/ListMarketsComponent';
+import PredictionComponent from './prediction/containers/PredictionComponent';
+import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
+import ListPredictionsComponent from './market/containers/ListPredictionsComponent';
 import AboutComponent from './about/components/AboutComponent';
 import {
-  PATH_MARKET,
+  PATH_PREDICTION,
   PATH_LIST,
   PATH_CREATE,
   PATH_ABOUT
@@ -27,9 +27,9 @@ ReactDOM.render((
       <Router history={syncHistoryWithStore(browserHistory, store)}>
         <Route path="/" component={AppComponent}>
           <IndexRoute component={HomeComponent}/>
-          <Route path={PATH_LIST} component={ListMarketsComponent}/>
-          <Route path={PATH_CREATE} component={CreateMarketComponent}/>
-          <Route path={PATH_MARKET} component={MarketComponent}/>
+          <Route path={PATH_LIST} component={ListPredictionsComponent}/>
+          <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
+          <Route path={PATH_PREDICTION} component={PredictionComponent}/>
           <Route path={PATH_ABOUT} component={AboutComponent}/>
         </Route>
       </Router>
