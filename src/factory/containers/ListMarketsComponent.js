@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
+import BubblePreloader from 'react-bubble-preloader';
 import {
   getMarketPreview
 } from '../actions';
@@ -74,15 +75,29 @@ class ListMarkets extends React.Component {
             <ul className="list-group">
               {_.map(this.props.addresses, (address) => {
                 const preview = this.props.previews[address];
-                const title = preview ? preview.statement : address;
-                const balance = preview ? preview.balance : 0;
-                return (
-                  <li className="list-group-item" key={address}>
-                    <Link to={`/market/${address}`}>
-                      {title} <span className="pull-right">{balance} ETH</span>
-                    </Link>
-                  </li>
-                );
+                if(preview) {
+                  const title = preview ? preview.statement : address;
+                  const balance = preview ? preview.balance : 0;
+                  return (
+                    <li className="list-group-item" key={address}>
+                      <Link to={`/market/${address}`}>
+                        {title} <span className="pull-right">{balance} ETH</span>
+                      </Link>
+                    </li>
+                  );
+                }
+                else {
+                  return (
+                    <li className="list-group-item" key={address}>
+                      <BubblePreloader
+                        bubble={{ width: '1rem', height: '1rem' }}
+                        animation={{ speed: 2 }}
+                        className=""
+                        colors={['#ccc', '#aaa', '#999']}
+                      />
+                    </li>
+                  );
+                }
               })}
             </ul>
           }
