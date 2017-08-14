@@ -30,11 +30,6 @@ class CreatePredictionComponent extends React.Component {
         <div className="row">
           <div className="panel panel-primary">
 
-            {/* PANEL TITLE */}
-            <div className="panel-heading">
-              <strong>Create your prediction</strong>
-            </div>
-
             <div className="panel-body">
               <form className="">
 
