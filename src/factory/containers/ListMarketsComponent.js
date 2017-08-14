@@ -18,7 +18,8 @@ class ListMarkets extends React.Component {
   constructor() {
     super();
     this.state = {
-      lastRecordedBlockNumber: 0
+      lastRecordedBlockNumber: 0,
+      fetching: false
     };
   }
 
@@ -48,7 +49,7 @@ class ListMarkets extends React.Component {
 
         {/* LIST MARKETS PANEL */}
         <div className="row">
-          {this.props.addresses.length === 0 &&
+          {!this.state.fetching && this.props.addresses.length === 0 &&
             <div className="alert alert-info">
               <strong>
                 Sorry, there are currently no markets... Would you like to create one?
@@ -89,12 +90,17 @@ class ListMarkets extends React.Component {
   }
 
   refreshPreviews(props) {
+    let fetching = false;
     _.each(props.addresses, (address) => {
         if(!props.previews[address]) {
           props.getMarketPreview(address);
+          fetching = true;
           return false;
         }
         else if(props.previews[address].isFetching) return false;
+    });
+    this.setState({
+      fetching
     });
   }
 }

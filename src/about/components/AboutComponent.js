@@ -5,12 +5,12 @@ class AboutComponent extends Component {
     return(
       <div>
 
-        {/* HEADER */}
-        <div className="page-header">
-          <h1>About</h1>
-        </div>
-
         <div className="container">
+
+          {/* HEADER */}
+          <div className="page-header">
+            <h1>About</h1>
+          </div>
 
           {/* INFO  */}
           <div className='panel panel-default'>

@@ -6,15 +6,15 @@ class Home extends Component {
     return(
       <div>
 
-        {/* HEADER */}
-        <div className='jumbotron'>
-          <div className="container">
-            <h1>Tokenless</h1>
-            <p>No tokens, just ether.</p>
-          </div>
-        </div>
-
         <div className="container">
+
+          {/* HEADER */}
+          <div className='jumbotron'>
+            <div className="container">
+              <h1>Tokenless</h1>
+              <p>No tokens, just ether.</p>
+            </div>
+          </div>
 
           {/* HOW DOES IT WORK */}
           <div className='panel panel-default'>
