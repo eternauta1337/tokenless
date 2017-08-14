@@ -13,7 +13,6 @@ const MarketListItemComponent = ({
     const balance = preview ? preview.balance : 0;
     return (
       <Link
-        key={address}
         to={`/prediction/${address}`}
         className="list-group-item">
         {title} <span className="pull-right">{balance} ETH</span>
@@ -41,7 +40,7 @@ const MarketListItemComponent = ({
       <Link
         to={`/prediction/${address}`}
         className="list-group-item"
-        key={address}>
+        >
         {address}
       </Link>
     );

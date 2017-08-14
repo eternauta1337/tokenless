@@ -1,4 +1,4 @@
 export { createPrediction } from './CreatePredictionAction';
-export { CONNECT_MARKET, connectFactory } from './ConnectMarketAction';
-export { GET_PREDICTION_PREVIEW, getMarketPreview } from './GetPredictionPreviewAction';
+export { CONNECT_MARKET, connectMarket } from './ConnectMarketAction';
+export { GET_PREDICTION_PREVIEW, getPredictionPreview } from './GetPredictionPreviewAction';
 export { FORGET_PREVIEW, forgetPreview } from './ForgetPredictionPreviewAction';

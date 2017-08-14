@@ -4,9 +4,9 @@ import { MARKET_ADDRESS } from '../../constants';
 
 export const CONNECT_MARKET = 'prediction/CONNECT_MARKET';
 
-export function connectFactory() {
+export function connectMarket() {
   return async function(dispatch, getState) {
-    console.log('connectFactory()');
+    console.log('connectMarket()');
 
     const market = {};
     const web3 = getState().network.web3;

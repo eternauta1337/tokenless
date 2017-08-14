@@ -4,7 +4,7 @@ import * as web3util from '../../utils/Web3Util';
 
 export const GET_PREDICTION_PREVIEW = 'prediction/GET_PREDICTION_PREVIEW';
 
-export function getMarketPreview(address) {
+export function getPredictionPreview(address) {
   return async function(dispatch, getState) {
     console.log('getMarketPreview()', address);
 
@@ -17,7 +17,7 @@ export function getMarketPreview(address) {
     // ---------------------
 
     // Skip if preview has already been obtained.
-    if(getState().factory.previews[address]) {
+    if(getState().market.previews[address]) {
       console.log('preview already fetched');
       return;
     }

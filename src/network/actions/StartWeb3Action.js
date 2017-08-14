@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import * as web3Util from '../../utils/Web3Util';
 import { setActiveAccountIndex } from './SetActiveAccountAction';
-import { connectFactory } from '../../market/actions/ConnectMarketAction';
+import { connectMarket } from '../../market/actions/ConnectMarketAction';
 
 export const START_WEB3 = 'network/START_WEB3';
 export const UPDATE_NETWORK = 'network/UPDATE_NETWORK';
@@ -24,7 +24,7 @@ export function startWeb3() {
       });
 
       // Fetch prediction contract.
-      dispatch(connectFactory());
+      dispatch(connectMarket());
 
       // Watch blockchain parameters...
       setInterval(async () => {

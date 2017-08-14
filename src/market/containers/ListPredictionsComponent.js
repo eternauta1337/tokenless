@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Link } from 'react-router';
 import MarketListItemComponent from '../components/PredictionListItemComponent';
-import {
-  getMarketPreview
-} from '../actions';
-
 import ConnectComponent from '../../common/components/ConnectComponent';
-
 import {
-  connectFactory
+  getPredictionPreview,
+  connectMarket
 } from '../actions';
 
-class ListMarkets extends React.Component {
+class ListPredictions extends React.Component {
 
   constructor() {
     super();
@@ -56,6 +52,7 @@ class ListMarkets extends React.Component {
               {_.map(this.props.addresses, (address) => {
                 const preview = this.props.previews[address];
                 return <MarketListItemComponent
+                  key={address}
                   address={address}
                   preview={preview}
                   />;
@@ -79,7 +76,7 @@ class ListMarkets extends React.Component {
       const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
       if(!this.props.isConnected || blockAdvanced) {
         if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
-        this.props.connectFactory();
+        this.props.connectMarket();
       }
     }
   }
@@ -88,7 +85,7 @@ class ListMarkets extends React.Component {
     let fetching = false;
     _.each(props.addresses, (address) => {
         if(!props.previews[address]) {
-          props.getMarketPreview(address);
+          props.getPredictionPreview(address);
           fetching = true;
           return false;
         }
@@ -112,14 +109,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    connectFactory: () => dispatch(connectFactory()),
-    getMarketPreview: (address) => dispatch(getMarketPreview(address))
+    connectMarket: () => dispatch(connectMarket()),
+    getPredictionPreview: (address) => dispatch(getPredictionPreview(address))
   };
 };
 
 const ListPredictionsComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListMarkets);
+)(ListPredictions);
 
 export default ListPredictionsComponent;
