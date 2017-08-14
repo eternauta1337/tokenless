@@ -8,6 +8,7 @@ import MarketWithdrawComponent from '../components/MarketWithdrawComponent';
 import MarketDestroyComponent from '../components/MarketDestroyComponent';
 import MarketWaitComponent from '../components/MarketWaitComponent';
 import MarketBalancesComponent from '../components/MarketBalancesComponent';
+import MarketDiscussComponent from '../components/MarketDiscussComponent';
 import _ from 'lodash';
 import '../../styles/index.css';
 import {
@@ -137,11 +138,7 @@ class Market extends React.Component {
           }
 
           {/* COMMENTS */}
-          <div className="well">
-            <div className="text-muted">
-              -> todo: add disqus comments plugin
-            </div>
-          </div>
+          <MarketDiscussComponent/>
 
         </div>
 
