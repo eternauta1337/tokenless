@@ -6,10 +6,8 @@ const ConnectComponent = ({title}) => {
     <div className="container">
       <div className="page-header">
         <p className="text-muted">{title}</p>
-      </div>
-      <div className="row">
         <BubblePreloader
-          bubble={{ width: '2rem', height: '2rem' }}
+          bubble={{ width: '1rem', height: '1rem' }}
           animation={{ speed: 2 }}
           className=""
           colors={['#ffbb33', '#FF8800', '#ff4444']}
