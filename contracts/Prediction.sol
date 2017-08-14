@@ -3,9 +3,8 @@ pragma solidity ^0.4.11;
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/payment/PullPayment.sol";
-import "zeppelin-solidity/contracts/lifecycle/Destructible.sol";
 
-contract Prediction is Ownable, PullPayment, Destructible {
+contract Prediction is Ownable, PullPayment {
 
   using SafeMath for uint;
 
@@ -74,7 +73,7 @@ contract Prediction is Ownable, PullPayment, Destructible {
   // Prize withdrawals
   // --------------------------------------------------
 
-  event ClaimEvent(address indexed from);
+  event ClaimPrizeEvent(address indexed from);
 
   function claimPrize() onlyInState(State.Resolved) {
 
@@ -87,7 +86,7 @@ contract Prediction is Ownable, PullPayment, Destructible {
     bets[true][msg.sender] = 0;
     bets[false][msg.sender] = 0;
 
-    ClaimEvent(msg.sender);
+    ClaimPrizeEvent(msg.sender);
   }
 
   function calculatePrize(bool prediction) constant returns (uint) {
@@ -151,13 +150,11 @@ contract Prediction is Ownable, PullPayment, Destructible {
   // Destruction
   // --------------------------------------------------
 
-  event DestroyEvent(address indexed from);
+  event ClaimFeesEvent(address indexed from);
 
-  function destroy() onlyOwner {
-    if(block.number <= killBlock) {
-      revert();
-    }
-    DestroyEvent(msg.sender);
-    super.destroy();
+  function claimFees() onlyOwner {
+    if(block.number <= killBlock) revert();
+    ClaimFeesEvent(msg.sender);
+    asyncSend(owner, this.balance);
   }
 }

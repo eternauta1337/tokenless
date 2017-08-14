@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDisqusThread from 'react-disqus-thread';
 
-const MarketDiscussComponent = ({
+const PredictionDiscussComponent = ({
   predictionAddress
 }) => {
 
@@ -22,4 +22,4 @@ const MarketDiscussComponent = ({
   );
 };
 
-export default MarketDiscussComponent;
+export default PredictionDiscussComponent;

@@ -4,9 +4,9 @@ import * as web3util from '../../utils/Web3Util';
 
 export const CONNECT_MARKET = 'prediction/CONNECT';
 
-export function connectMarket(address) {
+export function connectPrediction(address) {
   return async function(dispatch, getState) {
-    console.log('connectMarket()', address);
+    console.log('connectPrediction()', address);
 
     const prediction = {};
     const web3 = getState().network.web3;

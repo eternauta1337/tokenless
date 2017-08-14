@@ -1,4 +1,4 @@
-import { connectMarket } from '.';
+import { connectPrediction } from '.';
 
 export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
@@ -13,7 +13,7 @@ export function resolveMarket(outcome) {
       }
       else {
         console.log('contract resolved!', result);
-        dispatch(connectMarket(prediction.address));
+        dispatch(connectPrediction(prediction.address));
       }
     });
 

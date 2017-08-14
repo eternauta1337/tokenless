@@ -1,4 +1,4 @@
-import { connectMarket } from '.';
+import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 
 export function withdrawPrize() {
@@ -22,7 +22,7 @@ export function withdrawPrize() {
         });
 
         dispatch(forgetPreview(prediction.address));
-        dispatch(connectMarket(prediction.address));
+        dispatch(connectPrediction(prediction.address));
       }
     });
 

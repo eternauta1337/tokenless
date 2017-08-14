@@ -1,5 +1,5 @@
 import TruffleContract from 'truffle-contract';
-import MarketArtifacts from '../../../build/contracts/PredictionMarket.json';
+import PredictionMarketArtifacts from '../../../build/contracts/PredictionMarket.json';
 import { MARKET_ADDRESS } from '../../constants';
 
 export const CONNECT_MARKET = 'prediction/CONNECT_MARKET';
@@ -12,7 +12,7 @@ export function connectFactory() {
     const web3 = getState().network.web3;
 
     // Retrieve prediction.
-    const Market = TruffleContract(MarketArtifacts);
+    const Market = TruffleContract(PredictionMarketArtifacts);
     Market.setProvider(web3.currentProvider);
     const contract = await Market.at(MARKET_ADDRESS);
     market.contract = contract;

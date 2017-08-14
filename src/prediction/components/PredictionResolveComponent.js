@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketResolveComponent = ({ resolveMarket }) => {
+const PredictionResolveComponent = ({ resolveMarket }) => {
 
   let outcomeSelector;
 
@@ -45,4 +45,4 @@ const MarketResolveComponent = ({ resolveMarket }) => {
   );
 };
 
-export default MarketResolveComponent;
+export default PredictionResolveComponent;

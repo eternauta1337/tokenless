@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import EthIconComponent from '../../common/components/EthIconComponent';
 import {
   PATH_LIST,
   PATH_CREATE,
@@ -18,8 +17,12 @@ const NavigationComponent = ({ path }) => {
           <div className="navbar-header">
             <Link className="navbar-brand" to={PATH_ROOT}>
               <div className="brand">
-                <EthIconComponent/>
-                <span>Tokenless</span>
+                <span className='icon'>
+                  <svg width="14" height="14" viewBox="0 2 24 24">
+                    <path d="M12,1.75L5.75,12.25L12,16L18.25,12.25L12,1.75M5.75,13.5L12,22.25L18.25,13.5L12,17.25L5.75,13.5Z"></path>
+                  </svg>
+                </span>
+                <span>tokenless.pm</span>
               </div>
             </Link>
           </div>

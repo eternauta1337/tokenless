@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketWaitComponent = () => {
+const PredictionWaitComponent = () => {
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
@@ -17,4 +17,4 @@ const MarketWaitComponent = () => {
   );
 };
 
-export default MarketWaitComponent;
+export default PredictionWaitComponent;

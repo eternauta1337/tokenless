@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketBalancesComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
+const PredictionBalancesComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
@@ -14,4 +14,4 @@ const MarketBalancesComponent = ({ playerPositiveBalance, playerNegativeBalance 
   );
 };
 
-export default MarketBalancesComponent;
+export default PredictionBalancesComponent;

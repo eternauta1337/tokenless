@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketBetComponent = ({ placeBet }) => {
+const PredictionBetComponent = ({ placeBet }) => {
 
   let betInputField;
   let predictionSelector;
@@ -59,4 +59,4 @@ const MarketBetComponent = ({ placeBet }) => {
   );
 };
 
-export default MarketBetComponent;
+export default PredictionBetComponent;

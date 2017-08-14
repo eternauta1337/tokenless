@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketDestroyComponent = ({
+const PredictionFinishComponent = ({
   destroyMarket,
   balance
 }) => {
@@ -12,7 +12,7 @@ const MarketDestroyComponent = ({
   return (
     <div className='panel panel-danger'>
       <div className="panel-heading">
-        <strong>Would you like to withdraw your feeds?</strong>
+        <strong>Would you like to withdraw your fees?</strong>
       </div>
       <div className="panel-body">
         <form className="">
@@ -20,7 +20,7 @@ const MarketDestroyComponent = ({
             type="button"
             className="btn btn-danger"
             onClick={(evt) => handleDestroyButtonClick()}>
-            Destroy Market and Withdraw {balance} ETH
+            Withdraw {balance} ETH
           </button>
         </form>
       </div>
@@ -28,4 +28,4 @@ const MarketDestroyComponent = ({
   );
 };
 
-export default MarketDestroyComponent;
+export default PredictionFinishComponent;

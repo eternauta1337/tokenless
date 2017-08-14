@@ -28,37 +28,4 @@ contract PredictionMarket {
 
       PredictionCreatedEvent(prediction);
   }
-
-  // ---------------------
-  // Deletion
-  // ---------------------
-
-  event PredictionDeletedEvent(address predictionAddress);
-
-  function forgetPrediction(address prediction) {
-    if(predictions.length == 0) return;
-
-    // Find element.
-    uint idx = 0;
-    bool found;
-    for(uint i = 0; i < predictions.length; i++) {
-      address predicionAddr = predictions[i];
-      if(predicionAddr == prediction) {
-        idx = i;
-        found = true;
-        break;
-      }
-    }
-    if(!found) return;
-
-    // Deletion in solidity simply empties the data,
-    // leaving a 'hole' in the array.
-    // Solution is to move the last element into the gap
-    // instead of delete array[idx].
-    address lastPrediction = predictions[predictions.length - 1];
-    predictions[idx] = lastPrediction;
-    predictions.length--;
-
-    PredictionDeletedEvent(prediction);
-  }
 }

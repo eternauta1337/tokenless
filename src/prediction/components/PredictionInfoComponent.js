@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MarketInfoComponent = ({
+const PredictionInfoComponent = ({
   positivePredicionBalance,
   negativePredicionBalance,
   isOwned,
@@ -60,4 +60,4 @@ const MarketInfoComponent = ({
   );
 };
 
-export default MarketInfoComponent;
+export default PredictionInfoComponent;

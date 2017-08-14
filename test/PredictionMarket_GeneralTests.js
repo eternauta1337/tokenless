@@ -9,11 +9,11 @@ contract('PredictionMarket (General)', function(accounts) {
   });
 
   it('should be able to create a prediction with transferred ownership', async function() {
-    const prediction = await PredictionMarket.new();
+    const market = await PredictionMarket.new();
     // console.log('prediction address:', prediction.address);
 
     // Create prediction.
-    const creationTransaction = await prediction.createPrediction(
+    const creationTransaction = await market.createPrediction(
       'The prediction prediction will work.', 10, {
         from: accounts[3]
       }
@@ -61,36 +61,4 @@ contract('PredictionMarket (General)', function(accounts) {
 
     assert.equal(localAddresses.length, remoteAddresses.length, 'num addresses mismatch');
   });
-
-  it('should be able to forget predictions', async function() {
-
-    const prediction = await PredictionMarket.new();
-
-    // Create a few predictions and recall their addresse.
-    const localAddresses = [];
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 0.', 10, {from: accounts[0]}
-    )).logs[0].args.predictionAddress);
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 1.', 10, {from: accounts[0]}
-    )).logs[0].args.predictionAddress);
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 2.', 10, {from: accounts[0]}
-    )).logs[0].args.predictionAddress);
-
-    // Verify num.
-    let remoteAddresses = await prediction.getPredictions();
-    // console.log('predictions:', remoteAddresses);
-    assert.equal(remoteAddresses.length, 3, 'num addresses mismatch');
-
-    // Remove 1 prediction.
-    await prediction.forgetPrediction(localAddresses[1]);
-
-    // Verify num.
-    remoteAddresses = await prediction.getPredictions();
-    // console.log('predictions:', remoteAddresses);
-    assert.equal(remoteAddresses.length, 2, 'num addresses mismatch');
-
-  });
-
 });

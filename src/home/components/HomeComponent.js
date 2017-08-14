@@ -11,15 +11,22 @@ class Home extends Component {
           {/* HEADER */}
           <div className='jumbotron'>
             <div className="container">
-              <h1>Tokenless</h1>
-              <p>No tokens, just ether.</p>
+              <div className="brand">
+                <span className='icon'>
+                  <svg width="44" height="44" viewBox="0 2 24 24">
+                    <path d="M12,1.75L5.75,12.25L12,16L18.25,12.25L12,1.75M5.75,13.5L12,22.25L18.25,13.5L12,17.25L5.75,13.5Z"></path>
+                  </svg>
+                </span>
+                <h1>tokenless.pm</h1>
+              </div>
+              <p>A tokenless prediction market. No tokens, just ether.</p>
             </div>
           </div>
 
           {/* HOW DOES IT WORK */}
           <div className='panel panel-default'>
             <div className="panel-heading">
-              <strong>What is tokenless?</strong>
+              <strong>What is tokenless.pm?</strong>
             </div>
             <div className="panel-body">
               Tokenless is a prediction prediction...<br/><br/>
