@@ -1,4 +1,5 @@
 import { connectMarket } from '.';
+import { forgetPreview } from '../../factory/actions/ForgetMarketPreviewAction';
 
 export function placeBet(prediction, betEther) {
   console.log('placeBet()', prediction, betEther);
@@ -16,6 +17,7 @@ export function placeBet(prediction, betEther) {
       else {
         console.log('bet placed!');
         dispatch(connectMarket(market.address));
+        dispatch(forgetPreview(market.address));
       }
     });
 

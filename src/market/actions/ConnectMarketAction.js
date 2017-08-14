@@ -30,7 +30,7 @@ export function connectMarket(address) {
     });
 
     // Extract market info.
-    console.log('getting market data... player:', player);
+    // console.log('getting market data... player:', player);
     market.playerPositiveBalance = +web3.fromWei(await contract.getPlayerBalance(true, {from: player}), 'ether').toNumber();
     market.playerNegativeBalance = +web3.fromWei(await contract.getPlayerBalance(false, {from: player}), 'ether').toNumber();
     market.statement = await contract.statement.call();
@@ -46,7 +46,7 @@ export function connectMarket(address) {
     if(market.marketState === 2) {
       market.estimatePrize = +web3.fromWei(await contract.calculatePrize(market.outcome, {from: player}), 'ether').toNumber();
     }
-    console.log('market: ', market);
+    // console.log('market: ', market);
 
     dispatch({
       type: CONNECT_MARKET,

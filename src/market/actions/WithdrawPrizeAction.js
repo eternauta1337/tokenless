@@ -1,4 +1,5 @@
 import { connectMarket } from '.';
+import { forgetPreview } from '../../factory/actions/ForgetMarketPreviewAction';
 
 export function withdrawPrize() {
   return async function(dispatch, getState) {
@@ -20,6 +21,7 @@ export function withdrawPrize() {
           from: getState().network.activeAccountAddress
         });
 
+        dispatch(forgetPreview(market.address));
         dispatch(connectMarket(market.address));
       }
     });
