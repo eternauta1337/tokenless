@@ -24,7 +24,8 @@ class Market extends React.Component {
   constructor() {
     super();
     this.state = {
-      lastRecordedBlockNumber: 0
+      lastRecordedBlockNumber: 0,
+      lastRecordedPlayerAddress: ''
     };
   }
 
@@ -40,8 +41,10 @@ class Market extends React.Component {
   refreshMarket() {
     if(this.props.isNetworkConnected) {
       const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if(!this.props.isConnected || blockAdvanced) {
+      const addressChanged = this.props.activeAccountAddress !== this.state.lastRecordedPlayerAddress;
+      if(!this.props.isConnected || blockAdvanced || addressChanged) {
         if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
+        if(this.props.blockNumber) this.setState({ lastRecordedPlayerAddress: this.props.activeAccountAddress });
         this.props.connectMarket(this.props.routeParams.address);
       }
     }

@@ -21,13 +21,13 @@ const MarketWithdrawComponent = ({
               type="button"
               className="btn btn-primary"
               onClick={(evt) => handleWithdrawButtonClick()}>
-              Withdraw {estimatePrize} ETH Now
+              Withdraw {estimatePrize} ETH Now!
             </button>
           </form>
         }
         {estimatePrize <= 0 &&
           <h4 className="text-muted">
-            Sorry, it seems you didn't win anything =(
+            Sorry, there is no balance for you to withdraw.
           </h4>
         }
       </div>

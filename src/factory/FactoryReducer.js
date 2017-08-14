@@ -13,7 +13,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  console.log('FactoryReducer', state, action);
+  // console.log('FactoryReducer', state, action);
 
   let newState;
 
@@ -29,12 +29,12 @@ export default function(state = initialState, action) {
     break;
 
   case GET_MARKET_PREVIEW:
-    const market = action.payload;
+    const preview = action.payload;
     newState = {
       ...state,
       previews: {
         ...state.previews,
-        [market.address]: market
+        [preview.address]: preview
       }
     };
     break;
@@ -61,7 +61,7 @@ export default function(state = initialState, action) {
     break;
   }
 
-  console.log('newState:', newState);
+  // console.log('newState:', newState);
 
   return newState;
 }
