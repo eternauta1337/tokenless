@@ -1,13 +1,13 @@
 /*eslint no-undef: "off"*/
-const Market = artifacts.require('./Market.sol');
+const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 import expectThrow from 'zeppelin-solidity/test/helpers/expectThrow';
 
-contract('Market (Resolve)', function(accounts) {
+contract('Prediction (Resolve)', function(accounts) {
 
   it('should be resolvable only by the owner, and only after the closing date', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
     let state = 0;
 
     await expectThrow(contract.resolve(true, {from: accounts[1]}));

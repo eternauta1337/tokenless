@@ -1,11 +1,11 @@
 /*eslint no-undef: "off"*/
-const Market = artifacts.require('./Market.sol');
+const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 
-contract('Market (General)', function(accounts) {
+contract('Prediction (General)', function(accounts) {
 
   it('should contain a valid text statement', async function() {
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
     const statement = await contract.statement.call();
     // console.log('statement: ', statement);
@@ -14,7 +14,7 @@ contract('Market (General)', function(accounts) {
   });
 
   it('should have a valid end date', async function() {
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
     // Assumes that tests are ran immediately after contract creation.
     const lifeSpan = (await contract.endBlock.call()).toNumber() - web3.eth.blockNumber;
@@ -25,7 +25,7 @@ contract('Market (General)', function(accounts) {
 
   it('it should correctly track its state', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
     let state = 0;
 
     state = (await contract.getState()).toNumber();

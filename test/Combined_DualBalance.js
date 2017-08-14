@@ -1,29 +1,29 @@
 /*eslint no-undef: "off"*/
-const MarketFactory = artifacts.require('./MarketFactory.sol');
-const Market = artifacts.require('./Market.sol');
+const PredictionMarket = artifacts.require('./PredictionMarket.sol');
+const Prediction = artifacts.require('./Prediction.sol');
 // import * as util from '../src/utils/Web3Util';
 
 contract('', function(accounts) {
 
-  it('(market) should support 2 balances for each player', async function() {
+  it('(prediction) should support 2 balances for each user', async function() {
 
     let i;
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
     // Implement the following structure in the contract.
     const datas = [
-      {playerIdx: 0, pos: 1, neg: 2},
-      {playerIdx: 1, pos: 3, neg: 0},
-      {playerIdx: 2, pos: 1, neg: 1},
-      {playerIdx: 3, pos: 4, neg: 1},
-      {playerIdx: 4, pos: 0, neg: 0},
-      {playerIdx: 5, pos: 0, neg: 7.2}
+      {userIdx: 0, pos: 1, neg: 2},
+      {userIdx: 1, pos: 3, neg: 0},
+      {userIdx: 2, pos: 1, neg: 1},
+      {userIdx: 3, pos: 4, neg: 1},
+      {userIdx: 4, pos: 0, neg: 0},
+      {userIdx: 5, pos: 0, neg: 7.2}
     ];
     for(i = 0; i < datas.length; i++) {
 
       const data = datas[i];
-      const addr = accounts[data.playerIdx];
+      const addr = accounts[data.userIdx];
 
       // Place bets.
       // console.log('placing pos bet:', data.pos);
@@ -42,11 +42,11 @@ contract('', function(accounts) {
       }
 
       // Read balance.
-      const pos = web3.fromWei(await contract.getPlayerBalance(true, {
+      const pos = web3.fromWei(await contract.getUserBalance(true, {
         from: addr
       }), 'ether').toNumber();
       // console.log('pos:', pos);
-      const neg = web3.fromWei(await contract.getPlayerBalance(false, {
+      const neg = web3.fromWei(await contract.getUserBalance(false, {
         from: addr
       }), 'ether').toNumber();
       // console.log('neg:', neg);
@@ -57,27 +57,27 @@ contract('', function(accounts) {
     }
   });
 
-  it('(factory+market) should support 2 balances for each player on contracts deployed by the factory', async function() {
+  it('(market+prediction) should support 2 balances for each user on contracts deployed by the market', async function() {
 
-    const factory = await MarketFactory.new();
-    // console.log('factory address:', factory.address);
+    const market = await PredictionMarket.new();
+    // console.log('market address:', market.address);
 
-    // Create market.
-    const creationTransaction = await factory.createMarket(
-      'The market factory will work.', 10, {
+    // Create prediction.
+    const creationTransaction = await market.createPrediction(
+      'The prediction market contract will work.', 10, {
         from: accounts[3]
       }
     );
     // console.log('creation transaction:', creationTransaction);
 
-    // Market address is obtained by analysing the transaction logs.
+    // Prediction address is obtained by analysing the transaction logs.
     // Part of the logs is an event contained in the transaction.
     const creationEventArgs = creationTransaction.logs[0].args;
-    const marketAddress = creationEventArgs.marketAddress;
-    // console.log('marketAddress:', marketAddress);
+    const predictionAddress = creationEventArgs.predictionAddress;
+    // console.log('predictionAddress:', predictionAddress);
 
     // Retrieve market.
-    const contract = await Market.at(marketAddress);
+    const contract = await Prediction.at(predictionAddress);
     // console.log('market created');
 
     const statement = await contract.statement.call();
@@ -88,17 +88,17 @@ contract('', function(accounts) {
 
     // Implement the following structure in the contract.
     const datas = [
-      {playerIdx: 0, pos: 1, neg: 2},
-      {playerIdx: 1, pos: 3, neg: 0},
-      {playerIdx: 2, pos: 1, neg: 1},
-      {playerIdx: 3, pos: 4, neg: 1},
-      {playerIdx: 4, pos: 0, neg: 0},
-      {playerIdx: 5, pos: 0, neg: 7.2}
+      {userIdx: 0, pos: 1, neg: 2},
+      {userIdx: 1, pos: 3, neg: 0},
+      {userIdx: 2, pos: 1, neg: 1},
+      {userIdx: 3, pos: 4, neg: 1},
+      {userIdx: 4, pos: 0, neg: 0},
+      {userIdx: 5, pos: 0, neg: 7.2}
     ];
     for(i = 0; i < datas.length; i++) {
 
       const data = datas[i];
-      const addr = accounts[data.playerIdx];
+      const addr = accounts[data.userIdx];
 
       // Place bets.
       // console.log('placing pos bet:', data.pos);
@@ -117,11 +117,11 @@ contract('', function(accounts) {
       }
 
       // Read balance.
-      const pos = web3.fromWei(await contract.getPlayerBalance(true, {
+      const pos = web3.fromWei(await contract.getUserBalance(true, {
         from: addr
       }), 'ether').toNumber();
       // console.log('pos:', pos);
-      const neg = web3.fromWei(await contract.getPlayerBalance(false, {
+      const neg = web3.fromWei(await contract.getUserBalance(false, {
         from: addr
       }), 'ether').toNumber();
       // console.log('neg:', neg);

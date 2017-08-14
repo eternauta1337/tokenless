@@ -1,13 +1,13 @@
 /*eslint no-undef: "off"*/
-const Market = artifacts.require('./Market.sol');
+const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 import expectThrow from 'zeppelin-solidity/test/helpers/expectThrow';
 
-contract('Market (Withdraw)', function(accounts) {
+contract('Prediction (Withdraw)', function(accounts) {
 
   it('should allow winners to withdraw their prize', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
 
     await contract.bet(true, {
       from: accounts[1],
@@ -49,7 +49,7 @@ contract('Market (Withdraw)', function(accounts) {
 
   it('should allow the owner to destroy the contract a certain time after resolution, claiming whatever no one else claimed', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
     // let state = 0;
 
     await contract.bet(true, {

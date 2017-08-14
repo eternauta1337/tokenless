@@ -1,7 +1,7 @@
 /*eslint no-undef: "off"*/
 
-var MarketFactory = artifacts.require("./MarketFactory.sol");
+var PredictionMarket = artifacts.require("./PredictionMarket.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(MarketFactory);
+  deployer.deploy(PredictionMarket);
 };

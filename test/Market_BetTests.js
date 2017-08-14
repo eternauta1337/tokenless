@@ -1,8 +1,8 @@
 /*eslint no-undef: "off"*/
-const Market = artifacts.require('./Market.sol');
+const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 
-contract('Market (Bets)', function(accounts) {
+contract('Prediction (Bets)', function(accounts) {
 
   before(() => {
     // console.log('accounts:', web3.eth.accounts);
@@ -10,39 +10,39 @@ contract('Market (Bets)', function(accounts) {
 
   it('should accepts funds via bets', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    const playerAddress = accounts[1];
-    const initialPlayerBalance = util.getBalanceInEther(playerAddress, web3);
+    const userAddress = accounts[1];
+    const initialUserBalance = util.getBalanceInEther(userAddress, web3);
     const betValueEth = 1;
     await contract.bet(true, {
-      from: playerAddress,
+      from: userAddress,
       value: web3.toWei(betValueEth, 'ether')
     });
 
-    const newPlayerBalance = util.getBalanceInEther(playerAddress, web3);
-    // console.log('newPlayerBalance', newPlayerBalance);
+    const newUserBalance = util.getBalanceInEther(userAddress, web3);
+    // console.log('newUserBalance', newUserBalance);
     const newContractBalance = util.getBalanceInEther(contract.address, web3);
     // console.log('newContractBalance', newContractBalance);
 
-    assert.approximately(initialPlayerBalance - betValueEth, newPlayerBalance, 0.01, 'player balance was not deducted');
+    assert.approximately(initialUserBalance - betValueEth, newUserBalance, 0.01, 'user balance was not deducted');
     assert.equal(1, newContractBalance, 'contract balance was not increased');
   });
 
-  it('should keep track of a players positive bet balance', async function() {
+  it('should keep track of a users positive bet balance', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    let playerNullBalance = web3.fromWei(await contract.getPlayerBalance(true, {
+    let userNullBalance = web3.fromWei(await contract.getUserBalance(true, {
       from: accounts[1]
     }), 'ether').toNumber();
-    // console.log('player 1 null balance: ', playerBalance);
-    assert.equal(0, playerNullBalance, 'player balance supposed to be 0');
-    playerNullBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+    // console.log('user 1 null balance: ', userBalance);
+    assert.equal(0, userNullBalance, 'user balance supposed to be 0');
+    userNullBalance = web3.fromWei(await contract.getUserBalance(false, {
       from: accounts[1]
     }), 'ether').toNumber();
-    // console.log('player 1 null balance: ', playerBalance);
-    assert.equal(0, playerNullBalance, 'player balance supposed to be 0');
+    // console.log('user 1 null balance: ', userBalance);
+    assert.equal(0, userNullBalance, 'user balance supposed to be 0');
 
     await contract.bet(true, {
       from: accounts[1],
@@ -53,37 +53,37 @@ contract('Market (Bets)', function(accounts) {
       value: web3.toWei(2, 'ether')
     });
 
-    const playerPosBalance = web3.fromWei(await contract.getPlayerBalance(true, {
+    const userPosBalance = web3.fromWei(await contract.getUserBalance(true, {
       from: accounts[1]
     }), 'ether').toNumber();
-    // console.log('player 1 pos balance: ', playerBalance);
-    assert.equal(1, playerPosBalance, 'player balance was not tracked');
+    // console.log('user 1 pos balance: ', userBalance);
+    assert.equal(1, userPosBalance, 'user balance was not tracked');
 
-    const playerNegBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+    const userNegBalance = web3.fromWei(await contract.getUserBalance(false, {
       from: accounts[1]
     }), 'ether').toNumber();
-    // console.log('player 1 neg balance: ', playerBalance);
-    assert.equal(2, playerNegBalance, 'player balance was not tracked');
+    // console.log('user 1 neg balance: ', userBalance);
+    assert.equal(2, userNegBalance, 'user balance was not tracked');
   });
 
-  it('should not keep a balance for a player that didnt bet', async function() {
+  it('should not keep a balance for a user that didnt bet', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
-    let playerBalance = web3.fromWei(await contract.getPlayerBalance(false, {
+    let userBalance = web3.fromWei(await contract.getUserBalance(false, {
       from: accounts[2]
     }), 'ether');
-    playerBalance = web3.fromWei(await contract.getPlayerBalance(true, {
+    userBalance = web3.fromWei(await contract.getUserBalance(true, {
       from: accounts[2]
     }), 'ether');
-    // console.log('player 2 balance: ', player2Balance);
+    // console.log('user 2 balance: ', user2Balance);
 
-    assert.equal(0, playerBalance, 'player wasnt supposed to have a balance');
+    assert.equal(0, userBalance, 'user wasnt supposed to have a balance');
   });
 
   it('should expose pot totals', async function() {
 
-    const contract = await Market.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
 
     let i;
     for(i = 0; i < 5; i++) {

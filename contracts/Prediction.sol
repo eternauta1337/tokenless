@@ -5,7 +5,7 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/payment/PullPayment.sol";
 import "zeppelin-solidity/contracts/lifecycle/Destructible.sol";
 
-contract Market is Ownable, PullPayment, Destructible {
+contract Prediction is Ownable, PullPayment, Destructible {
 
   using SafeMath for uint;
 
@@ -17,7 +17,7 @@ contract Market is Ownable, PullPayment, Destructible {
   uint public endBlock; // Bets close at endBlock.
   uint public killBlock; // Owner will be able to destroy contract after killBlock.
 
-  function Market(string _statement, uint _blockDuration) {
+  function Prediction(string _statement, uint _blockDuration) {
     statement = _statement;
     endBlock = block.number.add(_blockDuration);
 
@@ -52,7 +52,7 @@ contract Market is Ownable, PullPayment, Destructible {
     BetEvent(msg.sender, prediction, msg.value);
   }
 
-  function getPlayerBalance(bool outcome) constant returns (uint) {
+  function getUserBalance(bool outcome) constant returns (uint) {
     return bets[outcome][msg.sender];
   }
 
@@ -159,17 +159,5 @@ contract Market is Ownable, PullPayment, Destructible {
     }
     DestroyEvent(msg.sender);
     super.destroy();
-  }
-
-  // --------------------------------------------------
-  // Debugging elements
-  // (could be removed without hurting the contract)
-  // --------------------------------------------------
-
-  event LogStringUintEvent(string msg, uint value);
-  event LogAddressEvent(address msg);
-
-  function getBlockNumber() constant returns (uint) {
-    return block.number;
   }
 }
