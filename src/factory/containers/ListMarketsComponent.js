@@ -61,22 +61,31 @@ class ListMarkets extends React.Component {
           <h1>Browse Markets</h1>
         </div>
 
-        {/* CREATE MARKET PANEL */}
+        {/* LIST MARKETS PANEL */}
         <div className="row">
-          <ul className="list-group">
-            {_.map(this.props.addresses, (address) => {
-              const preview = this.props.previews[address];
-              const title = preview ? preview.statement : address;
-              const balance = preview ? preview.balance : 0;
-              return (
-                <li className="list-group-item" key={address}>
-                  <Link to={`/market/${address}`}>
-                    {title} <span className="pull-right">{balance} ETH</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          {this.props.addresses.length === 0 &&
+            <div className="alert alert-info">
+              <strong>
+                Sorry, there are currently no markets... Would you like to create one?
+              </strong>
+            </div>
+          }
+          {this.props.addresses.length > 0 &&
+            <ul className="list-group">
+              {_.map(this.props.addresses, (address) => {
+                const preview = this.props.previews[address];
+                const title = preview ? preview.statement : address;
+                const balance = preview ? preview.balance : 0;
+                return (
+                  <li className="list-group-item" key={address}>
+                    <Link to={`/market/${address}`}>
+                      {title} <span className="pull-right">{balance} ETH</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          }
         </div>
 
         {/* LINK TO CREATE */}
