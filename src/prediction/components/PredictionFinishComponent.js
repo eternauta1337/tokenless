@@ -1,12 +1,12 @@
 import React from 'react';
 
 const PredictionFinishComponent = ({
-  destroyMarket,
+  finishPrediction,
   balance
 }) => {
 
   const handleDestroyButtonClick = function() {
-    destroyMarket();
+    finishPrediction();
   };
 
   return (

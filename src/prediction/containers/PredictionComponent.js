@@ -16,7 +16,7 @@ import {
   placeBet,
   resolveMarket,
   withdrawPrize,
-  destroyMarket
+  finishPrediction
 } from '../actions';
 
 class Prediction extends React.Component {
@@ -105,7 +105,7 @@ class Prediction extends React.Component {
           {isOwned && this.props.predictionState >= 2 && this.props.blockNumber >= this.props.killBlock &&
             <PredictionFinishComponent
               balance={this.props.balance}
-              destroyMarket={this.props.destroyMarket}
+              finishPrediction={this.props.finishPrediction}
               />
           }
 
@@ -162,7 +162,7 @@ const mapDispatchToProps = (dispatch) => {
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
     withdrawPrize: () => dispatch(withdrawPrize()),
-    destroyMarket: () => dispatch(destroyMarket()),
+    finishPrediction: () => dispatch(finishPrediction()),
     resetMarket: () => dispatch(resetMarket()),
   };
 };

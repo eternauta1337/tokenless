@@ -47,7 +47,7 @@ contract('Prediction (Withdraw)', function(accounts) {
     await expectThrow(contract.claimPrize({from: accounts[1]}));
   });
 
-  it('should allow the owner to destroy the contract a certain time after resolution, claiming whatever no one else claimed', async function() {
+  it('should allow the owner to withdraw the contract balance a certain time after resolution, claiming whatever no one else claimed', async function() {
 
     const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
     // let state = 0;
@@ -73,7 +73,7 @@ contract('Prediction (Withdraw)', function(accounts) {
     // console.log('init contract balance:', initContractBalance);
 
     // Too early to destroy...
-    await expectThrow(contract.destroy({from: accounts[0]}));
+    await expectThrow(contract.claimFees({from: accounts[0]}));
 
     // console.log('init player balance:', util.getBalanceInEther(accounts[1], web3));
     await contract.claimPrize({from: accounts[1]});
@@ -90,12 +90,8 @@ contract('Prediction (Withdraw)', function(accounts) {
     // console.log('init owner balance:', initOwnerBalance);
     // state = (await contract.getState()).toNumber();
     // console.log('state:', state);
-    contract.destroy({from: accounts[0]});
-
-    // Check destruction
-    const owner = await contract.owner.call();
-    // console.log('owner after destruction: ', owner);
-    assert.equal(owner, '0x', 'contract was not destroyed');
+    contract.claimFees({from: accounts[0]});
+    await contract.withdrawPayments({from: accounts[0]});
 
     // Check owner balance
     const newOwnerBalance = util.getBalanceInEther(accounts[0], web3);

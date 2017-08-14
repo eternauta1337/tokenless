@@ -1,19 +1,20 @@
-import { connectPrediction } from '.';
+import { push } from 'react-router-redux';
+import { resetMarket } from './ResetPredictionAction';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 
-export function withdrawPrize() {
+export function finishPrediction() {
   return async function(dispatch, getState) {
 
     const prediction = getState().prediction.contract;
 
-    // Listen for withdraw event...
-    prediction.ClaimPrizeEvent().watch(async (error, result) => {
-      console.log('ClaimPrizeEvent', error, result);
+    // Listen for destroy event...
+    prediction.ClaimFeesEvent().watch(async (error, result) => {
+      console.log('ClaimFeesEvent', error, result);
       if(error) {
-        console.log('error withdrawing funds');
+        console.log('finish prediction failed');
       }
       else {
-        console.log('withdraw succesful!', result);
+        console.log('prediction finished!');
 
         // Claim != withdrawal, still need to
         // pull the ether out.
@@ -21,14 +22,14 @@ export function withdrawPrize() {
           from: getState().network.activeAccountAddress
         });
 
+        // Forget listing.
         dispatch(forgetPreview(prediction.address));
-        dispatch(connectPrediction(prediction.address));
       }
     });
 
-    // Withdraw
-    console.log('withdrawing prize...');
-    await prediction.claimPrize({
+    // Destroy
+    console.log('finishing prediction...');
+    await prediction.claimFees({
       from: getState().network.activeAccountAddress
     });
   };

@@ -47,15 +47,6 @@ export default function(state = initialState, action) {
     };
     break;
 
-  case PREDICTION_FORGOTTEN:
-    const forgottenAddress = action.payload;
-    const newPreviews = _.omit(state.previews, forgottenAddress);
-    newState = {
-      ...state,
-      previews: newPreviews
-    };
-    break;
-
   default:
     newState = state;
     break;
