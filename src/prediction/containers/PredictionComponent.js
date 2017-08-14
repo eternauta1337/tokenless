@@ -93,14 +93,6 @@ class Prediction extends React.Component {
             outcome={this.props.outcome}
             />
 
-          {/* BALANCES */}
-            {this.props.predictionState === 0 &&
-              <PredictionBalancesComponent
-                playerPositiveBalance={this.props.playerPositiveBalance}
-                playerNegativeBalance={this.props.playerNegativeBalance}
-                />
-            }
-
           {/* FINISH */}
           {isOwned && this.props.predictionState >= 2 && this.props.blockNumber >= this.props.killBlock &&
             <PredictionFinishComponent
@@ -136,8 +128,16 @@ class Prediction extends React.Component {
               />
           }
 
+          {/* BALANCES */}
+          {this.props.predictionState === 0 &&
+          <PredictionBalancesComponent
+            playerPositiveBalance={this.props.playerPositiveBalance}
+            playerNegativeBalance={this.props.playerNegativeBalance}
+          />
+          }
+
           {/* COMMENTS */}
-          <PredictionDiscussComponent/>
+          {/*<PredictionDiscussComponent/>*/}
 
         </div>
 
