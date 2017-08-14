@@ -5,17 +5,11 @@ const PredictionBetComponent = ({ placeBet }) => {
   let betInputField;
   let predictionSelector;
 
-  const handleBetSubmit = function(evt) {
+  const handleBetSubmit = function(prediction) {
 
     const bet = betInputField.value;
-    const prediction = +predictionSelector.options[
-      predictionSelector.selectedIndex].value;
 
     // TODO: proper validation
-    if(prediction !== 0 && prediction !== 1) {
-      console.log('invalid form parameters');
-      return;
-    }
     if(isNaN(bet)) {
       console.log('invalid form parameters');
       return;
@@ -27,7 +21,7 @@ const PredictionBetComponent = ({ placeBet }) => {
   return (
     <div className='panel panel-info'>
       <div className="panel-heading">
-        <strong>Would you like to make a new prediction?</strong>
+        <strong>Place a new bet</strong>
       </div>
       <div className="panel-body">
         <form className="">
@@ -38,20 +32,24 @@ const PredictionBetComponent = ({ placeBet }) => {
               ref={ref => betInputField = ref}
               />
           </div>
-          <div className="form-group">
-            <select
-              ref={ref => predictionSelector = ref}
-              className="custom-select mb-2 mr-sm-2 mb-sm-0">
-              <option defaultValue>Outcome...</option>
-              <option value="1">Yea</option>
-              <option value="0">Nay</option>
-            </select>
-          </div>
+
+          {/* YES */}
           <button
             type="button"
             className="btn btn-primary"
-            onClick={(evt) => handleBetSubmit()}>
-            Submit Your Prediction
+            onClick={(evt) => handleBetSubmit(true)}>
+            Will Happen
+          </button>
+
+          &nbsp;
+          &nbsp;
+
+          {/* NO */}
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={(evt) => handleBetSubmit(false)}>
+            Won't Happen
           </button>
         </form>
       </div>
