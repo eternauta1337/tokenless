@@ -1,3 +1,8 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
   padding-top: 50px;
   font-family: sans-serif;
@@ -33,4 +38,19 @@ body {
 
 .brand * {
   vertical-align: middle;
+}
+
+.wrapper {
+    margin: 0 0 40px; /* bottom = footer-muted height */
+    padding: 25px;
+}
+
+.footer-muted {
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+    overflow:hidden;
 }

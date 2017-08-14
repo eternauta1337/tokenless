@@ -14,23 +14,19 @@ class App extends Component {
         <NavigationComponent path={this.props.location.pathname}/>
 
         {/* BODY */}
-        <div className="">
+        <div className="wrapper">
           {/* CONTENT MANAGED BY ROUTES */}
           {this.props.children}
         </div>
 
-        <br/>
-        <br/>
-        <br/>
-
         {/* FOOTER */}
-        <div className="row footer">
+        <footer className="row footer-muted">
           <div className="text-center">
             <small className="text-muted">
               Created with <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp; by the Zeppelin team
             </small>
           </div>
-        </div>
+        </footer>
 
         {/* DEBUG UI */}
         <footer className="footer navbar-fixed-bottom">
