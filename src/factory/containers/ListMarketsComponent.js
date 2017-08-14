@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import _ from 'lodash';
-import BubblePreloader from 'react-bubble-preloader';
+import { Link } from 'react-router';
+import MarketListItemComponent from '../components/MarketListItemComponent';
 import {
   getMarketPreview
 } from '../actions';
@@ -79,38 +79,10 @@ class ListMarkets extends React.Component {
             <ul className="list-group">
               {_.map(this.props.addresses, (address) => {
                 const preview = this.props.previews[address];
-                if(preview && !preview.isFetching) {
-                  const title = preview ? preview.statement : address;
-                  const balance = preview ? preview.balance : 0;
-                  return (
-                    <li className="list-group-item" key={address}>
-                      <Link to={`/market/${address}`}>
-                        {title} <span className="pull-right">{balance} ETH</span>
-                      </Link>
-                    </li>
-                  );
-                }
-                else if(preview && preview.isFetching) {
-                  return (
-                    <li className="list-group-item" key={address}>
-                      <BubblePreloader
-                        bubble={{ width: '1rem', height: '1rem' }}
-                        animation={{ speed: 2 }}
-                        className=""
-                        colors={['#ccc', '#aaa', '#999']}
-                      />
-                    </li>
-                  );
-                }
-                else {
-                  return (
-                    <li className="list-group-item" key={address}>
-                      <Link to={`/market/${address}`}>
-                        {address}
-                      </Link>
-                    </li>
-                  );
-                }
+                return <MarketListItemComponent
+                  address={address}
+                  preview={preview}
+                  />;
               })}
             </ul>
           }
