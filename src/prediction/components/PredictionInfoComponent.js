@@ -1,48 +1,54 @@
 import React from 'react';
 
 const PredictionInfoComponent = ({
-  positivePredicionBalance,
-  negativePredicionBalance,
-  isOwned,
-  predictionState,
-  predictionStateStr,
-  remainingBlocks,
-  outcome
-}) => {
+                                   positivePredicionBalance,
+                                   negativePredicionBalance,
+                                   isOwned,
+                                   predictionState,
+                                   predictionStateStr,
+                                   remainingBlocks,
+                                   outcome
+                                 }) => {
 
   let predictionStateClass = 'success';
-  if(predictionState === 1) predictionStateClass = 'warning';
-  if(predictionState === 2 && outcome === false) predictionStateClass = 'danger';
+  if (predictionState === 1) predictionStateClass = 'warning';
+  if (predictionState === 2 && outcome === false) predictionStateClass = 'danger';
 
   let stateStr = predictionStateStr;
-  if(predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
+  if (predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
+
+  const balanceTotal = positivePredicionBalance + negativePredicionBalance;
+  const posPercent = 100 * positivePredicionBalance / balanceTotal;
+  const negPercent = 100 * negativePredicionBalance / balanceTotal;
+  console.log('pos', posPercent);
+  console.log('neg', negPercent);
 
   return (
+
     <div>
 
-      {/* BET BALANCES */}
-      <h3>
-        <span className="label label-default align-middle">
-          <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;
-          {positivePredicionBalance}&nbsp;ETH
-        </span>
-        &nbsp;|&nbsp;
-        <span className="label label-default">
-          <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>&nbsp;&nbsp;
-          {negativePredicionBalance}&nbsp;ETH
-        </span>
-      </h3>
+      {/* POT BALANCES */}
+      { balanceTotal > 0 &&
+        <div className="progress">
+          <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
+            <span className="">{positivePredicionBalance}&nbsp;ETH</span>
+          </div>
+          <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
+            <span className="">{negativePredicionBalance}&nbsp;ETH</span>
+          </div>
+        </div>
+      }
 
-      {/* MISC */}
+      {/* BADGES */}
       <ul className='list'>
 
         {/* OWNED */}
         {isOwned &&
-          <li className='list-inline-item'>
-            <span className="label label-primary">
+        <li className='list-inline-item'>
+            <span className="label label-info">
               You own this prediction
             </span>
-          </li>
+        </li>
         }
 
         {/* STATE + OUTCOME + BLOCKS REMAINING */}
