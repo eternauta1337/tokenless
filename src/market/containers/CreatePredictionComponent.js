@@ -26,11 +26,6 @@ class CreatePredictionComponent extends React.Component {
     return (
       <div className="container">
 
-        {/* TITLE */}
-        <div className="page-header">
-          <h1>Create a Prediction</h1>
-        </div>
-
         {/* CREATE PREDICTION PANEL */}
         <div className="row">
           <div className="panel panel-primary">

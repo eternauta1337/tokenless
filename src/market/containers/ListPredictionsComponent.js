@@ -42,11 +42,6 @@ class ListMarkets extends React.Component {
     return (
       <div className="container">
 
-        {/* TITLE */}
-        <div className="page-header">
-          <h1>Browse Predictions</h1>
-        </div>
-
         {/* LIST MARKETS PANEL */}
         <div className="row">
           {!this.state.fetching && this.props.addresses.length === 0 &&

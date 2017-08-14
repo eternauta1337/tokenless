@@ -6,7 +6,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import AppComponent from './main/components/AppComponent';
-import HomeComponent from './home/components/HomeComponent';
 import PredictionComponent from './prediction/containers/PredictionComponent';
 import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
 import ListPredictionsComponent from './market/containers/ListPredictionsComponent';
@@ -26,8 +25,7 @@ ReactDOM.render((
     <Provider store={store}>
       <Router history={syncHistoryWithStore(browserHistory, store)}>
         <Route path="/" component={AppComponent}>
-          <IndexRoute component={HomeComponent}/>
-          <Route path={PATH_LIST} component={ListPredictionsComponent}/>
+          <IndexRoute component={ListPredictionsComponent}/>
           <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
           <Route path={PATH_PREDICTION} component={PredictionComponent}/>
           <Route path={PATH_ABOUT} component={AboutComponent}/>

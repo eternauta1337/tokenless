@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import {
-  PATH_LIST,
   PATH_CREATE,
   PATH_ROOT,
   PATH_ABOUT
@@ -31,12 +30,12 @@ const NavigationComponent = ({ path }) => {
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav">
 
-              {/* MARKET LIST */}
-              <li className={`${path === PATH_LIST ? 'active' : ''}`}>
-                <Link to={PATH_LIST}>Browse Predictions</Link>
+              {/* PREDICTION LIST */}
+              <li className={`${path === PATH_ROOT ? 'active' : ''}`}>
+                <Link to={PATH_ROOT}>Browse Predictions</Link>
               </li>
 
-              {/* CREATE MARKET */}
+              {/* CREATE PREDICTION */}
               <li className={path === PATH_CREATE ? 'active' : ''}>
                 <Link to={PATH_CREATE}>Create a Prediction</Link>
               </li>
