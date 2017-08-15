@@ -1,6 +1,7 @@
 /*eslint no-undef: "off"*/
 const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
+import expectThrow from 'zeppelin-solidity/test/helpers/expectThrow';
 
 contract('Prediction (Bets)', function(accounts) {
 
@@ -27,6 +28,29 @@ contract('Prediction (Bets)', function(accounts) {
 
     assert.approximately(initialUserBalance - betValueEth, newUserBalance, 0.01, 'user balance was not deducted');
     assert.equal(1, newContractBalance, 'contract balance was not increased');
+  });
+
+  it('should not allow owners to bet', async function () {
+
+    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+
+    const userAddress = accounts[0];
+    const initialUserBalance = util.getBalanceInEther(userAddress, web3);
+    // console.log('initialUserBalance', initialUserBalance);
+    await expectThrow(contract.bet(true, {
+      from: userAddress,
+      value: web3.toWei(1, 'ether'),
+      gas: 30000
+    }));
+
+    const newUserBalance = util.getBalanceInEther(userAddress, web3);
+    // console.log('newUserBalance', newUserBalance);
+    const newContractBalance = util.getBalanceInEther(contract.address, web3);
+    // console.log('newContractBalance', newContractBalance);
+
+    assert.approximately(newUserBalance, initialUserBalance, 0.01, 'user balance was deduced');
+    assert.equal(0, newContractBalance, 'contract balance was altered');
+
   });
 
   it('should keep track of a users positive bet balance', async function() {

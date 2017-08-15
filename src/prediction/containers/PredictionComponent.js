@@ -124,6 +124,7 @@ class Prediction extends React.Component {
           {/* BET */}
           {this.props.predictionState === 0 &&
             <PlaceBetComponent
+              isOwned={isOwned}
               placeBet={this.props.placeBet}
               />
           }

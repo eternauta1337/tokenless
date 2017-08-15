@@ -1,12 +1,17 @@
 pragma solidity ^0.4.11;
 
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/payment/PullPayment.sol";
+import "./zeppelin-solidity/contracts/math/SafeMath.sol";
+import "./zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./zeppelin-solidity/contracts/payment/PullPayment.sol";
 
 contract Prediction is Ownable, PullPayment {
 
   using SafeMath for uint;
+
+  modifier notOwner() {
+    require(msg.sender != owner);
+    _;
+  }
 
   // --------------------------------------------------
   // Init
@@ -36,7 +41,7 @@ contract Prediction is Ownable, PullPayment {
   mapping(bool => mapping(address => uint)) bets;
   mapping(bool => uint) public totals;
 
-  function bet(bool prediction) payable onlyInState(State.Open) {
+  function bet(bool prediction) payable notOwner() onlyInState(State.Open) {
     if(msg.value == 0) revert();
 
     // Update user's balances.
@@ -61,7 +66,7 @@ contract Prediction is Ownable, PullPayment {
 
   bool public outcome;
 
-  event ResolveEvent(bool outcome);
+  event ResolveEvent(bool selectedOutcome);
 
   function resolve(bool _outcome) onlyOwner onlyInState(State.Closed) {
     outcome = _outcome;
@@ -75,7 +80,7 @@ contract Prediction is Ownable, PullPayment {
 
   event ClaimPrizeEvent(address indexed from);
 
-  function claimPrize() onlyInState(State.Resolved) {
+  function claimPrize() notOwner() onlyInState(State.Resolved) {
 
     // Calculate total prize.
     uint prize = calculatePrize(outcome);
@@ -121,6 +126,18 @@ contract Prediction is Ownable, PullPayment {
   }
 
   // --------------------------------------------------
+  // Fee withdrawals
+  // --------------------------------------------------
+
+  event ClaimFeesEvent(address indexed from);
+
+  function claimFees() onlyOwner {
+    if(block.number <= killBlock) revert();
+    ClaimFeesEvent(msg.sender);
+    asyncSend(owner, this.balance);
+  }
+
+  // --------------------------------------------------
   // State
   // --------------------------------------------------
 
@@ -144,17 +161,5 @@ contract Prediction is Ownable, PullPayment {
     else {
       return State.Resolved;
     }
-  }
-
-  // --------------------------------------------------
-  // Destruction
-  // --------------------------------------------------
-
-  event ClaimFeesEvent(address indexed from);
-
-  function claimFees() onlyOwner {
-    if(block.number <= killBlock) revert();
-    ClaimFeesEvent(msg.sender);
-    asyncSend(owner, this.balance);
   }
 }

@@ -3,7 +3,7 @@ const PredictionMarket = artifacts.require('./PredictionMarket.sol');
 const Prediction = artifacts.require('./Prediction.sol');
 // import * as util from '../src/utils/Web3Util';
 
-contract('', function(accounts) {
+contract('Combined', function(accounts) {
 
   it('(prediction) should support 2 balances for each user', async function() {
 
@@ -13,7 +13,6 @@ contract('', function(accounts) {
 
     // Implement the following structure in the contract.
     const datas = [
-      {userIdx: 0, pos: 1, neg: 2},
       {userIdx: 1, pos: 3, neg: 0},
       {userIdx: 2, pos: 1, neg: 1},
       {userIdx: 3, pos: 4, neg: 1},
@@ -57,15 +56,15 @@ contract('', function(accounts) {
     }
   });
 
-  it('(prediction+prediction) should support 2 balances for each user on contracts deployed by the prediction', async function() {
+  it('(market+prediction) should support 2 balances for each user on contracts deployed by the prediction', async function() {
 
-    const prediction = await PredictionMarket.new();
+    const market = await PredictionMarket.new();
     // console.log('prediction address:', prediction.address);
 
     // Create prediction.
-    const creationTransaction = await prediction.createPrediction(
+    const creationTransaction = await market.createPrediction(
       'The prediction prediction contract will work.', 10, {
-        from: accounts[3]
+        from: accounts[0]
       }
     );
     // console.log('creation transaction:', creationTransaction);
@@ -77,10 +76,10 @@ contract('', function(accounts) {
     // console.log('predictionAddress:', predictionAddress);
 
     // Retrieve prediction.
-    const contract = await Prediction.at(predictionAddress);
+    const prediction = await Prediction.at(predictionAddress);
     // console.log('prediction created');
 
-    const statement = await contract.statement.call();
+    const statement = await prediction.statement.call();
     // console.log('statement:', statement);
     assert.notEqual(statement.length, 0, 'invalid statement');
 
@@ -88,7 +87,6 @@ contract('', function(accounts) {
 
     // Implement the following structure in the contract.
     const datas = [
-      {userIdx: 0, pos: 1, neg: 2},
       {userIdx: 1, pos: 3, neg: 0},
       {userIdx: 2, pos: 1, neg: 1},
       {userIdx: 3, pos: 4, neg: 1},
@@ -103,25 +101,25 @@ contract('', function(accounts) {
       // Place bets.
       // console.log('placing pos bet:', data.pos);
       if(data.pos !== 0) {
-        await contract.bet(true, {
+        await prediction.bet(true, {
           from: addr,
           value: web3.toWei(data.pos, 'ether')
         });
       }
       // console.log('placing neg bet:', data.neg);
       if(data.neg !== 0) {
-        await contract.bet(false, {
+        await prediction.bet(false, {
           from: addr,
           value: web3.toWei(data.neg, 'ether')
         });
       }
 
       // Read balance.
-      const pos = web3.fromWei(await contract.getUserBalance(true, {
+      const pos = web3.fromWei(await prediction.getUserBalance(true, {
         from: addr
       }), 'ether').toNumber();
       // console.log('pos:', pos);
-      const neg = web3.fromWei(await contract.getUserBalance(false, {
+      const neg = web3.fromWei(await prediction.getUserBalance(false, {
         from: addr
       }), 'ether').toNumber();
       // console.log('neg:', neg);
