@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import {
   createPrediction
@@ -9,9 +10,7 @@ class CreatePredictionComponent extends React.Component {
 
   handleCreateSubmit() {
     const statement = this.statementInputField.value;
-    const betEndDate = new Date(this.betEndDateField.value);
-    const withdrawEndDate = new Date(this.withdrawEndDateField.value);
-    this.props.createPrediction(statement, betEndDate, withdrawEndDate);
+    this.props.createPrediction(statement, this.betEndDate, this.withdrawEndDate);
   }
 
   setStatementInputField(input) {
@@ -21,10 +20,12 @@ class CreatePredictionComponent extends React.Component {
   render() {
 
     let betDate = new Date();
-    betDate.setDate(betDate.getDate() + 7);
+    betDate.setDate(betDate.getDate() + 0.001);
+    this.betEndDate = betDate;
 
     let withdrawDate = new Date();
-    withdrawDate.setDate(withdrawDate.getDate() + 14);
+    withdrawDate.setDate(withdrawDate.getDate() + 0.002);
+    this.withdrawEndDate = withdrawDate;
 
     return (
       <div className="container">
@@ -54,12 +55,10 @@ class CreatePredictionComponent extends React.Component {
                 {/* BET END DATE */}
                 <div className="form-group">
                   <label>Resolution Date:</label>
-                  <input
-                    className="form-control"
-                    type="date"
-                    defaultValue={dateUtil.dateToStr(betDate, 'yyyy-mm-dd')}
-                    ref={ref => this.betEndDateField = ref}
-                    />
+                  <DatePicker
+                    defaultValue={betDate}
+                    onChange={(moment) => this.betEndDate = moment.toDate()}
+                  />
                   <small className="text-muted">
                     Upon this date, the prediction should be resolved by it's owner to yes or no,
                     meaning that all bets will be closed and that
@@ -70,11 +69,9 @@ class CreatePredictionComponent extends React.Component {
                 {/* WITHDRAW END DATE */}
                 <div className="form-group">
                   <label>Withdraw End Date:</label>
-                  <input
-                    className="form-control"
-                    type="date"
-                    defaultValue={dateUtil.dateToStr(withdrawDate, 'yyyy-mm-dd')}
-                    ref={ref => this.withdrawEndDateField = ref}
+                  <DatePicker
+                    defaultValue={withdrawDate}
+                    onChange={(moment) => this.withdrawEndDate = moment.toDate()}
                   />
                   <small className="text-muted">
                     After this final date, the owner of the prediction will be able to withdraw his fees

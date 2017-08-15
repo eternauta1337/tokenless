@@ -16,6 +16,7 @@ import {
   PATH_ABOUT
 } from './constants';
 import './styles/index.css';
+import './styles/datetime.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 

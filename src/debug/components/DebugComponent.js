@@ -4,6 +4,9 @@ import * as web3Util from '../../utils/Web3Util';
 import {
   setActiveAccountIndex
 } from '../../network/actions';
+import {
+  USE_INJECTED_WEB3
+} from "../../constants";
 import * as web3util from '../../utils/Web3Util';
 import * as dateUtil from '../../utils/DateUtil';
 
@@ -45,16 +48,18 @@ class Debug extends React.Component {
       <div className='debugPanel'>
 
         {/* ACCOUNT SELECTOR */}
-        <select className=""
-          onChange={(event) => this.onAccountSelected(event.target.value)}
-          defaultValue={0}>
-          >
-          {this.props.accounts && this.props.accounts.map((account, index) => {
-            return <option value={index} key={index}>ACCT {index}: {account}</option>;
-          })}
-        </select>&nbsp;
+        { !USE_INJECTED_WEB3 &&
+          <select className=""
+                  onChange={(event) => this.onAccountSelected(event.target.value)}
+                  defaultValue={0}>
+            {this.props.accounts && this.props.accounts.map((account, index) => {
+              return <option value={index} key={index}>ACCT {index}: {account}</option>;
+            })}
+          </select>
+        }
 
         {/* BALANCE */}
+        &nbsp;
         {this.state.accountBalance} ETH&nbsp;
 
         {/* SKIP BLOCK */}
