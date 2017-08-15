@@ -20,8 +20,6 @@ const InfoComponent = ({
   const balanceTotal = positivePredicionBalance + negativePredicionBalance;
   const posPercent = 100 * positivePredicionBalance / balanceTotal;
   const negPercent = 100 * negativePredicionBalance / balanceTotal;
-  console.log('pos', posPercent);
-  console.log('neg', negPercent);
 
   return (
 
@@ -31,10 +29,18 @@ const InfoComponent = ({
       { balanceTotal > 0 &&
         <div className="progress">
           <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
-            <span className="">{positivePredicionBalance}&nbsp;ETH (yes)</span>
+            <span className="">
+              <span className="glyphicon glyphicon-thumbs-up"></span>
+              &nbsp;
+              {positivePredicionBalance}&nbsp;ETH
+            </span>
           </div>
           <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
-            <span className="">{negativePredicionBalance}&nbsp;ETH (no)</span>
+            <span className="">
+              <span className="glyphicon glyphicon-thumbs-down"></span>
+              &nbsp;
+              {negativePredicionBalance}&nbsp;ETH
+            </span>
           </div>
         </div>
       }
