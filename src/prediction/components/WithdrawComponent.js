@@ -17,12 +17,19 @@ const WithdrawComponent = ({
       <div className="panel-body">
         {estimatePrize > 0 &&
           <form className="">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={(evt) => handleWithdrawButtonClick()}>
-              Withdraw {estimatePrize} ETH Now!
-            </button>
+            <div className="form-group">
+              <label>Withdraw End Date:</label>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={(evt) => handleWithdrawButtonClick()}>
+                Withdraw {estimatePrize} ETH Now!
+              </button>
+              <small className="text-danger">
+                Make sure to withdraw your prize before the contract's withdrawal end date! The owner of
+                the contract will be able to withdraw all remaining funds after this date.
+              </small>
+            </div>
           </form>
         }
         {estimatePrize <= 0 &&

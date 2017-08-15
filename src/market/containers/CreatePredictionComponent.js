@@ -46,7 +46,7 @@ class CreatePredictionComponent extends React.Component {
                     />
                   <small className="text-muted">
                     Please enter a falsable and measurable
-                    statement that can be reduced to yes/no
+                    statement that can be answered to yes or no,
                     once the prediction is resolved.
                   </small>
                 </div>
@@ -61,8 +61,9 @@ class CreatePredictionComponent extends React.Component {
                     ref={ref => this.betEndDateField = ref}
                     />
                   <small className="text-muted">
-                    Upon this date, the prediction should be resolvable to yes or no, meaning
-                    that all bets will be closed and that players can start withdrawing their prizes.
+                    Upon this date, the prediction should be resolved by it's owner to yes or no,
+                    meaning that all bets will be closed and that
+                    players can start withdrawing prizes.
                   </small>
                 </div>
 
@@ -76,8 +77,8 @@ class CreatePredictionComponent extends React.Component {
                     ref={ref => this.withdrawEndDateField = ref}
                   />
                   <small className="text-muted">
-                    After this date the owner of the prediction will be able to withdraw his fees
-                    (the full balance of the smart contract),
+                    After this final date, the owner of the prediction will be able to withdraw his fees
+                    (i.e. whatever is left in the balance of the smart contract),
                     and players will no longer be able to withdraw their prizes.
                   </small>
                   <br/>

@@ -62,7 +62,7 @@ class Prediction extends React.Component {
     // Pre-process some of the prediction's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
-    let now = web3Util.getTimestamp(this.props.web3);
+    let now = this.props.currentTime;
     let daysLeft;
     if(this.props.predictionState === 0) {
       daysLeft = dateUtil.secondsToDays(this.props.betEndDate - now);
@@ -85,6 +85,9 @@ class Prediction extends React.Component {
 
           {/* INFO */}
           <InfoComponent
+            simulatedNow={now}
+            betEndDate={this.props.betEndDate}
+            withdrawalEndDate={this.props.withdrawEndDate}
             positivePredicionBalance={this.props.positivePredicionBalance}
             negativePredicionBalance={this.props.negativePredicionBalance}
             isOwned={isOwned}
@@ -131,12 +134,12 @@ class Prediction extends React.Component {
           }
 
           {/* HISTORY */}
-          {this.props.predictionState === 0 &&
-          <HistoryComponent
-            playerPositiveBalance={this.props.playerPositiveBalance}
-            playerNegativeBalance={this.props.playerNegativeBalance}
-          />
-          }
+          {/*{this.props.predictionState === 0 &&*/}
+            {/*<HistoryComponent*/}
+              {/*playerPositiveBalance={this.props.playerPositiveBalance}*/}
+              {/*playerNegativeBalance={this.props.playerNegativeBalance}*/}
+            {/*/>*/}
+          {/*}*/}
 
           {/* COMMENTS */}
           {/*<CommentsComponent/>*/}

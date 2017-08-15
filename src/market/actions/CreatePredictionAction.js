@@ -6,14 +6,19 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
   return async function(dispatch, getState) {
 
     const market = getState().market.contract;
+    const acct = getState().network.activeAccountAddress;
+    console.log('acct:', acct);
 
-    console.log('creating prediction:', statement, betEndDate, withdrawEndDate);
+    // console.log('creating prediction:', statement, betEndDate, withdrawEndDate);
     const creationTransaction = await market.createPrediction(
       statement,
       dateUtil.dateToUnix(betEndDate),
       dateUtil.dateToUnix(withdrawEndDate),
+      function(error, res) {
+        console.log('metamask callback:', error, res);
+      },
       {
-        from: getState().network.activeAccountAddress,
+        from: acct,
         gas: 2000000
       }
     );
@@ -27,6 +32,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       dispatch(push(`/prediction/${predictionAddress}`));
     }
     else {
+      console.log('prediction creation failed');
       // TODO: handle error
     }
   };

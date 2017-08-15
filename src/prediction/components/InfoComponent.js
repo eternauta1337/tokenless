@@ -1,4 +1,8 @@
 import React from 'react';
+import * as dateUtil from '../../utils/DateUtil';
+import {
+  DEBUG_MODE
+} from '../../constants';
 
 const InfoComponent = ({
   positivePredicionBalance,
@@ -7,7 +11,10 @@ const InfoComponent = ({
   predictionState,
   predictionStateStr,
   daysLeft,
-  outcome
+  betEndDate,
+  withdrawalEndDate,
+  outcome,
+  simulatedNow
 }) => {
 
   let predictionStateClass = 'success';
@@ -47,6 +54,25 @@ const InfoComponent = ({
 
       {/* BADGES */}
       <ul className='list'>
+
+        {/* DATES */}
+        { DEBUG_MODE &&
+          <li className='list-inline-item'>
+            <span className="label label-warning">
+              Simulated date: {dateUtil.dateToStr(dateUtil.unixToDate(simulatedNow))}
+            </span>
+          </li>
+        }
+        <li className='list-inline-item'>
+          <span className="label label-default">
+            Bets end on: {dateUtil.dateToStr(dateUtil.unixToDate(betEndDate))}
+          </span>
+        </li>
+        <li className='list-inline-item'>
+          <span className="label label-default">
+            Withdrawals end on: {dateUtil.dateToStr(dateUtil.unixToDate(withdrawalEndDate))}
+          </span>
+        </li>
 
         {/* OWNED */}
         {isOwned &&

@@ -39,7 +39,7 @@ export function getPredictionPreview(address) {
       payload: preview
     });
 
-    preview.balance = web3util.getBalanceInEther(address, web3);
+    preview.balance = await web3util.getBalanceInEther(address, web3);
     preview.statement = await contract.statement.call();
     preview.predictionState = (await contract.getState()).toNumber();
     preview.predictionStateStr = stateUtil.predictionStateToStr(preview.predictionState);

@@ -19,19 +19,19 @@ contract('Prediction (Bets)', function(accounts) {
     );
 
     const userAddress = accounts[1];
-    const initialUserBalance = util.getBalanceInEther(userAddress, web3);
+    const initialUserBalance = await util.getBalanceInEther(userAddress, web3);
     const betValueEth = 1;
     await contract.bet(true, {
       from: userAddress,
       value: web3.toWei(betValueEth, 'ether')
     });
 
-    const newUserBalance = util.getBalanceInEther(userAddress, web3);
+    const newUserBalance = await util.getBalanceInEther(userAddress, web3);
     // console.log('newUserBalance', newUserBalance);
-    const newContractBalance = util.getBalanceInEther(contract.address, web3);
+    const newContractBalance = await util.getBalanceInEther(contract.address, web3);
     // console.log('newContractBalance', newContractBalance);
 
-    assert.approximately(initialUserBalance - betValueEth, newUserBalance, 0.01, 'user balance was not deducted');
+    assert.approximately(initialUserBalance - betValueEth, newUserBalance, 0.01, 'user balance was not deduced');
     assert.equal(1, newContractBalance, 'contract balance was not increased');
   });
 
@@ -44,7 +44,7 @@ contract('Prediction (Bets)', function(accounts) {
     );
 
     const userAddress = accounts[0];
-    const initialUserBalance = util.getBalanceInEther(userAddress, web3);
+    const initialUserBalance = await util.getBalanceInEther(userAddress, web3);
     // console.log('initialUserBalance', initialUserBalance);
     await expectThrow(contract.bet(true, {
       from: userAddress,
@@ -52,9 +52,9 @@ contract('Prediction (Bets)', function(accounts) {
       gas: 30000
     }));
 
-    const newUserBalance = util.getBalanceInEther(userAddress, web3);
+    const newUserBalance = await util.getBalanceInEther(userAddress, web3);
     // console.log('newUserBalance', newUserBalance);
-    const newContractBalance = util.getBalanceInEther(contract.address, web3);
+    const newContractBalance = await util.getBalanceInEther(contract.address, web3);
     // console.log('newContractBalance', newContractBalance);
 
     assert.approximately(newUserBalance, initialUserBalance, 0.01, 'user balance was deduced');

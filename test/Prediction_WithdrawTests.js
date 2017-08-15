@@ -37,11 +37,11 @@ contract('Prediction (Withdraw)', function(accounts) {
     await expectThrow(contract.claimPrize({from: accounts[2]}));
     await expectThrow(contract.claimPrize({from: accounts[3]}));
 
-    const initPlayerBalance = util.getBalanceInEther(accounts[1], web3);
+    const initPlayerBalance = await util.getBalanceInEther(accounts[1], web3);
     // console.log('initPlayerBalance', initPlayerBalance);
     await contract.claimPrize({from: accounts[1]});
     await contract.withdrawPayments({from: accounts[1]});
-    const newPlayerBalance = util.getBalanceInEther(accounts[1], web3);
+    const newPlayerBalance = await util.getBalanceInEther(accounts[1], web3);
     // console.log('newPlayerBalance', newPlayerBalance);
     const prize = 1 + 2 * 0.98;
     const expectedNewPlayerBalance = initPlayerBalance + prize;
@@ -59,7 +59,7 @@ contract('Prediction (Withdraw)', function(accounts) {
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
     );
-    // let state = 0;
+    let state = 0;
 
     await contract.bet(true, {
       from: accounts[1],
@@ -74,39 +74,39 @@ contract('Prediction (Withdraw)', function(accounts) {
       value: web3.toWei(1, 'ether')
     });
 
-    util.skipTime(dateUtil.daysToSeconds(5), web3);
+    util.skipTime(dateUtil.daysToSeconds(6), web3);
 
     await contract.resolve(true, {from: accounts[0]});
 
-    // const initContractBalance = util.getBalanceInEther(contract.address, web3);
-    // console.log('init contract balance:', initContractBalance);
+    const initContractBalance = await util.getBalanceInEther(contract.address, web3);
+    console.log('init contract balance:', initContractBalance);
 
     // Too early to destroy...
     await expectThrow(contract.claimFees({from: accounts[0]}));
 
-    // console.log('init player balance:', util.getBalanceInEther(accounts[1], web3));
+    console.log('init player balance:', await util.getBalanceInEther(accounts[1], web3));
     await contract.claimPrize({from: accounts[1]});
     await contract.withdrawPayments({from: accounts[1]});
-    // console.log('new player balance:', util.getBalanceInEther(accounts[1], web3));
+    console.log('new player balance:', await util.getBalanceInEther(accounts[1], web3));
 
-    const withdrawnContractBalance = util.getBalanceInEther(contract.address, web3);
-    // console.log('withdrawn contract balance:', withdrawnContractBalance);
+    const withdrawnContractBalance = await util.getBalanceInEther(contract.address, web3);
+    console.log('withdrawn contract balance:', withdrawnContractBalance);
 
-    util.skipTime(dateUtil.daysToSeconds(5), web3);
+    util.skipTime(dateUtil.daysToSeconds(11), web3);
 
     // Should work now...
-    const initOwnerBalance = util.getBalanceInEther(accounts[0], web3);
-    // console.log('init owner balance:', initOwnerBalance);
-    // state = (await contract.getState()).toNumber();
-    // console.log('state:', state);
+    const initOwnerBalance = await util.getBalanceInEther(accounts[0], web3);
+    console.log('init owner balance:', initOwnerBalance);
+    state = (await contract.getState()).toNumber();
+    console.log('state:', state);
     contract.claimFees({from: accounts[0]});
     await contract.withdrawPayments({from: accounts[0]});
 
     // Check owner balance
-    const newOwnerBalance = util.getBalanceInEther(accounts[0], web3);
-    // console.log('new owner balance:', newOwnerBalance);
+    const newOwnerBalance = await util.getBalanceInEther(accounts[0], web3);
+    console.log('new owner balance:', newOwnerBalance);
     const expectedNewOwnerBalance = initOwnerBalance + withdrawnContractBalance;
-    // console.log('expectedNewOwnerBalance:', expectedNewOwnerBalance);
+    console.log('expectedNewOwnerBalance:', expectedNewOwnerBalance);
     assert.approximately(newOwnerBalance, expectedNewOwnerBalance, 0.01, 'expected owner balance is incorrect');
   });
 });

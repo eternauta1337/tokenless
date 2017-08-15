@@ -3,16 +3,25 @@ import * as dateUtil from './DateUtil';
 
 export let currentSimulatedDateUnix = dateUtil.dateToUnix(new Date());
 
-export async function getBlockNumber(web3) {
+export function getBlockNumber(web3) {
   return new Promise(resolve => {
-    web3.eth.getBlockNumber(async (err, blockNumber) => {
+    web3.eth.getBlockNumber((err, blockNumber) => {
       resolve(blockNumber);
     });
   });
 }
 
 export function getBalanceInEther(address, web3) {
-  return +web3.fromWei(+web3.eth.getBalance(address), 'ether');
+  return new Promise(resolve => {
+    return +web3.eth.getBalance(address, function(error, result) {
+      if(error) {
+        console.log('error getting balance');
+      }
+      else {
+        resolve( +web3.fromWei(result.toNumber(), 'ether'));
+      }
+    });
+  });
 }
 
 export function skipBlocks(numBlocks, web3) {
@@ -38,7 +47,17 @@ export function skipTime(seconds, web3) {
 }
 
 export function getTimestamp(web3) {
-  return web3.eth.getBlock(web3.eth.blockNumber).timestamp;
+  return new Promise(async resolve => {
+    const blockNumber = await getBlockNumber(web3);
+    return web3.eth.getBlock(blockNumber, function(error, result) {
+      if(error) {
+        console.log('error getting timestamp');
+      }
+      else {
+        resolve(result);
+      }
+    });
+  });
   // Console snippet:
   // web3.eth.getBlock(web3.eth.blockNumber).timestamp;
 }
@@ -55,8 +74,8 @@ export async function delay(ms) {
 }
 
 export function privateKeyToAddress(privateKeyHex) {
-  var privateKeyBytes = hexToBytes(privateKeyHex);
-  var addressBytes =  EthUtil.privateToAddress(privateKeyBytes);
+  const privateKeyBytes = hexToBytes(privateKeyHex);
+  const addressBytes =  EthUtil.privateToAddress(privateKeyBytes);
   return '0x' + addressBytes.toString('hex');
 };
 

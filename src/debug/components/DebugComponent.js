@@ -24,9 +24,9 @@ class Debug extends React.Component {
     }
   }
 
-  updateBalance() {
+  async updateBalance() {
     const address = this.props.accounts[this.state.accountIndex];
-    const balance = web3Util.getBalanceInEther(address, this.props.globalState.network.web3);
+    const balance = await web3Util.getBalanceInEther(address, this.props.globalState.network.web3);
     this.setState({
       accountBalance: balance
     });

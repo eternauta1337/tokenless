@@ -7,3 +7,6 @@ export {
   SET_ACTIVE_ACCOUNT_INDEX,
   setActiveAccountIndex
 } from './SetActiveAccountAction';
+export {
+  watchAccountChanges
+} from './WatchAccountChangesAction';

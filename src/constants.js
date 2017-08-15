@@ -1,6 +1,7 @@
 export const DEBUG_MODE = true;
+export const USE_INJECTED_WEB3 = true;
 export const MARKET_ADDRESS =
-  '0x3c45798360c7a33eede867f748b4f8de854b5da9';
+  '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a';
 export const PATH_CREATE = '/create';
 export const PATH_PREDICTION = '/prediction/:address';
 export const PATH_ROOT = '/';
