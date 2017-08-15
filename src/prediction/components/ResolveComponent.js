@@ -29,8 +29,8 @@ const ResolveComponent = ({ resolveMarket }) => {
               ref={ref => outcomeSelector = ref}
               className="custom-select mb-2 mr-sm-2 mb-sm-0">
               <option defaultValue>Outcome...</option>
-              <option value="1">Yea</option>
-              <option value="0">Nay</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
             </select>
           </div>
           <button

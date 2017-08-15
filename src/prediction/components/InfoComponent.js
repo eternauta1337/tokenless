@@ -15,7 +15,7 @@ const InfoComponent = ({
   if (predictionState === 2 && outcome === false) predictionStateClass = 'danger';
 
   let stateStr = predictionStateStr;
-  if (predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yea' : 'Nay'}`;
+  if (predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yes' : 'No'}`;
 
   const balanceTotal = positivePredicionBalance + negativePredicionBalance;
   const posPercent = 100 * positivePredicionBalance / balanceTotal;
@@ -31,10 +31,10 @@ const InfoComponent = ({
       { balanceTotal > 0 &&
         <div className="progress">
           <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
-            <span className="">{positivePredicionBalance}&nbsp;ETH</span>
+            <span className="">{positivePredicionBalance}&nbsp;ETH (yes)</span>
           </div>
           <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
-            <span className="">{negativePredicionBalance}&nbsp;ETH</span>
+            <span className="">{negativePredicionBalance}&nbsp;ETH (no)</span>
           </div>
         </div>
       }

@@ -7,8 +7,8 @@ const HistoryComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
         <strong>Your current prediction</strong>
       </div>
       <div className="panel-body">
-        Yea: {playerPositiveBalance} ETH<br/>
-        Nay: {playerNegativeBalance} ETH
+        Yes: {playerPositiveBalance} ETH<br/>
+        No: {playerNegativeBalance} ETH
       </div>
     </div>
   );

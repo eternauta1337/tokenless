@@ -1,6 +1,7 @@
 import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
+import * as stateUtil from '../../utils/PredictionState';
 
 export const CONNECT_MARKET = 'prediction/CONNECT';
 
@@ -27,7 +28,7 @@ export function connectPrediction(address) {
     prediction.negativePredicionBalance = +web3.fromWei(await contract.totals.call(false), 'ether').toNumber();
     prediction.owner = await contract.owner.call();
     prediction.predictionState = (await contract.getState()).toNumber();
-    prediction.predictionStateStr = predictionStateToStr(prediction.predictionState);
+    prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
     prediction.outcome = await contract.outcome.call();
     prediction.endBlock = (await contract.endBlock.call()).toNumber();
     prediction.killBlock = (await contract.killBlock.call()).toNumber();
@@ -42,11 +43,4 @@ export function connectPrediction(address) {
       payload: prediction
     });
   };
-}
-
-function predictionStateToStr(state) {
-  if(state === 0) return 'Open';
-  if(state === 1) return 'Closed';
-  if(state === 2) return 'Resolved';
-  return 'Unknwon';
 }
