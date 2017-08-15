@@ -20,6 +20,14 @@ export function dateToUnix(date) {
   return Math.floor(date.getTime() / 1000);
 }
 
+export function nowUnix() {
+  return dateToUnix(new Date());
+}
+
 export function daysToSeconds(numDays) {
   return 60 * 60 * 24 * numDays;
+}
+
+export function secondsToDays(seconds) {
+  return seconds / 24 / 60 / 60;
 }

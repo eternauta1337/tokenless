@@ -1,15 +1,18 @@
 import { push } from 'react-router-redux';
+import * as dateUtil from '../../utils/DateUtil';
 
-export function createPrediction(statement, duration) {
-  console.log('createPrediction()', statement, duration);
+export function createPrediction(statement, betEndDate, withdrawEndDate) {
+  console.log('createPrediction()', statement, betEndDate, withdrawEndDate);
   return async function(dispatch, getState) {
 
     const market = getState().market.contract;
 
-    console.log('creating prediction:', statement, duration);
+    console.log('creating prediction:', statement, betEndDate, withdrawEndDate);
     const creationTransaction = await market.createPrediction(
       statement,
-      duration, {
+      dateUtil.dateToUnix(betEndDate),
+      dateUtil.dateToUnix(withdrawEndDate),
+      {
         from: getState().network.activeAccountAddress,
         gas: 2000000
       }

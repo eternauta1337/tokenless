@@ -2,6 +2,7 @@ import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
 import * as stateUtil from '../../utils/PredictionState';
+import * as dateUtil from '../../utils/DateUtil';
 
 export const CONNECT_MARKET = 'prediction/CONNECT';
 
@@ -30,13 +31,13 @@ export function connectPrediction(address) {
     prediction.predictionState = (await contract.getState()).toNumber();
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
     prediction.outcome = await contract.outcome.call();
-    prediction.endBlock = (await contract.endBlock.call()).toNumber();
-    prediction.killBlock = (await contract.killBlock.call()).toNumber();
+    prediction.betEndDate = ( await contract.betEndTimestamp.call() ).toNumber();
+    prediction.withdrawEndDate = ( await contract.withdrawEndTimestamp.call() ).toNumber();
     prediction.balance = web3util.getBalanceInEther(address, web3);
     if(prediction.predictionState === 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
     }
-    // console.log('prediction: ', prediction);
+    console.log('prediction: ', prediction);
 
     dispatch({
       type: CONNECT_MARKET,

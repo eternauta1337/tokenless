@@ -9,6 +9,8 @@ import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
+import * as dateUtil from '../../utils/DateUtil';
+import * as web3Util from '../../utils/Web3Util';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -60,14 +62,13 @@ class Prediction extends React.Component {
     // Pre-process some of the prediction's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
-    let remainingBlocks = 0;
-    if(this.props.blockNumber) {
-      if(this.props.predictionState === 0) {
-        remainingBlocks = this.props.endBlock - this.props.blockNumber;
-      }
-      else if(this.props.predictionState >= 1) {
-        remainingBlocks = this.props.killBlock - this.props.blockNumber;
-      }
+    let now = web3Util.getTimestamp(this.props.web3);
+    let daysLeft;
+    if(this.props.predictionState === 0) {
+      daysLeft = dateUtil.secondsToDays(this.props.betEndDate - now);
+    }
+    else {
+      daysLeft = dateUtil.secondsToDays(this.props.withdrawEndDate - now);
     }
 
     return (
@@ -89,12 +90,12 @@ class Prediction extends React.Component {
             isOwned={isOwned}
             predictionState={this.props.predictionState}
             predictionStateStr={this.props.predictionStateStr}
-            remainingBlocks={remainingBlocks}
+            daysLeft={daysLeft}
             outcome={this.props.outcome}
             />
 
           {/* FINISH */}
-          {isOwned && this.props.predictionState >= 2 && this.props.blockNumber >= this.props.killBlock &&
+          {isOwned && this.props.predictionState >= 2 && now >= this.props.withdrawEndDate &&
             <FinishComponent
               balance={this.props.balance}
               finishPrediction={this.props.finishPrediction}
@@ -102,7 +103,7 @@ class Prediction extends React.Component {
           }
 
           {/* WITHDRAW */}
-          {this.props.predictionState === 2 && this.props.blockNumber < this.props.killBlock &&
+          {this.props.predictionState === 2 && now < this.props.withdrawEndDate &&
             <WithdrawComponent
               estimatePrize={this.props.estimatePrize}
               withdrawPrize={this.props.withdrawPrize}
@@ -129,7 +130,7 @@ class Prediction extends React.Component {
               />
           }
 
-          {/* BALANCES */}
+          {/* HISTORY */}
           {this.props.predictionState === 0 &&
           <HistoryComponent
             playerPositiveBalance={this.props.playerPositiveBalance}
@@ -153,6 +154,7 @@ const mapStateToProps = (state, ownProps) => {
     isNetworkConnected: state.network.isConnected,
     activeAccountAddress: state.network.activeAccountAddress,
     blockNumber: state.network.blockNumber,
+    web3: state.network.web3,
     ...state.prediction
   };
 };

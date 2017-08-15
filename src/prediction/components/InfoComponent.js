@@ -1,14 +1,14 @@
 import React from 'react';
 
 const InfoComponent = ({
-                                   positivePredicionBalance,
-                                   negativePredicionBalance,
-                                   isOwned,
-                                   predictionState,
-                                   predictionStateStr,
-                                   remainingBlocks,
-                                   outcome
-                                 }) => {
+  positivePredicionBalance,
+  negativePredicionBalance,
+  isOwned,
+  predictionState,
+  predictionStateStr,
+  daysLeft,
+  outcome
+}) => {
 
   let predictionStateClass = 'success';
   if (predictionState === 1) predictionStateClass = 'warning';
@@ -60,7 +60,7 @@ const InfoComponent = ({
         {/* STATE + OUTCOME + BLOCKS REMAINING */}
         <li className='list-inline-item'>
           <span className={`label label-${predictionStateClass}`}>
-            {stateStr} ({remainingBlocks})
+            {stateStr} ({daysLeft} days left)
           </span>
         </li>
 

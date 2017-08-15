@@ -1,5 +1,3 @@
-import { push } from 'react-router-redux';
-import { resetMarket } from './ResetPredictionAction';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 
 export function finishPrediction() {

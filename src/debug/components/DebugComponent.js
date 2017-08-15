@@ -5,6 +5,7 @@ import {
   setActiveAccountIndex
 } from '../../network/actions';
 import * as web3util from '../../utils/Web3Util';
+import * as dateUtil from '../../utils/DateUtil';
 
 class Debug extends React.Component {
 
@@ -58,11 +59,15 @@ class Debug extends React.Component {
 
         {/* SKIP BLOCK */}
         <button onClick={(evt) => {
-            web3util.skipBlocks(1, this.props.globalState.network.web3);
-          }}>SKIP 1</button>
+            const secs = dateUtil.daysToSeconds(1);
+            console.log('secs:', secs);
+            web3util.skipTime(secs, this.props.globalState.network.web3);
+          }}>SKIP 1d</button>
         <button onClick={(evt) => {
-            web3util.skipBlocks(10, this.props.globalState.network.web3);
-          }}>SKIP 10</button>
+          const secs = dateUtil.daysToSeconds(10);
+          console.log('secs:', secs);
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+          }}>SKIP 10d</button>
 
       </div>
     );

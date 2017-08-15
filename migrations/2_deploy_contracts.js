@@ -1,7 +1,14 @@
 /*eslint no-undef: "off"*/
+const dateUtil = require('../src/utils/DateUtil');
 
-var PredictionMarket = artifacts.require("./PredictionMarket.sol");
+const PredictionMarket = artifacts.require("./PredictionMarket.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(PredictionMarket);
+
+  let minWithdrawEndTimestampDelta = dateUtil.daysToSeconds(2);
+
+  deployer.deploy(
+    PredictionMarket,
+    minWithdrawEndTimestampDelta
+  );
 };

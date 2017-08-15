@@ -4,7 +4,7 @@ const HistoryComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
-        <strong>Your current prediction</strong>
+        <strong>Bet History</strong>
       </div>
       <div className="panel-body">
         Yes: {playerPositiveBalance} ETH<br/>
