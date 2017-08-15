@@ -12,7 +12,7 @@ const WithdrawComponent = ({
   return (
     <div className='panel panel-info'>
       <div className="panel-heading">
-        <strong>Would you like to withdraw your prize?</strong>
+        <strong>This prediction has been resolved, prizes may be withdrawn</strong>
       </div>
       <div className="panel-body">
         {estimatePrize > 0 &&
