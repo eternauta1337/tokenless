@@ -11,11 +11,20 @@ const MarketListItemComponent = ({
   if(preview && !preview.isFetching) {
     const title = preview ? preview.statement : address;
     const balance = preview ? preview.balance : 0;
+    let predictionStateClass = 'success';
+    if (preview.predictionState === 1) predictionStateClass = 'warning';
+    if (preview.predictionState === 2) predictionStateClass = 'danger';
     return (
       <Link
         to={`/prediction/${address}`}
         className="list-group-item">
-        {title} <span className="pull-right">{balance} ETH</span>
+        {title}
+        <div className="pull-right">
+          <span>{balance} ETH</span>&nbsp;
+          <span className={`label label-${predictionStateClass}`}>
+            {preview.predictionStateStr}
+          </span>
+        </div>
       </Link>
     );
   }
@@ -28,7 +37,7 @@ const MarketListItemComponent = ({
           bubble={{ width: '1rem', height: '1rem' }}
           animation={{ speed: 2 }}
           className=""
-          colors={['#ccc', '#aaa', '#999']}
+          colors={['#ffbb33', '#FF8800', '#ff4444']}
         />
       </li>
     );

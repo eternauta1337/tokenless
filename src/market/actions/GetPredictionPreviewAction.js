@@ -1,6 +1,7 @@
 import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
+import * as stateUtil from '../../utils/PredictionState';
 
 export const GET_PREDICTION_PREVIEW = 'prediction/GET_PREDICTION_PREVIEW';
 
@@ -40,6 +41,8 @@ export function getPredictionPreview(address) {
 
     preview.balance = web3util.getBalanceInEther(address, web3);
     preview.statement = await contract.statement.call();
+    preview.predictionState = (await contract.getState()).toNumber();
+    preview.predictionStateStr = stateUtil.predictionStateToStr(preview.predictionState);
     preview.isFetching = false;
 
     dispatch({
