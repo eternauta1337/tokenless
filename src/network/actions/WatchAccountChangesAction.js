@@ -12,6 +12,7 @@ export function watchAccountChanges(index) {
     const accountInterval = setInterval(function() {
       // console.log('watch account...');
       if (web3.eth.accounts[0] !== activeAcct) {
+        console.log('account changed');
         dispatch({
           type: SET_ACTIVE_ACCOUNT_INDEX,
           payload: 0

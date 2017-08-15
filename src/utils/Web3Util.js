@@ -29,6 +29,8 @@ export function skipBlocks(numBlocks, web3) {
     web3.currentProvider.send({
       jsonrpc: '2.0',
       method: 'evm_mine'
+    }, function(error, res) {
+
     });
   }
 }
@@ -39,6 +41,8 @@ export function skipTime(seconds, web3) {
     method: "evm_increaseTime",
     params: [seconds],
     id: 0
+  }, function(error, res) {
+
   });
   skipBlocks(1, web3);
   currentSimulatedDateUnix += seconds; // keep track of when now is for concurent tests
@@ -49,12 +53,12 @@ export function skipTime(seconds, web3) {
 export function getTimestamp(web3) {
   return new Promise(async resolve => {
     const blockNumber = await getBlockNumber(web3);
-    return web3.eth.getBlock(blockNumber, function(error, result) {
+    web3.eth.getBlock(blockNumber, function(error, result) {
       if(error) {
         console.log('error getting timestamp');
       }
       else {
-        resolve(result);
+        resolve(result.timestamp);
       }
     });
   });

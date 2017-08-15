@@ -62,17 +62,26 @@ class Debug extends React.Component {
         &nbsp;
         {this.state.accountBalance} ETH&nbsp;
 
-        {/* SKIP BLOCK */}
+        {/* SKIP 1d */}
         <button onClick={(evt) => {
             const secs = dateUtil.daysToSeconds(1);
             console.log('secs:', secs);
             web3util.skipTime(secs, this.props.globalState.network.web3);
           }}>SKIP 1d</button>
+
+        {/* SKIP 10d */}
         <button onClick={(evt) => {
           const secs = dateUtil.daysToSeconds(10);
           console.log('secs:', secs);
           web3util.skipTime(secs, this.props.globalState.network.web3);
           }}>SKIP 10d</button>
+
+        {/* SEND DUMMY TRANSACTION */}
+        <button onClick={(evt) => {
+          const secs = dateUtil.daysToSeconds(10);
+          console.log('secs:', secs);
+          web3util.sendDummyTransaction(this.props.globalState.network.web3);
+        }}>SEND DUMMY</button>
 
       </div>
     );

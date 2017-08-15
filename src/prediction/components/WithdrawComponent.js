@@ -25,9 +25,17 @@ const WithdrawComponent = ({
                 onClick={(evt) => handleWithdrawButtonClick()}>
                 Withdraw {estimatePrize} ETH Now!
               </button>
+              <br/>
               <small className="text-danger">
                 Make sure to withdraw your prize before the contract's withdrawal end date! The owner of
                 the contract will be able to withdraw all remaining funds after this date.
+              </small>
+              <br/>
+              <br/>
+              <small className="text-info">
+                You will be asked to make 2 transactions:<br/>
+                1) Claim your prize from the prediction contract.<br/>
+                2) Withdraw your prize.
               </small>
             </div>
           </form>

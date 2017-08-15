@@ -70,6 +70,9 @@ class Prediction extends React.Component {
     else {
       daysLeft = dateUtil.secondsToDays(this.props.withdrawEndDate - now);
     }
+    // console.log('this.props.betEndDate:', this.props.betEndDate);
+    // console.log('this.props.withdrawEndDate:', this.props.withdrawEndDate);
+    // console.log('daysLeft:', daysLeft);
 
     return (
       <div className="container">
