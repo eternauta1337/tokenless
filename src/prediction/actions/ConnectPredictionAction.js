@@ -2,7 +2,6 @@ import TruffleContract from 'truffle-contract';
 import MarketArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
 import * as stateUtil from '../../utils/PredictionState';
-import * as dateUtil from '../../utils/DateUtil';
 
 export const CONNECT_MARKET = 'prediction/CONNECT';
 

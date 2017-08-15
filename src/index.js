@@ -12,7 +12,6 @@ import ListPredictionsComponent from './market/containers/ListPredictionsCompone
 import AboutComponent from './about/components/AboutComponent';
 import {
   PATH_PREDICTION,
-  PATH_LIST,
   PATH_CREATE,
   PATH_ABOUT
 } from './constants';

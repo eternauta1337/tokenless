@@ -2,7 +2,6 @@ import _ from 'lodash';
 import {
   CONNECT_MARKET,
   GET_PREDICTION_PREVIEW,
-  PREDICTION_FORGOTTEN,
   FORGET_PREVIEW,
 } from './actions';
 

@@ -2,7 +2,7 @@ export function dateToStr(date, format = '') {
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
   const year = date.getFullYear();
-  if(format === 'yyyy-mm-dd') { return `${year}-${month}-${day}` }
+  if(format === 'yyyy-mm-dd') { return `${year}-${month}-${day}`; }
   return `${month}-${day}-${year}`;
 }
 
