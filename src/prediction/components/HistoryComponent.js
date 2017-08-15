@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PredictionBalancesComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
+const HistoryComponent = ({ playerPositiveBalance, playerNegativeBalance }) => {
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
@@ -14,4 +14,4 @@ const PredictionBalancesComponent = ({ playerPositiveBalance, playerNegativeBala
   );
 };
 
-export default PredictionBalancesComponent;
+export default HistoryComponent;

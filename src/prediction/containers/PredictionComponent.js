@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import PredictionInfoComponent from '../components/PredictionInfoComponent';
-import PredictionBetComponent from '../components/PredictionBetComponent';
-import PredictionResolveComponent from '../components/PredictionResolveComponent';
-import PredictionWithdrawComponent from '../components/PredictionWithdrawComponent';
-import PredictionFinishComponent from '../components/PredictionFinishComponent';
-import PredictionWaitComponent from '../components/PredictionWaitComponent';
-import PredictionBalancesComponent from '../components/PredictionBalancesComponent';
-import PredictionDiscussComponent from '../components/PredictionDiscussComponent';
+import InfoComponent from '../components/InfoComponent';
+import PlaceBetComponent from '../components/PlaceBetComponent';
+import ResolveComponent from '../components/ResolveComponent';
+import WithdrawComponent from '../components/WithdrawComponent';
+import FinishComponent from '../components/FinishComponent';
+import WaitComponent from '../components/WaitComponent';
+import HistoryComponent from '../components/HistoryComponent';
+import CommentsComponent from '../components/CommentsComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -83,7 +83,7 @@ class Prediction extends React.Component {
         <div className="">
 
           {/* INFO */}
-          <PredictionInfoComponent
+          <InfoComponent
             positivePredicionBalance={this.props.positivePredicionBalance}
             negativePredicionBalance={this.props.negativePredicionBalance}
             isOwned={isOwned}
@@ -95,7 +95,7 @@ class Prediction extends React.Component {
 
           {/* FINISH */}
           {isOwned && this.props.predictionState >= 2 && this.props.blockNumber >= this.props.killBlock &&
-            <PredictionFinishComponent
+            <FinishComponent
               balance={this.props.balance}
               finishPrediction={this.props.finishPrediction}
               />
@@ -103,7 +103,7 @@ class Prediction extends React.Component {
 
           {/* WITHDRAW */}
           {this.props.predictionState === 2 && this.props.blockNumber < this.props.killBlock &&
-            <PredictionWithdrawComponent
+            <WithdrawComponent
               estimatePrize={this.props.estimatePrize}
               withdrawPrize={this.props.withdrawPrize}
               />
@@ -111,33 +111,33 @@ class Prediction extends React.Component {
 
           {/* RESOLVE */}
           {isOwned && this.props.predictionState === 1 &&
-            <PredictionResolveComponent
+            <ResolveComponent
               resolveMarket={this.props.resolveMarket}
               />
           }
 
           {/* WAIT */}
           {!isOwned && this.props.predictionState === 1 &&
-            <PredictionWaitComponent/>
+            <WaitComponent/>
           }
 
           {/* BET */}
           {this.props.predictionState === 0 &&
-            <PredictionBetComponent
+            <PlaceBetComponent
               placeBet={this.props.placeBet}
               />
           }
 
           {/* BALANCES */}
           {this.props.predictionState === 0 &&
-          <PredictionBalancesComponent
+          <HistoryComponent
             playerPositiveBalance={this.props.playerPositiveBalance}
             playerNegativeBalance={this.props.playerNegativeBalance}
           />
           }
 
           {/* COMMENTS */}
-          {/*<PredictionDiscussComponent/>*/}
+          {/*<CommentsComponent/>*/}
 
         </div>
 

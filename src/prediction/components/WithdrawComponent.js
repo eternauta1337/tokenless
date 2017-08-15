@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PredictionWithdrawComponent = ({
+const WithdrawComponent = ({
   estimatePrize,
   withdrawPrize
 }) => {
@@ -35,4 +35,4 @@ const PredictionWithdrawComponent = ({
   );
 };
 
-export default PredictionWithdrawComponent;
+export default WithdrawComponent;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PredictionFinishComponent = ({
+const FinishComponent = ({
   finishPrediction,
   balance
 }) => {
@@ -28,4 +28,4 @@ const PredictionFinishComponent = ({
   );
 };
 
-export default PredictionFinishComponent;
+export default FinishComponent;

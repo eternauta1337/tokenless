@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PredictionBetComponent = ({ placeBet }) => {
+const PlaceBetComponent = ({ placeBet }) => {
 
   let betInputField;
   let predictionSelector;
@@ -57,4 +57,4 @@ const PredictionBetComponent = ({ placeBet }) => {
   );
 };
 
-export default PredictionBetComponent;
+export default PlaceBetComponent;
