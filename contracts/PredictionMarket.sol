@@ -9,6 +9,16 @@ contract PredictionMarket {
   function getPredictions() constant returns (address[]) {
     return predictions;
   }
+  
+  // --------------------------------------------------
+  // Init
+  // --------------------------------------------------
+  
+  uint public minWithdrawEndTimestampDelta;
+
+  function PredictionMarket(uint _minWithdrawEndTimestampDelta) {
+    minWithdrawEndTimestampDelta = _minWithdrawEndTimestampDelta;
+  }
 
   // ---------------------
   // Creation
@@ -16,10 +26,21 @@ contract PredictionMarket {
 
   event PredictionCreatedEvent(Prediction predictionAddress);
 
-  function createPrediction(string statement, uint blockDuration) {
+  function createPrediction(string statement, uint betEndTimestamp, uint withdrawEndTimestamp) {
+
+      // Validate timestamps.
+      require(betEndTimestamp > now);
+      require(withdrawEndTimestamp > betEndTimestamp);
+
+      // Contain withdraw end timestamp.
+      uint delta = withdrawEndTimestamp - betEndTimestamp;
+      uint adjustedWithdrawEndTimestamp = withdrawEndTimestamp;
+      if(delta < minWithdrawEndTimestampDelta) {
+          adjustedWithdrawEndTimestamp += minWithdrawEndTimestampDelta;
+      }
 
       // Crate prediction and store address.
-      Prediction prediction = new Prediction(statement, blockDuration);
+      Prediction prediction = new Prediction(statement, betEndTimestamp, adjustedWithdrawEndTimestamp);
       predictions.push(prediction);
 
       // Transfer ownership to whoever called for
@@ -29,3 +50,20 @@ contract PredictionMarket {
       PredictionCreatedEvent(prediction);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

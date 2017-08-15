@@ -18,18 +18,19 @@ contract Prediction is Ownable, PullPayment {
   // --------------------------------------------------
 
   string public statement;
-  uint public endBlock; // Bets close at endBlock.
-  uint public killBlock; // Owner will be able to destroy contract after killBlock.
+  
+  uint public betEndTimestamp;
+  uint public withdrawEndTimestamp;
 
-  function Prediction(string _statement, uint _blockDuration) {
+  function Prediction(string _statement, uint _betEndTimestamp, uint _withdrawEndTimestamp) {
+    
     statement = _statement;
-    endBlock = block.number.add(_blockDuration);
-
-    // Calculate kill block as a percentage of total duration.
-    uint _killBlock = _blockDuration / 4;
-    if(_killBlock < 5) _killBlock = 5;
-    if(_killBlock > 30000) _killBlock = 30000;
-    killBlock = endBlock.add(_killBlock);
+    betEndTimestamp = _betEndTimestamp;
+    withdrawEndTimestamp = _withdrawEndTimestamp;
+    
+    // Validate timestamps.
+    require(_betEndTimestamp > now);
+    require(_withdrawEndTimestamp > _betEndTimestamp);
   }
 
   // --------------------------------------------------
@@ -132,7 +133,7 @@ contract Prediction is Ownable, PullPayment {
   event ClaimFeesEvent(address indexed from);
 
   function claimFees() onlyOwner {
-    if(block.number <= killBlock) revert();
+    if(now < withdrawEndTimestamp) revert();
     ClaimFeesEvent(msg.sender);
     asyncSend(owner, this.balance);
   }
@@ -141,7 +142,7 @@ contract Prediction is Ownable, PullPayment {
   // State
   // --------------------------------------------------
 
-  bool private resolved;
+  bool public resolved;
   enum State { Open, Closed, Resolved }
 
   modifier onlyInState(State _state) {
@@ -151,7 +152,7 @@ contract Prediction is Ownable, PullPayment {
 
   function getState() constant returns (State) {
     if(!resolved) {
-      if(block.number <= endBlock) {
+      if(now < betEndTimestamp) {
         return State.Open;
       }
       else {
@@ -163,3 +164,18 @@ contract Prediction is Ownable, PullPayment {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

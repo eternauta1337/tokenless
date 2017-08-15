@@ -2,6 +2,7 @@
 const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 import expectThrow from 'zeppelin-solidity/test/helpers/expectThrow';
+import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Prediction (Bets)', function(accounts) {
 
@@ -11,7 +12,11 @@ contract('Prediction (Bets)', function(accounts) {
 
   it('should accepts funds via bets', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     const userAddress = accounts[1];
     const initialUserBalance = util.getBalanceInEther(userAddress, web3);
@@ -32,7 +37,11 @@ contract('Prediction (Bets)', function(accounts) {
 
   it('should not allow owners to bet', async function () {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     const userAddress = accounts[0];
     const initialUserBalance = util.getBalanceInEther(userAddress, web3);
@@ -55,7 +64,11 @@ contract('Prediction (Bets)', function(accounts) {
 
   it('should keep track of a users positive bet balance', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     let userNullBalance = web3.fromWei(await contract.getUserBalance(true, {
       from: accounts[1]
@@ -92,7 +105,11 @@ contract('Prediction (Bets)', function(accounts) {
 
   it('should not keep a balance for a user that didnt bet', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     let userBalance = web3.fromWei(await contract.getUserBalance(false, {
       from: accounts[2]
@@ -107,7 +124,11 @@ contract('Prediction (Bets)', function(accounts) {
 
   it('should expose pot totals', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     let i;
     for(i = 0; i < 5; i++) {

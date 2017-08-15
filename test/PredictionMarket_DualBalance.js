@@ -1,7 +1,8 @@
 /*eslint no-undef: "off"*/
 const PredictionMarket = artifacts.require('./PredictionMarket.sol');
 const Prediction = artifacts.require('./Prediction.sol');
-// import * as util from '../src/utils/Web3Util';
+import * as util from '../src/utils/Web3Util';
+import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Combined', function(accounts) {
 
@@ -9,7 +10,11 @@ contract('Combined', function(accounts) {
 
     let i;
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     // Implement the following structure in the contract.
     const datas = [
@@ -58,12 +63,17 @@ contract('Combined', function(accounts) {
 
   it('(market+prediction) should support 2 balances for each user on contracts deployed by the prediction', async function() {
 
-    const market = await PredictionMarket.new();
+    const market = await PredictionMarket.new(
+      dateUtil.daysToSeconds(5)
+    );
     // console.log('prediction address:', prediction.address);
 
     // Create prediction.
     const creationTransaction = await market.createPrediction(
-      'The prediction prediction contract will work.', 10, {
+      'The prediction prediction contract will work.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      {
         from: accounts[0]
       }
     );

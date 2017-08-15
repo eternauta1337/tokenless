@@ -2,12 +2,17 @@
 const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
 import expectThrow from 'zeppelin-solidity/test/helpers/expectThrow';
+import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Prediction (Withdraw)', function(accounts) {
 
   it('should allow winners to withdraw their prize', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     await contract.bet(true, {
       from: accounts[1],
@@ -24,7 +29,7 @@ contract('Prediction (Withdraw)', function(accounts) {
       value: web3.toWei(1, 'ether')
     });
 
-    util.skipBlocks(2, web3);
+    util.skipTime(dateUtil.daysToSeconds(5), web3);
 
     await contract.resolve(true, {from: accounts[0]});
 
@@ -49,7 +54,11 @@ contract('Prediction (Withdraw)', function(accounts) {
 
   it('should allow the owner to withdraw the contract balance a certain time after resolution, claiming whatever no one else claimed', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
     // let state = 0;
 
     await contract.bet(true, {
@@ -65,7 +74,7 @@ contract('Prediction (Withdraw)', function(accounts) {
       value: web3.toWei(1, 'ether')
     });
 
-    util.skipBlocks(2, web3);
+    util.skipTime(dateUtil.daysToSeconds(5), web3);
 
     await contract.resolve(true, {from: accounts[0]});
 
@@ -83,7 +92,7 @@ contract('Prediction (Withdraw)', function(accounts) {
     const withdrawnContractBalance = util.getBalanceInEther(contract.address, web3);
     // console.log('withdrawn contract balance:', withdrawnContractBalance);
 
-    util.skipBlocks(5, web3);
+    util.skipTime(dateUtil.daysToSeconds(5), web3);
 
     // Should work now...
     const initOwnerBalance = util.getBalanceInEther(accounts[0], web3);

@@ -1,11 +1,22 @@
 /*eslint no-undef: "off"*/
 const Prediction = artifacts.require('./Prediction.sol');
 import * as util from '../src/utils/Web3Util';
+import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Prediction (General)', function(accounts) {
 
   it('should contain a valid text statement', async function() {
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+
+    const betEndTimestamp = util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5);
+    const withdrawEndTimestamp = util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10);
+    // console.log('betEndTimestamp:', betEndTimestamp);
+    // console.log('withdrawEndTimestamp:', withdrawEndTimestamp);
+    const contract = await Prediction.new(
+      "Bitcoin will reach $5000 in October 1.",
+      betEndTimestamp,
+      withdrawEndTimestamp
+    );
+    // console.log('contract created');
 
     const statement = await contract.statement.call();
     // console.log('statement: ', statement);
@@ -13,26 +24,45 @@ contract('Prediction (General)', function(accounts) {
     assert.notEqual(statement.length, 0, 'text is invalid');
   });
 
-  it('should have a valid end date', async function() {
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 32);
+  it('should have a valid bet and withdraw end dates', async function() {
+
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
 
     // Assumes that tests are ran immediately after contract creation.
-    const lifeSpan = (await contract.endBlock.call()).toNumber() - web3.eth.blockNumber;
-    // console.log('lifeSpan: ', lifeSpan);
+    const betEndTimestamp = (await contract.betEndTimestamp.call()).toNumber();
+    const withdrawEndTimestamp = (await contract.withdrawEndTimestamp.call()).toNumber();
+    const nowTimestamp = util.currentSimulatedDateUnix;
+    // console.log('betEndTimestamp: ', betEndTimestamp);
+    // console.log('withdrawEndTimestamp: ', withdrawEndTimestamp);
 
-    assert.isAbove(lifeSpan, 0, 'contract was just created but has no time left');
+    assert.isAbove(betEndTimestamp, nowTimestamp, 'bet end date is invalid');
+    assert.isAbove(withdrawEndTimestamp, betEndTimestamp, 'withdraw end date is invalid');
   });
 
   it('it should correctly track its state', async function() {
 
-    const contract = await Prediction.new('Bitcoin will reach $5000 in October 1.', 5);
+    const contract = await Prediction.new(
+      'Bitcoin will reach $5000 in October 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+    );
+    // console.log('contract created');
+
+    // console.log('time: ', util.getTimestamp(web3));
+
     let state = 0;
+    // console.log('state:', state);
 
     state = (await contract.getState()).toNumber();
     // console.log('state:', state);
     assert.equal(state, 0, 'incorrect state');
 
-    util.skipBlocks(6, web3);
+    util.skipTime(dateUtil.daysToSeconds(6), web3);
+    // console.log('time: ', util.getTimestamp(web3));
 
     state = (await contract.getState()).toNumber();
     // console.log('state:', state);

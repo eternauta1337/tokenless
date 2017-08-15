@@ -6,6 +6,7 @@ const MarketArtifacts = require('../../build/contracts/PredictionMarket.json');
 const PredictionArtifacts = require('../../build/contracts/Prediction.json');
 const util = require('../../src/utils/Web3Util');
 const constants = require('../../src/constants');
+import * as dateUtil from '../../src/utils/DateUtil';
 
 const addr0 = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39';
 
@@ -16,14 +17,14 @@ module.exports = async function(callback) {
   // Retrieve deployed prediction prediction.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
-  const prediction = await Market.at(constants.MARKET_ADDRESS);
+  const market = await Market.at(constants.MARKET_ADDRESS);
   console.log('prediction retrieved');
 
   // Create a bunch of predictions.
   const Prediction = TruffleContract(PredictionArtifacts);
   Prediction.setProvider(web3.currentProvider);
   // createDeterministicPredictions(prediction, Prediction);
-  createRandomPredictions(20, prediction, Prediction);
+  createRandomPredictions(20, prediction, market);
 
   callback();
 };
@@ -32,7 +33,8 @@ module.exports = async function(callback) {
 // DETERMINISTIC
 // ---------------------
 
-async function createDeterministicPredictions(prediction, Prediction) {
+async function createDeterministicPredictions(market) {
+
   console.log('createDeterministicPredictions()');
   const predictions = [
     {statement: 'Whrachikov will win the election.',
@@ -48,9 +50,11 @@ async function createDeterministicPredictions(prediction, Prediction) {
 
     // Create prediction.
     const prediction = predictions[i];
-    const creationTransaction = await prediction.createPrediction(
+    const creationTransaction = await market.createPrediction(
       prediction.statement,
-      prediction.duration, {
+      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(duration),
+      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(duration + 5),
+      {
         from: addr0,
         gas: 1000000
       }
@@ -67,12 +71,12 @@ async function createDeterministicPredictions(prediction, Prediction) {
 // RANDOM
 // ---------------------
 
-async function createRandomPredictions(num, prediction, Prediction) {
+async function createRandomPredictions(num, market) {
   console.log('createRandomPredictions()', num);
   for(let i = 0; i < num; i++) {
 
     // Create prediction.
-    const creationTransaction = await prediction.createPrediction(
+    const creationTransaction = await market.createPrediction(
       "Random prediction " + i,
       getRandomInt(1, 1000), {
         from: addr0,

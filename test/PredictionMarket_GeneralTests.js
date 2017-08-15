@@ -1,6 +1,8 @@
 /*eslint no-undef: "off"*/
 const PredictionMarket = artifacts.require('./PredictionMarket.sol');
 const Prediction = artifacts.require('./Prediction.sol');
+import * as dateUtil from '../src/utils/DateUtil';
+import * as util from '../src/utils/Web3Util';
 
 contract('PredictionMarket (General)', function(accounts) {
 
@@ -9,13 +11,19 @@ contract('PredictionMarket (General)', function(accounts) {
   });
 
   it('should be able to create a prediction with transferred ownership', async function() {
-    const market = await PredictionMarket.new();
+
+    const market = await PredictionMarket.new(
+      dateUtil.daysToSeconds(5)
+    );
     // console.log('prediction address:', prediction.address);
 
     // Create prediction.
     const creationTransaction = await market.createPrediction(
-      'The prediction prediction will work.', 10, {
-        from: accounts[3]
+      'The prediction prediction contract will work.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      {
+        from: accounts[0]
       }
     );
     // console.log('creation transaction:', creationTransaction);
@@ -40,23 +48,35 @@ contract('PredictionMarket (General)', function(accounts) {
   });
 
   it('should keep track of multiple predictions', async function() {
-    const prediction = await PredictionMarket.new();
+
+    const market = await PredictionMarket.new(
+      dateUtil.daysToSeconds(5)
+    );
 
     // Create a few predictions and recall their addresse.
     const localAddresses = [];
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 0.', 10, {from: accounts[0]}
+    localAddresses.push((await market.createPrediction(
+      'Prediction 0.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      {from: accounts[0]}
     )).logs[0].args.predictionAddress);
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 1.', 10, {from: accounts[0]}
+    localAddresses.push((await market.createPrediction(
+      'Prediction 1.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      {from: accounts[0]}
     )).logs[0].args.predictionAddress);
-    localAddresses.push((await prediction.createPrediction(
-      'Prediction 2.', 10, {from: accounts[0]}
+    localAddresses.push((await market.createPrediction(
+      'Prediction 2.',
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      {from: accounts[0]}
     )).logs[0].args.predictionAddress);
     // console.log('localAddresses', localAddresses);
 
     // Ask the prediction for its addresses.
-    const remoteAddresses = await prediction.getPredictions();
+    const remoteAddresses = await market.getPredictions();
     // console.log('remoteAddresses', remoteAddresses);
 
     assert.equal(localAddresses.length, remoteAddresses.length, 'num addresses mismatch');
