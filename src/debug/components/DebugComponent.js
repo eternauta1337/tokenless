@@ -65,23 +65,22 @@ class Debug extends React.Component {
         {/* SKIP 1d */}
         <button onClick={(evt) => {
             const secs = dateUtil.daysToSeconds(1);
-            console.log('secs:', secs);
             web3util.skipTime(secs, this.props.globalState.network.web3);
           }}>SKIP 1d</button>
 
         {/* SKIP 10d */}
         <button onClick={(evt) => {
           const secs = dateUtil.daysToSeconds(10);
-          console.log('secs:', secs);
           web3util.skipTime(secs, this.props.globalState.network.web3);
           }}>SKIP 10d</button>
 
         {/* SEND DUMMY TRANSACTION */}
         <button onClick={(evt) => {
-          const secs = dateUtil.daysToSeconds(10);
-          console.log('secs:', secs);
-          web3util.sendDummyTransaction(this.props.globalState.network.web3);
-        }}>SEND DUMMY</button>
+          web3util.sendDummyTransaction(
+            this.props.globalState.network.web3,
+            this.props.globalState.network.activeAccountAddress
+          );
+        }}>DUMMY Tx</button>
 
       </div>
     );

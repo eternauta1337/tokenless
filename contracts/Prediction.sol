@@ -132,10 +132,12 @@ contract Prediction is Ownable, PullPayment {
 
   event ClaimFeesEvent(address indexed from);
 
-  function claimFees() onlyOwner {
-    if(now < withdrawEndTimestamp) revert();
-    ClaimFeesEvent(msg.sender);
+  function claimFees() onlyOwner onlyInState(State.Resolved) {
+    require(now > withdrawEndTimestamp);
+    require(this.balance > 0);
+    require(payments[msg.sender] == 0);
     asyncSend(owner, this.balance);
+    ClaimFeesEvent(msg.sender);
   }
 
   // --------------------------------------------------
@@ -143,7 +145,7 @@ contract Prediction is Ownable, PullPayment {
   // --------------------------------------------------
 
   bool public resolved;
-  enum State { Open, Closed, Resolved }
+  enum State { Open, Closed, Resolved, Finished }
 
   modifier onlyInState(State _state) {
     if(_state != getState()) { revert(); }
@@ -152,15 +154,12 @@ contract Prediction is Ownable, PullPayment {
 
   function getState() constant returns (State) {
     if(!resolved) {
-      if(now < betEndTimestamp) {
-        return State.Open;
-      }
-      else {
-        return State.Closed;
-      }
+      if(now < betEndTimestamp) return State.Open;
+      else return State.Closed;
     }
     else {
-      return State.Resolved;
+      if(this.balance > 0) return State.Resolved;
+      else return State.Finished;
     }
   }
 }

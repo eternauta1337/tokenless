@@ -9,11 +9,27 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
     const acct = getState().network.activeAccountAddress;
     console.log('acct:', acct);
 
-    // console.log('creating prediction:', statement, betEndDate, withdrawEndDate);
-    const creationTransaction = await market.createPrediction(
+    // Listen for bet event...
+    market.PredictionCreatedEvent().watch((error, result) => {
+      console.log('PredictionCreatedEvent');
+      if(error) {
+        console.log('prediction creation error');
+      }
+      else {
+        const predictionAddress = result.args.predictionAddress;
+        console.log('prediction created at:', predictionAddress);
+        dispatch(push(`/prediction/${predictionAddress}`));
+        market.PredictionCreatedEvent().stopWatching();
+      }
+    });
+
+    const unixBet = dateUtil.dateToUnix(betEndDate);
+    const unixWith = dateUtil.dateToUnix(withdrawEndDate);
+    console.log('creating prediction:', statement, unixBet, unixWith);
+    await market.createPrediction(
       statement,
-      dateUtil.dateToUnix(betEndDate),
-      dateUtil.dateToUnix(withdrawEndDate),
+      unixBet,
+      unixWith,
       function(error, res) {
         console.log('metamask callback:', error, res);
       },
@@ -22,18 +38,5 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
         gas: 2000000
       }
     );
-
-    // Market address is obtained by analysing the transaction logs.
-    // Part of the logs is an event contained in the transaction.
-    const creationEventArgs = creationTransaction.logs[0].args;
-    const predictionAddress = creationEventArgs.predictionAddress;
-    if(predictionAddress) {
-      console.log('prediction created at:', predictionAddress);
-      dispatch(push(`/prediction/${predictionAddress}`));
-    }
-    else {
-      console.log('prediction creation failed');
-      // TODO: handle error
-    }
   };
 }

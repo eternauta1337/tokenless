@@ -5,7 +5,7 @@ const PredictionMarket = artifacts.require("./PredictionMarket.sol");
 
 module.exports = function(deployer) {
 
-  let minWithdrawEndTimestampDelta = 60;
+  let minWithdrawEndTimestampDelta = 0;
 
   deployer.deploy(
     PredictionMarket,

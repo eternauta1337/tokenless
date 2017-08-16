@@ -14,6 +14,7 @@ const MarketListItemComponent = ({
     let predictionStateClass = 'success';
     if (preview.predictionState === 1) predictionStateClass = 'warning';
     if (preview.predictionState === 2) predictionStateClass = 'danger';
+    if (preview.predictionState === 3) predictionStateClass = 'default';
     return (
       <Link
         to={`/prediction/${address}`}

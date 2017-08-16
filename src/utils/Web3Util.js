@@ -26,7 +26,7 @@ export function getBalanceInEther(address, web3) {
 
 export function skipBlocks(numBlocks, web3) {
   for(let i = 0; i < numBlocks; i++) {
-    web3.currentProvider.send({
+    web3.currentProvider.sendAsync({
       jsonrpc: '2.0',
       method: 'evm_mine'
     }, function(error, res) {
@@ -36,7 +36,7 @@ export function skipBlocks(numBlocks, web3) {
 }
 
 export function skipTime(seconds, web3) {
-  web3.currentProvider.send({
+  web3.currentProvider.sendAsync({
     jsonrpc: "2.0",
     method: "evm_increaseTime",
     params: [seconds],
@@ -66,9 +66,13 @@ export function getTimestamp(web3) {
   // web3.eth.getBlock(web3.eth.blockNumber).timestamp;
 }
 
-export function sendDummyTransaction(web3) {
-  web3.eth.sendTransaction({},
-  (err, res) => {});
+export function sendDummyTransaction(web3, address) {
+  console.log('sendDummyTransaction', address);
+  web3.eth.sendTransaction({
+      from: address
+    },
+    (err, res) => {}
+  );
 }
 
 export async function delay(ms) {

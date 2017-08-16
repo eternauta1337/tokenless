@@ -14,7 +14,8 @@ const InfoComponent = ({
   betEndDate,
   withdrawalEndDate,
   outcome,
-  simulatedNow
+  simulatedNow,
+  balance
 }) => {
 
   let predictionStateClass = 'success';
@@ -54,6 +55,13 @@ const InfoComponent = ({
 
       {/* BADGES */}
       <ul className='list'>
+
+        {/* TOTAL BALANCE */}
+        <li className='list-inline-item'>
+            <span className="label label-info">
+              Contract balance: {balance}
+            </span>
+        </li>
 
         {/* DATES */}
         { DEBUG_MODE &&

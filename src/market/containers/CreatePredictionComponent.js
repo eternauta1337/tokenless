@@ -20,11 +20,11 @@ class CreatePredictionComponent extends React.Component {
   render() {
 
     let betDate = new Date();
-    betDate.setDate(betDate.getDate() + 0.001);
+    betDate.setDate(betDate.getDate() + dateUtil.secondsToDays(120));
     this.betEndDate = betDate;
 
     let withdrawDate = new Date();
-    withdrawDate.setDate(withdrawDate.getDate() + 0.002);
+    withdrawDate.setDate(withdrawDate.getDate() + dateUtil.secondsToDays(160));
     this.withdrawEndDate = withdrawDate;
 
     return (
@@ -79,8 +79,8 @@ class CreatePredictionComponent extends React.Component {
                     and players will no longer be able to withdraw their prizes.
                   </small>
                   <br/>
-                  {this.props.minWithdrawEndTimestampDelta &&
-                    <small>
+                  {!isNaN(this.props.minWithdrawEndTimestampDelta) &&
+                    <small className="text-muted">
                       ( The minimum of this market is {dateUtil.secondsToDays(this.props.minWithdrawEndTimestampDelta)} days )
                     </small>
                   }

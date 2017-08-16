@@ -5,6 +5,7 @@ import InfoComponent from '../components/InfoComponent';
 import PlaceBetComponent from '../components/PlaceBetComponent';
 import ResolveComponent from '../components/ResolveComponent';
 import WithdrawComponent from '../components/WithdrawComponent';
+import FeesComponent from '../components/FeesComponent';
 import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import HistoryComponent from '../components/HistoryComponent';
@@ -44,6 +45,7 @@ class Prediction extends React.Component {
     if(this.props.isNetworkConnected) {
       const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
       const addressChanged = this.props.activeAccountAddress !== this.state.lastRecordedPlayerAddress;
+      // console.log('refreshMarket()', blockAdvanced, addressChanged);
       if(!this.props.isConnected || blockAdvanced || addressChanged) {
         if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
         if(this.props.blockNumber) this.setState({ lastRecordedPlayerAddress: this.props.activeAccountAddress });
@@ -98,11 +100,17 @@ class Prediction extends React.Component {
             predictionStateStr={this.props.predictionStateStr}
             daysLeft={daysLeft}
             outcome={this.props.outcome}
+            balance={this.props.balance}
             />
 
           {/* FINISH */}
-          {isOwned && this.props.predictionState >= 2 && now >= this.props.withdrawEndDate &&
-            <FinishComponent
+          {this.props.predictionState >= 3 &&
+            <FinishComponent/>
+          }
+
+          {/* WITHDRAW FEES */}
+          {isOwned && this.props.predictionState === 2 && now >= this.props.withdrawEndDate &&
+            <FeesComponent
               balance={this.props.balance}
               finishPrediction={this.props.finishPrediction}
               />

@@ -20,13 +20,15 @@ export function finishPrediction() {
           from: getState().network.activeAccountAddress
         });
 
+        prediction.ClaimFeesEvent().stopWatching();
+
         // Forget listing.
         dispatch(forgetPreview(prediction.address));
       }
     });
 
     // Destroy
-    console.log('finishing prediction...');
+    console.log('claiming fees...');
     await prediction.claimFees({
       from: getState().network.activeAccountAddress
     });

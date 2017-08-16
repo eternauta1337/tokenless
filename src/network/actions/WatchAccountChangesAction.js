@@ -2,15 +2,15 @@ import {
   SET_ACTIVE_ACCOUNT_INDEX
 } from "./SetActiveAccountAction";
 
-export function watchAccountChanges(index) {
-  console.log('setActiveAccountIndex()', index);
+export function watchAccountChanges() {
+  console.log('watchAccountChanges()');
   return function(dispatch, getState) {
 
     const web3 = getState().network.web3;
     const activeAcct = getState().network.activeAccountAddress;
 
-    const accountInterval = setInterval(function() {
-      // console.log('watch account...');
+    setInterval(function() {
+      console.log('watch account...');
       if (web3.eth.accounts[0] !== activeAcct) {
         console.log('account changed');
         dispatch({
@@ -18,6 +18,6 @@ export function watchAccountChanges(index) {
           payload: 0
         });
       }
-    }, 500);
+    }, 1000);
   };
 }

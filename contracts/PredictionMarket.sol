@@ -28,10 +28,6 @@ contract PredictionMarket {
 
   function createPrediction(string statement, uint betEndTimestamp, uint withdrawEndTimestamp) {
 
-      // Validate timestamps.
-      require(betEndTimestamp > now);
-      require(withdrawEndTimestamp > betEndTimestamp);
-
       // Contain withdraw end timestamp.
       uint delta = withdrawEndTimestamp - betEndTimestamp;
       uint adjustedWithdrawEndTimestamp = withdrawEndTimestamp;
