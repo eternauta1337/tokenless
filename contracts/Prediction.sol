@@ -2,9 +2,8 @@ pragma solidity ^0.4.11;
 
 import "./zeppelin-solidity/contracts/math/SafeMath.sol";
 import "./zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./zeppelin-solidity/contracts/payment/PullPayment.sol";
 
-contract Prediction is Ownable, PullPayment {
+contract Prediction is Ownable {
 
   using SafeMath for uint;
 
@@ -79,20 +78,23 @@ contract Prediction is Ownable, PullPayment {
   // Prize withdrawals
   // --------------------------------------------------
 
-  event ClaimPrizeEvent(address indexed from);
+  event WithdrawPrizeEvent(address indexed from);
 
-  function claimPrize() notOwner() onlyInState(State.Resolved) {
+  function withdrawPrize() notOwner() onlyInState(State.Resolved) {
 
     // Calculate total prize.
     uint prize = calculatePrize(outcome);
-    if(prize == 0) revert();
+    require(prize > 0);
 
-    // Assign funds.
-    asyncSend(msg.sender, prize);
+    // Send funds.
+    require(this.balance > prize);
+    assert(msg.sender.send(prize)); 
+    
+    // Reset bets.
     bets[true][msg.sender] = 0;
     bets[false][msg.sender] = 0;
 
-    ClaimPrizeEvent(msg.sender);
+    WithdrawPrizeEvent(msg.sender);
   }
 
   function calculatePrize(bool prediction) constant returns (uint) {
@@ -130,14 +132,13 @@ contract Prediction is Ownable, PullPayment {
   // Fee withdrawals
   // --------------------------------------------------
 
-  event ClaimFeesEvent(address indexed from);
+  event WithdrawFeesEvent(address indexed from);
 
-  function claimFees() onlyOwner onlyInState(State.Resolved) {
+  function withdrawFees() onlyOwner onlyInState(State.Resolved) {
     require(now > withdrawEndTimestamp);
     require(this.balance > 0);
-    require(payments[msg.sender] == 0);
-    asyncSend(owner, this.balance);
-    ClaimFeesEvent(msg.sender);
+    assert(owner.send(this.balance)); 
+    WithdrawFeesEvent(msg.sender);
   }
 
   // --------------------------------------------------

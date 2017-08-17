@@ -25,35 +25,51 @@ export function getBalanceInEther(address, web3) {
 }
 
 export function skipTime(seconds, web3) {
-  web3.currentProvider.sendAsync(
-    {
-      jsonrpc: "2.0",
-      method: "evm_increaseTime",
-      params: [seconds],
-      id: 0
-    },
-    (error, result) => {
-      console.log('skipTime:', error, result);
-    }
-  );
-  skipBlocks(1, web3);
-  currentSimulatedDateUnix += seconds; // keep track of when now is for concurent tests
+  return new Promise(async (resolve, reject) => {
+    web3.currentProvider.sendAsync(
+      {
+        jsonrpc: "2.0",
+        method: "evm_increaseTime",
+        params: [seconds],
+        id: 0
+      },
+      async (error, result) => {
+        if(error) reject();
+        else {
+          await skipBlocks(1, web3);
+          currentSimulatedDateUnix += seconds; // keep track of when now is for concurent tests
+          resolve();
+        }
+      }
+    );
+  });
+
   // Console snippet:
   // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_increaseTime", params: [1000], id: 0});
 }
 
-export function skipBlocks(numBlocks, web3) {
-  for(let i = 0; i < numBlocks; i++) {
+export async function skipBlocks(numBlocks, web3) {
+  return new Promise(async resolve => {
+    for(let i = 0; i < numBlocks; i++) {
+      await skipBlock(web3);
+    }
+    resolve();
+  });
+}
+
+export async function skipBlock(web3) {
+  return new Promise((resolve, reject) => {
     web3.currentProvider.sendAsync(
       {
         jsonrpc: '2.0',
         method: 'evm_mine'
       },
       (error, result) => {
-        console.log('skipTime:', error, result);
+        if(error) reject();
+        else resolve();
       }
     );
-  }
+  });
 }
 
 export function getTimestamp(web3) {

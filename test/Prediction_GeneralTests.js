@@ -44,7 +44,6 @@ contract('Prediction (General)', function(accounts) {
   });
 
   it('it should correctly track its state', async function() {
-
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
@@ -52,27 +51,51 @@ contract('Prediction (General)', function(accounts) {
     );
     // console.log('contract created');
 
-    // console.log('time: ', util.getTimestamp(web3));
-
+    // Initial state should be 0 'OPEN'.
     let state = 0;
-    // console.log('state:', state);
-
     state = (await contract.getState()).toNumber();
+    // console.log('time: ', await util.getTimestamp(web3));
     // console.log('state:', state);
     assert.equal(state, 0, 'incorrect state');
 
-    util.skipTime(dateUtil.daysToSeconds(6), web3);
-    // console.log('time: ', util.getTimestamp(web3));
+    // Make a bet.
+    // console.log('making bet');
+    await contract.bet(true, {
+      from: accounts[1],
+      value: web3.toWei(1, 'ether')
+    });
 
+    // Skip until bets are closed.
+    // console.log('skipping betting period');
+    await util.skipTime(dateUtil.daysToSeconds(6), web3);
+    // console.log('time: ', await util.getTimestamp(web3));
+
+    // State should be 1 'CLOSED'.
     state = (await contract.getState()).toNumber();
     // console.log('state:', state);
     assert.equal(state, 1, 'incorrect state');
 
+    // Resolve the prediction.
+    // console.log('resolving...');
     await contract.resolve(true, {from: accounts[0]});
 
+    // State should be 2 'RESOLVED'.
     state = (await contract.getState()).toNumber();
     // console.log('state:', state);
     assert.equal(state, 2, 'incorrect state');
+
+    // Skip until withdrawals end.
+    // console.log('skipping withdrawal period');
+    await util.skipTime(dateUtil.daysToSeconds(6), web3);
+
+    // Withdraw all funds.
+    // console.log('withdrawing funds');
+    await contract.withdrawFees({from: accounts[0]});
+
+    // State should be 3 'FINISHED'.
+    state = (await contract.getState()).toNumber();
+    // console.log('state:', state);
+    assert.equal(state, 3, 'incorrect state');
   });
 
 });
