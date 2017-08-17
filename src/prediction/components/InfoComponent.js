@@ -83,7 +83,7 @@ const InfoComponent = ({
             </span>
           </li>
         }
-        {predictionState === 2 && bcTimestamp < withdrawalEndDate &&
+        {predictionState === 2 &&
           <li className='list-inline-item'>
             <span className="label label-default">
               Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}

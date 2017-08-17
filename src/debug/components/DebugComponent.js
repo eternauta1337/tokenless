@@ -5,7 +5,8 @@ import {
   setActiveAccountIndex
 } from '../../network/actions';
 import {
-  USE_INJECTED_WEB3
+  USE_INJECTED_WEB3,
+  TARGET_LIVE_NETWORK
 } from "../../constants";
 import * as web3util from '../../utils/Web3Util';
 import * as dateUtil from '../../utils/DateUtil';
@@ -94,24 +95,32 @@ class Debug extends React.Component {
         {/* BLOCKCHAIN TIMESTAMP */}
         { bcTimestamp &&
           <span className={`text-${isDetached ? 'danger' : 'default'}`}>
-            [time{nowStr}]&nbsp;
+            [time {nowStr}]&nbsp;
           </span>
         }
         {/* SKIP */}
-        <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
-        <button onClick={() => { this.skipTime(10 * 60);           }}> +10m </button>
-        <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
-        <button onClick={() => { this.skipTime(10 * 60 * 60);      }}> +10h </button>
-        <button onClick={() => { this.skipTime(24 * 60 * 60);      }}> +1d  </button>
-        <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>&nbsp;
+        {TARGET_LIVE_NETWORK === 'testrpc' &&
+          <div>
+            <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
+            <button onClick={() => { this.skipTime(10 * 60);           }}> +10m </button>
+            <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
+            <button onClick={() => { this.skipTime(10 * 60 * 60);      }}> +10h </button>
+            <button onClick={() => { this.skipTime(24 * 60 * 60);      }}> +1d  </button>
+            <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>&nbsp;
+          </div>
+        }
 
         {/* SEND DUMMY TRANSACTION */}
-        <button onClick={(evt) => {
-          web3util.sendDummyTransaction(
-            this.props.globalState.network.web3,
-            this.props.globalState.network.activeAccountAddress
-          );
-        }}>Tx</button>&nbsp;
+        {TARGET_LIVE_NETWORK === 'testrpc' &&
+          <div>
+            <button onClick={(evt) => {
+              web3util.sendDummyTransaction(
+                this.props.globalState.network.web3,
+                this.props.globalState.network.activeAccountAddress
+              );
+            }}>Tx</button>&nbsp;
+          </div>
+        }
 
       </div>
     );

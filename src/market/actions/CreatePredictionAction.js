@@ -31,8 +31,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       unixBet,
       unixWith,
       {
-        from: acct,
-        gas: 1500000
+        from: acct
       }
     );
   };

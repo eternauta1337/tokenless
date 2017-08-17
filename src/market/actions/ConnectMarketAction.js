@@ -1,6 +1,12 @@
 import TruffleContract from 'truffle-contract';
 import PredictionMarketArtifacts from '../../../build/contracts/PredictionMarket.json';
-import { MARKET_ADDRESS } from '../../constants';
+import {
+  DEBUG_MODE,
+  TARGET_LIVE_NETWORK,
+  MARKET_ADDRESS_DEV,
+  MARKET_ADDRESS_MAINNET,
+  MARKET_ADDRESS_ROPSTEN
+} from '../../constants';
 
 export const CONNECT_MARKET = 'prediction/CONNECT_MARKET';
 
@@ -14,13 +20,17 @@ export function connectMarket() {
     // Retrieve prediction.
     const Market = TruffleContract(PredictionMarketArtifacts);
     Market.setProvider(web3.currentProvider);
-    const contract = await Market.at(MARKET_ADDRESS);
+    let targetAddr = '';
+    if(TARGET_LIVE_NETWORK === 'testrpc') targetAddr = MARKET_ADDRESS_DEV;
+    else if(TARGET_LIVE_NETWORK === 'mainnet') targetAddr = MARKET_ADDRESS_MAINNET;
+    else if(TARGET_LIVE_NETWORK === 'ropsten') targetAddr = MARKET_ADDRESS_ROPSTEN;
+    else { console.log('!!! UNKNOWN TARGET NETWORK !!!'); return; }
+    const contract = await Market.at(targetAddr);
     market.contract = contract;
 
     // Get prediction info.
     market.minWithdrawEndTimestampDelta = ( await contract.minWithdrawEndTimestampDelta.call() ).toNumber();
     market.predictionAddresses = await contract.getPredictions();
-    console.log('minWithdrawEndTimestampDelta:', market.minWithdrawEndTimestampDelta);
     // console.log('market', market);
 
     dispatch({
