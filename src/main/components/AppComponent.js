@@ -20,10 +20,11 @@ class App extends Component {
         </div>
 
         {/* FOOTER */}
-        <footer className="row footer-muted">
+        <footer className="row footer-muted" style={{height: DEBUG_MODE ? '95px' : '30px'}}>
           <div className="text-center">
             <small className="text-muted">
-              Created with <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp; by the Zeppelin team
+              <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>
+              Powered by OpenZeppelin
             </small>
           </div>
         </footer>
