@@ -1,6 +1,6 @@
 export const UPDATE_NETWORK = 'network/UPDATE_NETWORK';
 
-// import { connectWeb3 } from "./ConnectWeb3Action";
+// import { connectNetwork } from "./connectNetworkAction";
 import * as web3Util from '../../utils/Web3Util';
 
 export function watchNetworkChanges() {
@@ -14,6 +14,15 @@ export function watchNetworkChanges() {
       const blockchain = {};
       blockchain.blockNumber = await web3Util.getBlockNumber(web3);
       blockchain.currentTime = await web3Util.getTimestamp(web3);
+      blockchain.networkId = await web3Util.getNetworkId(web3);
+      if(blockchain.networkId) {
+        if(blockchain.networkId === '1') blockchain.networkName = 'mainnet';
+        else if(blockchain.networkId === '2') blockchain.networkName = 'morden';
+        else if(blockchain.networkId === '3') blockchain.networkName = 'ropsten';
+        else if(blockchain.networkId === '4') blockchain.networkName = 'rinkeby';
+        else if(blockchain.networkId === '42') blockchain.networkName = 'kovan';
+        else blockchain.networkName = 'privatenet';
+      }
       // console.log('blockchain', blockchain);
 
       dispatch({
@@ -22,7 +31,7 @@ export function watchNetworkChanges() {
       });
 
       // if(!getState().web3) {
-      //   dispatch(connectWeb3());
+      //   dispatch(connectNetwork());
       // }
     }, 5000);
   };
