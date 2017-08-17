@@ -1,5 +1,5 @@
 import {
-  CONNECT_WEB3,
+  CONNECT_NETWORK,
   SET_ACTIVE_ACCOUNT_INDEX,
   UPDATE_NETWORK,
 } from './actions';
@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
 
   switch(action.type) {
 
-  case CONNECT_WEB3:
+  case CONNECT_NETWORK:
     return {
       ...state,
       web3: action.payload,

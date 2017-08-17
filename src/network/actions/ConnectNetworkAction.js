@@ -7,10 +7,10 @@ import {
   watchNetworkChanges
 } from '.';
 
-export const CONNECT_WEB3 = 'network/CONNECT_WEB3';
+export const CONNECT_NETWORK = 'network/CONNECT_NETWORK';
 
-export function connectWeb3() {
-  console.log('connectWeb3()');
+export function connectNetwork() {
+  console.log('connectNetwork()');
   return function(dispatch) {
 
     let web3;
@@ -26,7 +26,7 @@ export function connectWeb3() {
     console.log('web3 provider:', web3.currentProvider !== undefined);
 
     dispatch({
-      type: CONNECT_WEB3,
+      type: CONNECT_NETWORK,
       payload: web3
     });
 

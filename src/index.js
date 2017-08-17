@@ -10,7 +10,7 @@ import PredictionComponent from './prediction/containers/PredictionComponent';
 import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
 import ListPredictionsComponent from './market/containers/ListPredictionsComponent';
 import AboutComponent from './about/components/AboutComponent';
-import { connectWeb3 } from './network/actions';
+import { connectNetwork } from './network/actions';
 import {
   PATH_PREDICTION,
   PATH_CREATE,
@@ -24,7 +24,7 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 window.addEventListener('load', () => {
 
   // Initialize web3 and store in state.
-  store.dispatch(connectWeb3());
+  store.dispatch(connectNetwork());
 
   // UI entry point and routes.
   ReactDOM.render((
