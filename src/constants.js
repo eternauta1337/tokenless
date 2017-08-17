@@ -1,6 +1,6 @@
 // General.
-export const DEBUG_MODE = true;
-export const USE_INJECTED_WEB3 = true;
+export const DEBUG_MODE = true; // activates a debug panel useful for development
+export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
 export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 
 // Market contract urls.
@@ -11,7 +11,7 @@ export const MARKET_ADDRESS_ROPSTEN =
 export const MARKET_ADDRESS_MAINNET =
   '';
 
-// Explorer urls.
+// Block explorer urls.
 export const EXPLORER_URL = {
   testrpc: 'http://localhost:8000/#/', // requires: geth --rpc --rpccorsdomain "http://localhost:8000"
   ropsten: 'https://ropsten.etherscan.io/',
@@ -19,7 +19,8 @@ export const EXPLORER_URL = {
 };
 
 // Router paths.
-export const PATH_CREATE = '/create';
-export const PATH_PREDICTION = '/prediction/:address';
-export const PATH_ROOT = '/';
-export const PATH_ABOUT = '/about';
+const baseURL = process.env.PUBLIC_URL;
+export const PATH_CREATE = baseURL + '/create';
+export const PATH_PREDICTION = baseURL + '/prediction/:address';
+export const PATH_ROOT = baseURL + '/';
+export const PATH_ABOUT = baseURL + '/about';
