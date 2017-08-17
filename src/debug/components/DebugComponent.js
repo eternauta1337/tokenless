@@ -77,12 +77,15 @@ class Debug extends React.Component {
         </small>
         <br/>
 
-        {/* SKIP */}
-        &nbsp;[
+        {/* BLOCK NUM */}
+        [block {this.props.globalState.network.blockNumber}]&nbsp;
+
         {/* BLOCKCHAIN TIMESTAMP */}
+        [time&nbsp;
         { bcTimestamp &&
           <span className={`text-${isDetached ? 'danger' : 'default'}`}>{nowStr}</span>
         }
+        {/* SKIP */}
         <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
         <button onClick={() => { this.skipTime(10 * 60);           }}> +10m </button>
         <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
@@ -96,7 +99,7 @@ class Debug extends React.Component {
             this.props.globalState.network.web3,
             this.props.globalState.network.activeAccountAddress
           );
-        }}>DUMMY Tx</button>&nbsp;
+        }}>Tx</button>&nbsp;
 
       </div>
     );

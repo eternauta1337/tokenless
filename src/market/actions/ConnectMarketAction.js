@@ -20,7 +20,7 @@ export function connectMarket() {
     // Get prediction info.
     market.minWithdrawEndTimestampDelta = ( await contract.minWithdrawEndTimestampDelta.call() ).toNumber();
     market.predictionAddresses = await contract.getPredictions();
-    console.log('market', market);
+    // console.log('market', market);
 
     dispatch({
       type: CONNECT_MARKET,
