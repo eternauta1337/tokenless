@@ -45,10 +45,10 @@ class ListPredictions extends React.Component {
               {/* LIST MARKETS PANEL */}
               <div className="">
                 {!this.state.fetching && this.props.addresses.length === 0 &&
-                <div className="alert alert-info">
-                  <strong>
-                    Sorry, there are currently no predictions... Would you like to create one?
-                  </strong>
+                <div className="alert alert-default">
+                  <span className="text-muted">
+                    No predictions exist. Be the first to create one...
+                  </span>
                 </div>
                 }
                 {this.props.addresses.length > 0 &&

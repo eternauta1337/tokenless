@@ -4,11 +4,11 @@ import ConnectComponent from '../../common/components/ConnectComponent';
 import InfoComponent from '../components/InfoComponent';
 import PlaceBetComponent from '../components/PlaceBetComponent';
 import ResolveComponent from '../components/ResolveComponent';
-import WithdrawComponent from '../components/WithdrawComponent';
-import FeesComponent from '../components/FeesComponent';
+import ClaimComponent from '../components/ClaimComponent';
 import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
-import HistoryComponent from '../components/HistoryComponent';
+import UserInfoComponent from '../components/UserInfoComponent';
+import WithdrawFundsComponent from '../components/WithdrawFundsComponent';
 import CommentsComponent from '../components/CommentsComponent';
 import * as dateUtil from '../../utils/DateUtil';
 import * as web3Util from '../../utils/Web3Util';
@@ -18,8 +18,9 @@ import {
   connectPrediction,
   placeBet,
   resolveMarket,
-  withdrawPrize,
-  finishPrediction
+  claimPrize,
+  claimFees,
+  withdrawFunds
 } from '../actions';
 
 class Prediction extends React.Component {
@@ -34,22 +35,22 @@ class Prediction extends React.Component {
 
   componentWillMount() {
     this.props.resetMarket();
-    this.refreshMarket();
+    this.refreshMarket(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.refreshMarket();
+    this.refreshMarket(nextProps);
   }
 
-  refreshMarket() {
-    if(this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      const addressChanged = this.props.activeAccountAddress !== this.state.lastRecordedPlayerAddress;
-      // console.log('refreshMarket()', blockAdvanced, addressChanged);
-      if(!this.props.isConnected || blockAdvanced || addressChanged) {
-        if(this.props.blockNumber) this.setState({ lastRecordedBlockNumber: this.props.blockNumber });
-        if(this.props.blockNumber) this.setState({ lastRecordedPlayerAddress: this.props.activeAccountAddress });
-        this.props.connectPrediction(this.props.routeParams.address);
+  refreshMarket(props) {
+    if(props.isNetworkConnected) {
+      const blockAdvanced = props.blockNumber !== undefined && (props.blockNumber > this.state.lastRecordedBlockNumber);
+      const addressChanged = props.activeAccountAddress !== this.state.lastRecordedPlayerAddress;
+      if(!props.isConnected || blockAdvanced || addressChanged) {
+        if(props.blockNumber) this.setState({ lastRecordedBlockNumber: props.blockNumber });
+        if(props.activeAccountAddress) this.setState({ lastRecordedPlayerAddress: props.activeAccountAddress });
+        console.log('PredictionComponent requesting update... block advanced', blockAdvanced, 'addressChanged', addressChanged);
+        props.connectPrediction(props.routeParams.address);
       }
     }
   }
@@ -64,17 +65,6 @@ class Prediction extends React.Component {
     // Pre-process some of the prediction's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
-    let now = this.props.currentTime;
-    let daysLeft;
-    if(this.props.predictionState === 0) {
-      daysLeft = dateUtil.secondsToDays(this.props.betEndDate - now);
-    }
-    else {
-      daysLeft = dateUtil.secondsToDays(this.props.withdrawEndDate - now);
-    }
-    // console.log('this.props.betEndDate:', this.props.betEndDate);
-    // console.log('this.props.withdrawEndDate:', this.props.withdrawEndDate);
-    // console.log('daysLeft:', daysLeft);
 
     return (
       <div className="container">
@@ -90,7 +80,6 @@ class Prediction extends React.Component {
 
           {/* INFO */}
           <InfoComponent
-            simulatedNow={now}
             betEndDate={this.props.betEndDate}
             withdrawalEndDate={this.props.withdrawEndDate}
             positivePredicionBalance={this.props.positivePredicionBalance}
@@ -98,7 +87,6 @@ class Prediction extends React.Component {
             isOwned={isOwned}
             predictionState={this.props.predictionState}
             predictionStateStr={this.props.predictionStateStr}
-            daysLeft={daysLeft}
             outcome={this.props.outcome}
             balance={this.props.balance}
             />
@@ -108,20 +96,22 @@ class Prediction extends React.Component {
             <FinishComponent/>
           }
 
-          {/* WITHDRAW FEES */}
-          {isOwned && this.props.predictionState === 2 && now >= this.props.withdrawEndDate &&
-            <FeesComponent
-              balance={this.props.balance}
-              finishPrediction={this.props.finishPrediction}
+          {/* CLAIM */}
+          {this.props.predictionState === 2 &&
+           this.props.payments === 0 &&
+           this.props.estimatePrize > 0 &&
+            <ClaimComponent
+              claimValue={isOwned ? this.props.balance : this.props.estimatePrize}
+              claimMethod={isOwned ? claimFees : claimPrize}
               />
           }
 
-          {/* WITHDRAW */}
-          {this.props.predictionState === 2 && now < this.props.withdrawEndDate &&
-            <WithdrawComponent
-              estimatePrize={this.props.estimatePrize}
-              withdrawPrize={this.props.withdrawPrize}
-              />
+          {/* WITHDRAW FUNDS */}
+          {this.props.predictionState === 2 && this.props.payments !== 0 &&
+            <WithdrawFundsComponent
+              payments={this.props.payments}
+              withdrawFunds={this.props.withdrawFunds}
+            />
           }
 
           {/* RESOLVE */}
@@ -144,13 +134,14 @@ class Prediction extends React.Component {
               />
           }
 
-          {/* HISTORY */}
-          {/*{this.props.predictionState === 0 &&*/}
-            {/*<HistoryComponent*/}
-              {/*playerPositiveBalance={this.props.playerPositiveBalance}*/}
-              {/*playerNegativeBalance={this.props.playerNegativeBalance}*/}
-            {/*/>*/}
-          {/*}*/}
+          {/* USER INFO */}
+          <UserInfoComponent
+            predictionState={this.props.predictionState}
+            playerPayments={this.props.payments}
+            playerPrizes={this.props.estimatePrize}
+            playerPositiveBalance={this.props.playerPositiveBalance}
+            playerNegativeBalance={this.props.playerNegativeBalance}
+          />
 
           {/* COMMENTS */}
           {/*<CommentsComponent/>*/}
@@ -169,6 +160,7 @@ const mapStateToProps = (state, ownProps) => {
     activeAccountAddress: state.network.activeAccountAddress,
     blockNumber: state.network.blockNumber,
     web3: state.network.web3,
+    bcTimestamp: state.network.currentTime,
     ...state.prediction
   };
 };
@@ -178,9 +170,10 @@ const mapDispatchToProps = (dispatch) => {
     connectPrediction: (address) => dispatch(connectPrediction(address)),
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
-    withdrawPrize: () => dispatch(withdrawPrize()),
-    finishPrediction: () => dispatch(finishPrediction()),
+    claimPrize: () => dispatch(claimPrize()),
+    claimFees: () => dispatch(claimFees()),
     resetMarket: () => dispatch(resetMarket()),
+    withdrawFunds: () => dispatch(withdrawFunds()),
   };
 };
 

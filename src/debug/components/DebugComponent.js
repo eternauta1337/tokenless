@@ -44,6 +44,13 @@ class Debug extends React.Component {
   }
 
   render() {
+
+    const nowTimestamp = dateUtil.dateToUnix(new Date());
+    const bcTimestamp = this.props.globalState.network.currentTime;
+    const nowStr = dateUtil.unixToStr(bcTimestamp);
+    const isDetached = Math.abs(nowTimestamp - bcTimestamp) > 2 * 60;
+    // console.log('timestamp detach:', Math.abs(nowTimestamp - bcTimestamp));
+
     return (
       <div className='debugPanel'>
 
@@ -58,21 +65,45 @@ class Debug extends React.Component {
           </select>
         }
 
-        {/* BALANCE */}
+        {/* ACCOUNT BALANCE */}
         &nbsp;
-        {this.state.accountBalance} ETH&nbsp;
+        <small>
+          {this.props.globalState.network.activeAccountAddress}&nbsp;|&nbsp;
+          {this.state.accountBalance}&nbsp;
+        </small>
+        <br/>
 
-        {/* SKIP 1d */}
-        <button onClick={(evt) => {
-            const secs = dateUtil.daysToSeconds(1);
-            web3util.skipTime(secs, this.props.globalState.network.web3);
-          }}>SKIP 1d</button>
-
-        {/* SKIP 10d */}
-        <button onClick={(evt) => {
+        {/* SKIP */}
+        &nbsp;[
+        {/* BLOCKCHAIN TIMESTAMP */}
+        { bcTimestamp &&
+          <span className={`text-${isDetached ? 'danger' : 'default'}`}>{nowStr}</span>
+        }
+        <button onClick={() => {
+          const secs = 60;
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+        }}>+1m</button>
+        <button onClick={() => {
+          const secs = 10 * 60;
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+        }}>+10m</button>
+        <button onClick={() => {
+          const secs = 60 * 60;
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+        }}>+1h</button>
+        <button onClick={() => {
+          const secs = 10 * 60 * 60;
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+        }}>+10h</button>
+        <button onClick={() => {
+          const secs = dateUtil.daysToSeconds(1);
+          web3util.skipTime(secs, this.props.globalState.network.web3);
+        }}>+1d</button>
+        <button onClick={() => {
           const secs = dateUtil.daysToSeconds(10);
           web3util.skipTime(secs, this.props.globalState.network.web3);
-          }}>SKIP 10d</button>
+          }}>+10d</button>
+        ]&nbsp;
 
         {/* SEND DUMMY TRANSACTION */}
         <button onClick={(evt) => {
@@ -80,7 +111,7 @@ class Debug extends React.Component {
             this.props.globalState.network.web3,
             this.props.globalState.network.activeAccountAddress
           );
-        }}>DUMMY Tx</button>
+        }}>DUMMY Tx</button>&nbsp;
 
       </div>
     );

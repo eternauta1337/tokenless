@@ -24,30 +24,36 @@ export function getBalanceInEther(address, web3) {
   });
 }
 
-export function skipBlocks(numBlocks, web3) {
-  for(let i = 0; i < numBlocks; i++) {
-    web3.currentProvider.sendAsync({
-      jsonrpc: '2.0',
-      method: 'evm_mine'
-    }, function(error, res) {
-
-    });
-  }
-}
-
 export function skipTime(seconds, web3) {
-  web3.currentProvider.sendAsync({
-    jsonrpc: "2.0",
-    method: "evm_increaseTime",
-    params: [seconds],
-    id: 0
-  }, function(error, res) {
-
-  });
+  web3.currentProvider.sendAsync(
+    {
+      jsonrpc: "2.0",
+      method: "evm_increaseTime",
+      params: [seconds],
+      id: 0
+    },
+    (error, result) => {
+      console.log('skipTime:', error, result);
+    }
+  );
   skipBlocks(1, web3);
   currentSimulatedDateUnix += seconds; // keep track of when now is for concurent tests
   // Console snippet:
   // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_increaseTime", params: [1000], id: 0});
+}
+
+export function skipBlocks(numBlocks, web3) {
+  for(let i = 0; i < numBlocks; i++) {
+    web3.currentProvider.sendAsync(
+      {
+        jsonrpc: '2.0',
+        method: 'evm_mine'
+      },
+      (error, result) => {
+        console.log('skipTime:', error, result);
+      }
+    );
+  }
 }
 
 export function getTimestamp(web3) {

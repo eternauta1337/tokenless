@@ -1,4 +1,4 @@
-export { START_WEB3, UPDATE_NETWORK, startWeb3 } from './StartWeb3Action';
+export { CONNECT_WEB3, connectWeb3 } from './ConnectWeb3Action';
 export { SET_ACTIVE_ACCOUNT_INDEX, setActiveAccountIndex } from './SetActiveAccountAction';
 export { watchAccountChanges } from './WatchAccountChangesAction';
-export { watchBlockchainChanges } from './WatchBlockchainChangesAction';
+export { UPDATE_NETWORK, watchNetworkChanges } from './WatchNetoworkChangesAction';

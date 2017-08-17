@@ -9,14 +9,18 @@ export function watchAccountChanges() {
     const web3 = getState().network.web3;
     const activeAcct = getState().network.activeAccountAddress;
 
-    setInterval(function() {
-      console.log('watch account...');
-      if (web3.eth.accounts[0] !== activeAcct) {
-        console.log('account changed');
+    let interval = setInterval(function() {
+      if(!web3) return;
+      const candidate = web3.eth.accounts[0];
+      // console.log('check account:', candidate, activeAcct);
+      if (candidate && candidate !== activeAcct) {
+        console.log('<<< account changed >>>');
+        clearInterval(interval);
         dispatch({
           type: SET_ACTIVE_ACCOUNT_INDEX,
           payload: 0
         });
+        dispatch(watchAccountChanges());
       }
     }, 1000);
   };

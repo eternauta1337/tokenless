@@ -30,12 +30,9 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       statement,
       unixBet,
       unixWith,
-      function(error, res) {
-        console.log('metamask callback:', error, res);
-      },
       {
         from: acct,
-        gas: 2000000
+        gas: 1500000
       }
     );
   };

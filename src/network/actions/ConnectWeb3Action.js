@@ -4,13 +4,13 @@ import { connectMarket } from '../../market/actions/ConnectMarketAction';
 import { USE_INJECTED_WEB3 } from '../../constants';
 import {
   watchAccountChanges,
-  watchBlockchainChanges
+  watchNetworkChanges
 } from '.';
 
-export const START_WEB3 = 'network/START_WEB3';
+export const CONNECT_WEB3 = 'network/CONNECT_WEB3';
 
-export function startWeb3() {
-  console.log('startWeb3()');
+export function connectWeb3() {
+  console.log('connectWeb3()');
   return function(dispatch) {
 
     let web3;
@@ -23,14 +23,15 @@ export function startWeb3() {
       const provider = new Web3.providers.HttpProvider('http://localhost:8545');
       web3 = new Web3(provider);
     }
+    console.log('web3 provider:', web3.currentProvider !== undefined);
 
     dispatch({
-      type: START_WEB3,
+      type: CONNECT_WEB3,
       payload: web3
     });
 
     dispatch(connectMarket());
-    dispatch(watchBlockchainChanges());
+    dispatch(watchNetworkChanges());
     dispatch(setActiveAccountIndex(0));
 
     if(USE_INJECTED_WEB3) {

@@ -1,4 +1,10 @@
-export function dateToStr(date, format = '') {
+import moment from 'moment';
+
+export function unixToStr(unix, format = 'MM/DD/YYYY HH:mm:ss') {
+  return moment.unix(unix).format(format);
+}
+
+export function dateToStr(date, format = 'yyyy-mm-dd') {
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
   const year = date.getFullYear();

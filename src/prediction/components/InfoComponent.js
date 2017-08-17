@@ -1,22 +1,17 @@
 import React from 'react';
 import * as dateUtil from '../../utils/DateUtil';
-import {
-  DEBUG_MODE
-} from '../../constants';
 
 const InfoComponent = ({
-  positivePredicionBalance,
-  negativePredicionBalance,
-  isOwned,
-  predictionState,
-  predictionStateStr,
-  daysLeft,
-  betEndDate,
-  withdrawalEndDate,
-  outcome,
-  simulatedNow,
-  balance
-}) => {
+                         positivePredicionBalance,
+                         negativePredicionBalance,
+                         isOwned,
+                         predictionState,
+                         predictionStateStr,
+                         betEndDate,
+                         withdrawalEndDate,
+                         outcome,
+                         balance
+                       }) => {
 
   let predictionStateClass = 'success';
   if (predictionState === 1) predictionStateClass = 'warning';
@@ -34,23 +29,23 @@ const InfoComponent = ({
     <div>
 
       {/* POT BALANCES */}
-      { balanceTotal > 0 &&
-        <div className="progress">
-          <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
+      {balanceTotal > 0 &&
+      <div className="progress">
+        <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
             <span className="">
               <span className="glyphicon glyphicon-thumbs-up"></span>
               &nbsp;
               {positivePredicionBalance}&nbsp;ETH
             </span>
-          </div>
-          <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
+        </div>
+        <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
             <span className="">
               <span className="glyphicon glyphicon-thumbs-down"></span>
               &nbsp;
               {negativePredicionBalance}&nbsp;ETH
             </span>
-          </div>
         </div>
+      </div>
       }
 
       {/* BADGES */}
@@ -63,25 +58,6 @@ const InfoComponent = ({
             </span>
         </li>
 
-        {/* DATES */}
-        { DEBUG_MODE &&
-          <li className='list-inline-item'>
-            <span className="label label-warning">
-              Simulated date: {dateUtil.dateToStr(dateUtil.unixToDate(simulatedNow))}
-            </span>
-          </li>
-        }
-        <li className='list-inline-item'>
-          <span className="label label-default">
-            Bets end on: {dateUtil.dateToStr(dateUtil.unixToDate(betEndDate))}
-          </span>
-        </li>
-        <li className='list-inline-item'>
-          <span className="label label-default">
-            Withdrawals end on: {dateUtil.dateToStr(dateUtil.unixToDate(withdrawalEndDate))}
-          </span>
-        </li>
-
         {/* OWNED */}
         {isOwned &&
         <li className='list-inline-item'>
@@ -91,10 +67,22 @@ const InfoComponent = ({
         </li>
         }
 
-        {/* STATE + OUTCOME + BLOCKS REMAINING */}
+        {/* STATE */}
         <li className='list-inline-item'>
           <span className={`label label-${predictionStateClass}`}>
-            {stateStr} ({daysLeft} days left)
+            {stateStr}
+          </span>
+        </li>
+
+        {/* DATES */}
+        <li className='list-inline-item'>
+          <span className="label label-default">
+            Bets end on: {dateUtil.unixToStr(betEndDate)}
+          </span>
+        </li>
+        <li className='list-inline-item'>
+          <span className="label label-default">
+            Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
           </span>
         </li>
 

@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
+import * as miscUtil from '../../utils/MiscUtil';
+import {
+  DEBUG_MODE
+} from '../../constants';
 import {
   createPrediction
 } from '../actions';
@@ -19,12 +23,10 @@ class CreatePredictionComponent extends React.Component {
 
   render() {
 
-    let betDate = new Date();
-    betDate.setDate(betDate.getDate() + dateUtil.secondsToDays(120));
+    let betDate = dateUtil.unixToDate(this.props.bcTimestamp + 60 * 60);
     this.betEndDate = betDate;
 
-    let withdrawDate = new Date();
-    withdrawDate.setDate(withdrawDate.getDate() + dateUtil.secondsToDays(160));
+    let withdrawDate = dateUtil.unixToDate(this.props.bcTimestamp + 2 * 60 * 60);
     this.withdrawEndDate = withdrawDate;
 
     return (
@@ -43,6 +45,7 @@ class CreatePredictionComponent extends React.Component {
                   <input
                     className="form-control"
                     placeholder='Eg. "Ether will surpass bitcoin in 2018."'
+                    defaultValue={ DEBUG_MODE ? miscUtil.makeid() : '' }
                     ref={ref => this.setStatementInputField(ref)}
                     />
                   <small className="text-muted">
@@ -105,6 +108,7 @@ class CreatePredictionComponent extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    bcTimestamp: state.network.currentTime,
     minWithdrawEndTimestampDelta: state.market.minWithdrawEndTimestampDelta
   };
 };
