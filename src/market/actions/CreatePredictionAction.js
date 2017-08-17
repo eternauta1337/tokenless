@@ -1,5 +1,6 @@
 import { push } from 'react-router-redux';
 import * as dateUtil from '../../utils/DateUtil';
+import {TARGET_LIVE_NETWORK} from "../../constants";
 
 export function createPrediction(statement, betEndDate, withdrawEndDate) {
   console.log('createPrediction()', statement, betEndDate, withdrawEndDate);
@@ -7,6 +8,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
 
     const market = getState().market.contract;
     const acct = getState().network.activeAccountAddress;
+    const web3 = getState().network.web3;
     console.log('acct:', acct);
 
     // Listen for bet event...
@@ -19,10 +21,11 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
         const predictionAddress = result.args.predictionAddress;
         console.log('prediction created at:', predictionAddress);
         dispatch(push(`/prediction/${predictionAddress}`));
-        market.PredictionCreatedEvent().stopWatching();
       }
+      market.PredictionCreatedEvent().stopWatching();
     });
 
+    // Send transaction.
     const unixBet = dateUtil.dateToUnix(betEndDate);
     const unixWith = dateUtil.dateToUnix(withdrawEndDate);
     console.log('creating prediction:', statement, unixBet, unixWith);
@@ -31,7 +34,8 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       unixBet,
       unixWith,
       {
-        from: acct
+        from: acct,
+        gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
       }
     );
   };

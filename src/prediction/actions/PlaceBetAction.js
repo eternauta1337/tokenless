@@ -1,5 +1,6 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
+import {TARGET_LIVE_NETWORK} from "../../constants";
 
 export function placeBet(bet, betEther) {
   console.log('placeBet()', bet, betEther);
@@ -19,6 +20,7 @@ export function placeBet(bet, betEther) {
         dispatch(connectPrediction(prediction.address));
         dispatch(forgetPreview(prediction.address));
       }
+      prediction.BetEvent().stopWatching();
     });
 
     // Place bet
@@ -26,7 +28,8 @@ export function placeBet(bet, betEther) {
     console.log('placing bet: ', prediction, betWei, getState().network.activeAccountAddress);
     await prediction.bet(bet, {
       from: getState().network.activeAccountAddress,
-      value: betWei
+      value: betWei,
+      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     });
   };
 }

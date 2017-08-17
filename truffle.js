@@ -35,13 +35,13 @@ module.exports = {
     development: {
       host: "localhost",
       port: 8545,
-      network_id: "*"
+      network_id: "*",
+      gas: 4000000
     },
     ropsten: {
       host: "localhost",
       port: 8546,
-      network_id: "3",
-      gas: 4000000
+      network_id: "3"
     },
     rinkeby: {
       host: "localhost",

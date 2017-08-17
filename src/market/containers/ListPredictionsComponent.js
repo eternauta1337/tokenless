@@ -8,6 +8,10 @@ import {
   getPredictionPreview,
   connectMarket
 } from '../actions';
+import {
+  TARGET_LIVE_NETWORK,
+  EXPLORER_URL
+} from "../../constants";
 
 class ListPredictions extends React.Component {
 
@@ -44,24 +48,28 @@ class ListPredictions extends React.Component {
 
               {/* LIST MARKETS PANEL */}
               <div className="">
+
+                {/* NO ITEMS */}
                 {!this.state.fetching && this.props.addresses.length === 0 &&
-                <div className="alert alert-default">
-                  <span className="text-muted">
-                    No predictions exist. Be the first to create one...
-                  </span>
-                </div>
+                  <div className="alert alert-default">
+                    <span className="text-muted">
+                      No predictions exist. Be the first to create one...
+                    </span>
+                  </div>
                 }
+
+                {/* LIST */}
                 {this.props.addresses.length > 0 &&
-                <ul className="list-group">
-                  {_.map(this.props.addresses, (address) => {
-                    const preview = this.props.previews[address];
-                    return <MarketListItemComponent
-                      key={address}
-                      address={address}
-                      preview={preview}
-                    />;
-                  })}
-                </ul>
+                  <ul className="list-group">
+                    {_.map(this.props.addresses, (address) => {
+                      const preview = this.props.previews[address];
+                      return <MarketListItemComponent
+                        key={address}
+                        address={address}
+                        preview={preview}
+                      />;
+                    })}
+                  </ul>
                 }
               </div>
 
@@ -70,6 +78,22 @@ class ListPredictions extends React.Component {
                 <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                 Create a New Prediction
               </Link>
+
+              <br/>
+              <br/>
+
+              {/* LINK TO EXPLORER */}
+              <div>
+                <a
+                  href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}address/${this.props.address}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;
+                  Explore Contract
+                </a>
+              </div>
+
             </div>
 
           </div>

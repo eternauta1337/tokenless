@@ -100,26 +100,26 @@ class Debug extends React.Component {
         }
         {/* SKIP */}
         {TARGET_LIVE_NETWORK === 'testrpc' &&
-          <div>
+          <span>
             <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
             <button onClick={() => { this.skipTime(10 * 60);           }}> +10m </button>
             <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
             <button onClick={() => { this.skipTime(10 * 60 * 60);      }}> +10h </button>
             <button onClick={() => { this.skipTime(24 * 60 * 60);      }}> +1d  </button>
             <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>&nbsp;
-          </div>
+          </span>
         }
 
         {/* SEND DUMMY TRANSACTION */}
         {TARGET_LIVE_NETWORK === 'testrpc' &&
-          <div>
+          <span>
             <button onClick={(evt) => {
               web3util.sendDummyTransaction(
                 this.props.globalState.network.web3,
                 this.props.globalState.network.activeAccountAddress
               );
             }}>Tx</button>&nbsp;
-          </div>
+          </span>
         }
 
       </div>

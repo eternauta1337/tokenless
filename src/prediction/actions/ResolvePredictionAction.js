@@ -1,4 +1,5 @@
 import { connectPrediction } from '.';
+import {TARGET_LIVE_NETWORK} from "../../constants";
 
 export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
@@ -15,12 +16,14 @@ export function resolveMarket(outcome) {
         console.log('contract resolved!', result);
         dispatch(connectPrediction(prediction.address));
       }
+      prediction.ResolveEvent().stopWatching();
     });
 
     // Resolve
     console.log('resolving prediction with outcome:', outcome);
     await prediction.resolve(outcome, {
-      from: getState().network.activeAccountAddress
+      from: getState().network.activeAccountAddress,
+      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     });
   };
 }

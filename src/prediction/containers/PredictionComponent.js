@@ -18,6 +18,7 @@ import {
   withdrawPrize,
   withdrawFees,
 } from '../actions';
+import {EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
 
 class Prediction extends React.Component {
 
@@ -151,6 +152,18 @@ class Prediction extends React.Component {
             playerPositiveBalance={this.props.playerPositiveBalance}
             playerNegativeBalance={this.props.playerNegativeBalance}
           />
+
+          {/* LINK TO EXPLORER */}
+          <div>
+            <a
+              href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}address/${this.props.address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;
+              Explore Contract
+            </a>
+          </div>
 
           {/* COMMENTS */}
           {/*<CommentsComponent/>*/}

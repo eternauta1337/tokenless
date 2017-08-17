@@ -1,5 +1,6 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
+import {TARGET_LIVE_NETWORK} from "../../constants";
 
 export function withdrawFees() {
   console.log('withdrawFees()');
@@ -16,13 +17,15 @@ export function withdrawFees() {
         dispatch(connectPrediction(prediction.address));
         dispatch(forgetPreview(prediction.address));
       }
+      prediction.WithdrawFeesEvent().stopWatching();
     });
 
     // Claim
     console.log('withdrawing fees...', getState().network.activeAccountAddress);
     await prediction.withdrawFees({
       from: getState().network.activeAccountAddress,
-      gas: 50000
+      gas: 50000,
+      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     });
   };
 }

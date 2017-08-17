@@ -21,6 +21,7 @@ export function connectPrediction(address) {
 
     // Extract prediction info.
     // console.log('getting prediction data... player:', player);
+    prediction.address = address;
     prediction.playerPositiveBalance = +web3.fromWei(await contract.getUserBalance(true, {from: player}), 'ether').toNumber();
     prediction.playerNegativeBalance = +web3.fromWei(await contract.getUserBalance(false, {from: player}), 'ether').toNumber();
     prediction.statement = await contract.statement.call();

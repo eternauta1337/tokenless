@@ -1,4 +1,5 @@
 import { connectPrediction } from '.';
+import {TARGET_LIVE_NETWORK} from "../../constants";
 
 export function withdrawPrize() {
   console.log('withdrawPrize()');
@@ -15,13 +16,14 @@ export function withdrawPrize() {
         console.log('withdraw prize succesful!', result);
         dispatch(connectPrediction(prediction.address));
       }
+      prediction.WithdrawPrizeEvent().stopWatching();
     });
 
     // Claim
     console.log('withdrawing prize...', getState().network.activeAccountAddress);
     await prediction.withdrawPrize({
       from: getState().network.activeAccountAddress,
-      gas: 50000
+      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     });
   };
 }
