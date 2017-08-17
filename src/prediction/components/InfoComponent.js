@@ -10,7 +10,8 @@ const InfoComponent = ({
                          betEndDate,
                          withdrawalEndDate,
                          outcome,
-                         balance
+                         balance,
+                         bcTimestamp
                        }) => {
 
   let predictionStateClass = 'success';
@@ -75,16 +76,20 @@ const InfoComponent = ({
         </li>
 
         {/* DATES */}
-        <li className='list-inline-item'>
-          <span className="label label-default">
-            Bets end on: {dateUtil.unixToStr(betEndDate)}
-          </span>
-        </li>
-        <li className='list-inline-item'>
-          <span className="label label-default">
-            Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
-          </span>
-        </li>
+        {predictionState === 0 &&
+          <li className='list-inline-item'>
+            <span className="label label-default">
+              Bets end on: {dateUtil.unixToStr(betEndDate)}
+            </span>
+          </li>
+        }
+        {predictionState === 2 && bcTimestamp < withdrawalEndDate &&
+          <li className='list-inline-item'>
+            <span className="label label-default">
+              Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
+            </span>
+          </li>
+        }
 
       </ul>
 

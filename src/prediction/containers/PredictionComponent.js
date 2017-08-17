@@ -9,8 +9,6 @@ import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import CommentsComponent from '../components/CommentsComponent';
-import * as dateUtil from '../../utils/DateUtil';
-import * as web3Util from '../../utils/Web3Util';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -121,9 +119,20 @@ class Prediction extends React.Component {
               />
           }
 
-          {/* WAIT */}
+          {/* PLAYER WAIT */}
           {!isOwned && this.props.predictionState === 1 &&
-            <WaitComponent/>
+            <WaitComponent
+              isOwned={false}
+            />
+          }
+
+          {/* OWNER WAIT */}
+          {isOwned &&
+           this.props.predictionState === 2 &&
+           this.props.bcTimestamp < this.props.withdrawEndDate &&
+            <WaitComponent
+              isOwned={true}
+            />
           }
 
           {/* BET */}
@@ -136,6 +145,7 @@ class Prediction extends React.Component {
 
           {/* USER INFO */}
           <UserInfoComponent
+            bcTimestamp={this.props.bcTimestamp}
             predictionState={this.props.predictionState}
             playerPrizes={this.props.estimatePrize}
             playerPositiveBalance={this.props.playerPositiveBalance}
