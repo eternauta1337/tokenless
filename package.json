@@ -9,7 +9,7 @@
     "rpc": "./scripts/rpc.sh",
     "test": "node scripts/test.js --env=jsdom",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build_webpack"
   },
   "devDependencies": {
     "autoprefixer": "6.5.1",
