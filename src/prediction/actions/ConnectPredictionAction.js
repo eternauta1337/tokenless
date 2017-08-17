@@ -33,7 +33,6 @@ export function connectPrediction(address) {
     prediction.betEndDate = ( await contract.betEndTimestamp.call() ).toNumber();
     prediction.withdrawEndDate = ( await contract.withdrawEndTimestamp.call() ).toNumber();
     prediction.balance = await web3util.getBalanceInEther(address, web3);
-    prediction.payments = +web3.fromWei(await contract.payments(player), 'ether').toNumber();
     if(prediction.predictionState === 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
     }

@@ -4,15 +4,13 @@ const UserInfoComponent = ({
   playerPositiveBalance,
   playerNegativeBalance,
   playerPrizes,
-  playerPayments,
   predictionState
 }) => {
 
   if(
     playerPositiveBalance === 0 &&
     playerNegativeBalance === 0 &&
-    (!playerPrizes || playerPrizes === 0) &&
-    playerPayments === 0
+    (!playerPrizes || playerPrizes === 0)
   ) return null;
 
   return (
@@ -43,15 +41,6 @@ const UserInfoComponent = ({
           <div>
             <small className="text-muted">
               Prize to claim: {playerPrizes} eth
-            </small>
-          </div>
-        }
-
-        {/* WITHDRAW */}
-        { predictionState === 2 && playerPayments > 0 &&
-          <div>
-            <small className="text-muted">
-              Funds to withdraw: {playerPayments} eth
             </small>
           </div>
         }

@@ -4,11 +4,10 @@ import ConnectComponent from '../../common/components/ConnectComponent';
 import InfoComponent from '../components/InfoComponent';
 import PlaceBetComponent from '../components/PlaceBetComponent';
 import ResolveComponent from '../components/ResolveComponent';
-import ClaimComponent from '../components/ClaimComponent';
+import WithdrawComponent from '../components/WIthdrawComponent';
 import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
-import WithdrawFundsComponent from '../components/WithdrawFundsComponent';
 import CommentsComponent from '../components/CommentsComponent';
 import * as dateUtil from '../../utils/DateUtil';
 import * as web3Util from '../../utils/Web3Util';
@@ -18,9 +17,8 @@ import {
   connectPrediction,
   placeBet,
   resolveMarket,
-  claimPrize,
-  claimFees,
-  withdrawFunds
+  withdrawPrize,
+  withdrawFees,
 } from '../actions';
 
 class Prediction extends React.Component {
@@ -96,21 +94,23 @@ class Prediction extends React.Component {
             <FinishComponent/>
           }
 
-          {/* CLAIM */}
-          {this.props.predictionState === 2 &&
-           this.props.payments === 0 &&
-           this.props.estimatePrize > 0 &&
-            <ClaimComponent
-              claimValue={isOwned ? this.props.balance : this.props.estimatePrize}
-              claimMethod={isOwned ? claimFees : claimPrize}
+          {/* WITHDRAW PRIZE */}
+          {!isOwned &&
+            this.props.predictionState === 2 &&
+            this.props.estimatePrize > 0 &&
+            <WithdrawComponent
+              claimAmount={this.props.estimatePrize}
+              claimMethod={this.props.withdrawPrize}
               />
           }
 
-          {/* WITHDRAW FUNDS */}
-          {this.props.predictionState === 2 && this.props.payments !== 0 &&
-            <WithdrawFundsComponent
-              payments={this.props.payments}
-              withdrawFunds={this.props.withdrawFunds}
+          {/* WITHDRAW FEES */}
+          { isOwned &&
+            this.props.predictionState === 2 &&
+            this.props.bcTimestamp > this.props.withdrawEndDate &&
+            <WithdrawComponent
+              claimAmount={this.props.balance}
+              claimMethod={this.props.withdrawFees}
             />
           }
 
@@ -137,7 +137,6 @@ class Prediction extends React.Component {
           {/* USER INFO */}
           <UserInfoComponent
             predictionState={this.props.predictionState}
-            playerPayments={this.props.payments}
             playerPrizes={this.props.estimatePrize}
             playerPositiveBalance={this.props.playerPositiveBalance}
             playerNegativeBalance={this.props.playerNegativeBalance}
@@ -170,10 +169,9 @@ const mapDispatchToProps = (dispatch) => {
     connectPrediction: (address) => dispatch(connectPrediction(address)),
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
-    claimPrize: () => dispatch(claimPrize()),
-    claimFees: () => dispatch(claimFees()),
-    resetMarket: () => dispatch(resetMarket()),
-    withdrawFunds: () => dispatch(withdrawFunds()),
+    withdrawPrize: () => dispatch(withdrawPrize()),
+    withdrawFees: () => dispatch(withdrawFees()),
+    resetMarket: () => dispatch(resetMarket())
   };
 };
 
