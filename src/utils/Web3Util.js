@@ -24,6 +24,18 @@ export function getBalanceInEther(address, web3) {
   });
 }
 
+export function getNetworkId(web3) {
+  return new Promise((resolve, reject) => {
+    web3.version.getNetwork((err, netId) => {
+      if(err) reject();
+      else {
+        console.log('netId', netId);
+        resolve(netId);
+      }
+    });
+  });
+}
+
 export function skipTime(seconds, web3) {
   console.log('skipping time:', seconds);
   return new Promise(async (resolve, reject) => {

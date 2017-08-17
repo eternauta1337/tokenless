@@ -77,13 +77,25 @@ class Debug extends React.Component {
         </small>
         <br/>
 
+        {/* NETWORK ID */}
+        {this.props.globalState.network.networkName &&
+          <span>
+            [{this.props.globalState.network.networkName}]&nbsp;
+          </span>
+        }
+
         {/* BLOCK NUM */}
-        [block {this.props.globalState.network.blockNumber}]&nbsp;
+        {this.props.globalState.network.blockNumber &&
+          <span>
+            [block {this.props.globalState.network.blockNumber}]&nbsp;
+          </span>
+        }
 
         {/* BLOCKCHAIN TIMESTAMP */}
-        [time&nbsp;
         { bcTimestamp &&
-          <span className={`text-${isDetached ? 'danger' : 'default'}`}>{nowStr}</span>
+          <span className={`text-${isDetached ? 'danger' : 'default'}`}>
+            [time{nowStr}]&nbsp;
+          </span>
         }
         {/* SKIP */}
         <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
@@ -91,7 +103,7 @@ class Debug extends React.Component {
         <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
         <button onClick={() => { this.skipTime(10 * 60 * 60);      }}> +10h </button>
         <button onClick={() => { this.skipTime(24 * 60 * 60);      }}> +1d  </button>
-        <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>]&nbsp;
+        <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>&nbsp;
 
         {/* SEND DUMMY TRANSACTION */}
         <button onClick={(evt) => {
