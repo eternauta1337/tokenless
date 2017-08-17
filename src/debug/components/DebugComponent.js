@@ -85,7 +85,7 @@ class Debug extends React.Component {
         }
 
         {/* BLOCK NUM */}
-        {this.props.globalState.network.blockNumber &&
+        {this.props.globalState.network.blockNumber !== undefined &&
           <span>
             [block {this.props.globalState.network.blockNumber}]&nbsp;
           </span>

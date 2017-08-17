@@ -12,6 +12,10 @@ export function dateToStr(date, format = 'yyyy-mm-dd') {
   return `${month}-${day}-${year}`;
 }
 
+export function unixToHumanizedDuration(unixTime) {
+  return moment.duration(unixTime).humanize();
+}
+
 export function deltaDays(date1, date2) {
   let d1 = dateToUnix(date1);
   let d2 = dateToUnix(date2);

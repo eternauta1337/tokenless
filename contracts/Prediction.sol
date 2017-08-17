@@ -20,10 +20,12 @@ contract Prediction is Ownable {
   
   uint public betEndTimestamp;
   uint public withdrawEndTimestamp;
+  uint public feePercent;
 
-  function Prediction(string _statement, uint _betEndTimestamp, uint _withdrawEndTimestamp) {
+  function Prediction(string _statement, uint _betEndTimestamp, uint _withdrawEndTimestamp, uint _feePercent) {
     
     statement = _statement;
+    feePercent = _feePercent;
     betEndTimestamp = _betEndTimestamp;
     withdrawEndTimestamp = _withdrawEndTimestamp;
     
@@ -114,8 +116,6 @@ contract Prediction is Ownable {
 
     uint balance = bets[prediction][msg.sender];
     if(balance == 0) return 0;
-
-    uint feePercent = 2;
 
     uint winningPot = totals[outcome];
     uint losingPot = totals[!outcome];

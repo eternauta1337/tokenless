@@ -13,7 +13,8 @@ contract('PredictionMarket (General)', function(accounts) {
   it('should be able to create a prediction with transferred ownership', async function() {
 
     const market = await PredictionMarket.new(
-      dateUtil.daysToSeconds(5)
+      dateUtil.daysToSeconds(5),
+      2
     );
     // console.log('prediction address:', prediction.address);
 
@@ -50,7 +51,8 @@ contract('PredictionMarket (General)', function(accounts) {
   it('should keep track of multiple predictions', async function() {
 
     const market = await PredictionMarket.new(
-      dateUtil.daysToSeconds(5)
+      dateUtil.daysToSeconds(5),
+      2
     );
 
     // Create a few predictions and recall their addresse.

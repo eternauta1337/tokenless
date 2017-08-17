@@ -13,7 +13,8 @@ contract('Combined', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     // Implement the following structure in the contract.
@@ -62,11 +63,11 @@ contract('Combined', function(accounts) {
   });
 
   it('(market+prediction) should support 2 balances for each user on contracts deployed by the prediction', async function() {
-
     const market = await PredictionMarket.new(
-      dateUtil.daysToSeconds(5)
+      dateUtil.daysToSeconds(5),
+      2
     );
-    // console.log('prediction address:', prediction.address);
+    // console.log('market address:', market.address);
 
     // Create prediction.
     const creationTransaction = await market.createPrediction(
@@ -74,7 +75,8 @@ contract('Combined', function(accounts) {
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
       {
-        from: accounts[0]
+        from: accounts[0],
+        gas: 1500000
       }
     );
     // console.log('creation transaction:', creationTransaction);
@@ -93,8 +95,6 @@ contract('Combined', function(accounts) {
     // console.log('statement:', statement);
     assert.notEqual(statement.length, 0, 'invalid statement');
 
-    let i;
-
     // Implement the following structure in the contract.
     const datas = [
       {userIdx: 1, pos: 3, neg: 0},
@@ -103,6 +103,7 @@ contract('Combined', function(accounts) {
       {userIdx: 4, pos: 0, neg: 0},
       {userIdx: 5, pos: 0, neg: 7.2}
     ];
+    let i;
     for(i = 0; i < datas.length; i++) {
 
       const data = datas[i];

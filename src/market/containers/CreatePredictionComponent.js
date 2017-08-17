@@ -83,9 +83,10 @@ class CreatePredictionComponent extends React.Component {
                     and players will no longer be able to withdraw their prizes.
                   </small>
                   <br/>
-                  {!isNaN(this.props.minWithdrawEndTimestampDelta) &&
+                  {this.props.minWithdrawEndTimestampDelta !== undefined &&
+                   this.props.minWithdrawEndTimestampDelta !== 0 &&
                     <small className="text-muted">
-                      ( The minimum of this market is {dateUtil.secondsToDays(this.props.minWithdrawEndTimestampDelta)} days )
+                      (The minimum of this market is {dateUtil.unixToHumanizedDuration(this.props.minWithdrawEndTimestampDelta)})
                     </small>
                   }
                 </div>

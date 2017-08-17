@@ -5,6 +5,10 @@ import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Prediction (General)', function(accounts) {
 
+  before(() => {
+    console.log('*** WARNING *** these tests will modify testrpc timestamps into the future');
+  });
+
   it('should contain a valid text statement', async function() {
 
     const betEndTimestamp = util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5);
@@ -14,7 +18,8 @@ contract('Prediction (General)', function(accounts) {
     const contract = await Prediction.new(
       "Bitcoin will reach $5000 in October 1.",
       betEndTimestamp,
-      withdrawEndTimestamp
+      withdrawEndTimestamp,
+      2
     );
     // console.log('contract created');
 
@@ -29,7 +34,8 @@ contract('Prediction (General)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     // Assumes that tests are ran immediately after contract creation.
@@ -47,7 +53,8 @@ contract('Prediction (General)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
     // console.log('contract created');
 

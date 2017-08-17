@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Public keys (corresponding to the private keys below):
+# 0: 0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39
+# 1: 0x6704fbfcd5ef766b287262fa2281c105d57246a6
 
 # Read params.
 blocktime=$@

@@ -21,10 +21,17 @@ const MarketListItemComponent = ({
         className="list-group-item">
         {title}
         <div className="pull-right">
-          <span>{balance} ETH</span>&nbsp;
+
+          {/* BALANCE */}
+          {balance > 0 &&
+            <span>{balance} eth&nbsp;</span>
+          }
+
+          {/* STATAE */}
           <span className={`label label-${predictionStateClass}`}>
             {preview.predictionStateStr}
           </span>
+
         </div>
       </Link>
     );

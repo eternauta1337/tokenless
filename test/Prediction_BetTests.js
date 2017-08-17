@@ -11,11 +11,11 @@ contract('Prediction (Bets)', function(accounts) {
   });
 
   it('should accepts funds via bets', async function() {
-
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     const userAddress = accounts[1];
@@ -40,7 +40,8 @@ contract('Prediction (Bets)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     const userAddress = accounts[0];
@@ -67,7 +68,8 @@ contract('Prediction (Bets)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     let userNullBalance = web3.fromWei(await contract.getUserBalance(true, {
@@ -108,7 +110,8 @@ contract('Prediction (Bets)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     let userBalance = web3.fromWei(await contract.getUserBalance(false, {
@@ -127,7 +130,8 @@ contract('Prediction (Bets)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
 
     let i;

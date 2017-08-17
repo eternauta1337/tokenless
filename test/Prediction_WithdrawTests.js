@@ -6,11 +6,16 @@ import * as dateUtil from '../src/utils/DateUtil';
 
 contract('Prediction (Withdraw)', function(accounts) {
 
+  before(() => {
+    console.log('*** WARNING *** these tests will modify testrpc timestamps into the future');
+  });
+
   it('should allow winners to withdraw their prize', async function() {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
     // console.log('time: ', await util.getTimestamp(web3));
 
@@ -64,7 +69,8 @@ contract('Prediction (Withdraw)', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10)
+      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      2
     );
     let state = 0;
     // console.log('time: ', await util.getTimestamp(web3));
