@@ -25,6 +25,7 @@ export function getBalanceInEther(address, web3) {
 }
 
 export function skipTime(seconds, web3) {
+  console.log('skipping time:', seconds);
   return new Promise(async (resolve, reject) => {
     web3.currentProvider.sendAsync(
       {
@@ -34,8 +35,12 @@ export function skipTime(seconds, web3) {
         id: 0
       },
       async (error, result) => {
-        if(error) reject();
+        if(error) {
+          console.log('error skipping time');
+          reject();
+        }
         else {
+          console.log('time skipped');
           await skipBlocks(1, web3);
           currentSimulatedDateUnix += seconds; // keep track of when now is for concurent tests
           resolve();
@@ -49,6 +54,7 @@ export function skipTime(seconds, web3) {
 }
 
 export async function skipBlocks(numBlocks, web3) {
+  console.log('skipping blocks:', numBlocks);
   return new Promise(async resolve => {
     for(let i = 0; i < numBlocks; i++) {
       await skipBlock(web3);
@@ -65,8 +71,14 @@ export async function skipBlock(web3) {
         method: 'evm_mine'
       },
       (error, result) => {
-        if(error) reject();
-        else resolve();
+        if(error) {
+          console.log('error skipping block');
+          reject();
+        }
+        else {
+          console.log('block skipped');
+          resolve();
+        }
       }
     );
   });

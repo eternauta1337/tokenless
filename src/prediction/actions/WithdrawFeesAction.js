@@ -19,7 +19,8 @@ export function withdrawFees() {
     // Claim
     console.log('withdraw fees...');
     await prediction.withdrawFees({
-      from: getState().network.activeAccountAddress
+      from: getState().network.activeAccountAddress,
+      gas: 50000
     });
   };
 }

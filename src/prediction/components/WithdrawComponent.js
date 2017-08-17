@@ -12,7 +12,7 @@ const WithdrawComponent = ({
   return (
     <div className='panel panel-info'>
       <div className="panel-heading">
-        <strong>Congratulations, you may withdraw your funds</strong>
+        <strong>Congratulations, you may withdraw your funds now</strong>
       </div>
       <div className="panel-body">
         <div className="form-group">

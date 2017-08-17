@@ -23,10 +23,11 @@ class CreatePredictionComponent extends React.Component {
 
   render() {
 
-    let betDate = dateUtil.unixToDate(this.props.bcTimestamp + 60 * 60);
+    // Pre-populate date files with 2 dates in the near future.
+    let now = this.props.bcTimestamp || dateUtil.dateToUnix(new Date());
+    let betDate = dateUtil.unixToDate(now + 60 * 60);
     this.betEndDate = betDate;
-
-    let withdrawDate = dateUtil.unixToDate(this.props.bcTimestamp + 2 * 60 * 60);
+    let withdrawDate = dateUtil.unixToDate(now + 2 * 60 * 60);
     this.withdrawEndDate = withdrawDate;
 
     return (

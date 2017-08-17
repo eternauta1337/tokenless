@@ -4,7 +4,7 @@ import ConnectComponent from '../../common/components/ConnectComponent';
 import InfoComponent from '../components/InfoComponent';
 import PlaceBetComponent from '../components/PlaceBetComponent';
 import ResolveComponent from '../components/ResolveComponent';
-import WithdrawComponent from '../components/WIthdrawComponent';
+import WithdrawComponent from '../components/WithdrawComponent';
 import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';

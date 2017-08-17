@@ -43,6 +43,10 @@ class Debug extends React.Component {
     this.updateBalance();
   }
 
+  async skipTime(seconds) {
+    await web3util.skipTime(seconds, this.props.globalState.network.web3);
+  }
+
   render() {
 
     const nowTimestamp = dateUtil.dateToUnix(new Date());
@@ -79,31 +83,12 @@ class Debug extends React.Component {
         { bcTimestamp &&
           <span className={`text-${isDetached ? 'danger' : 'default'}`}>{nowStr}</span>
         }
-        <button onClick={() => {
-          const secs = 60;
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-        }}>+1m</button>
-        <button onClick={() => {
-          const secs = 10 * 60;
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-        }}>+10m</button>
-        <button onClick={() => {
-          const secs = 60 * 60;
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-        }}>+1h</button>
-        <button onClick={() => {
-          const secs = 10 * 60 * 60;
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-        }}>+10h</button>
-        <button onClick={() => {
-          const secs = dateUtil.daysToSeconds(1);
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-        }}>+1d</button>
-        <button onClick={() => {
-          const secs = dateUtil.daysToSeconds(10);
-          web3util.skipTime(secs, this.props.globalState.network.web3);
-          }}>+10d</button>
-        ]&nbsp;
+        <button onClick={() => { this.skipTime(60);                }}> +1m  </button>
+        <button onClick={() => { this.skipTime(10 * 60);           }}> +10m </button>
+        <button onClick={() => { this.skipTime(60 * 60);           }}> +1h  </button>
+        <button onClick={() => { this.skipTime(10 * 60 * 60);      }}> +10h </button>
+        <button onClick={() => { this.skipTime(24 * 60 * 60);      }}> +1d  </button>
+        <button onClick={() => { this.skipTime(10 * 24 * 60 * 60); }}> +1d  </button>]&nbsp;
 
         {/* SEND DUMMY TRANSACTION */}
         <button onClick={(evt) => {
