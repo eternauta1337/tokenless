@@ -1,4 +1,5 @@
 import { connectPrediction } from '.';
+import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 
 export function withdrawFees() {
   console.log('withdrawFees()');
@@ -13,11 +14,12 @@ export function withdrawFees() {
       else {
         console.log('withdraw fees succesful!');
         dispatch(connectPrediction(prediction.address));
+        dispatch(forgetPreview(prediction.address));
       }
     });
 
     // Claim
-    console.log('withdraw fees...');
+    console.log('withdrawing fees...', getState().network.activeAccountAddress);
     await prediction.withdrawFees({
       from: getState().network.activeAccountAddress,
       gas: 50000

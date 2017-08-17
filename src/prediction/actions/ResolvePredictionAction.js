@@ -20,7 +20,8 @@ export function resolveMarket(outcome) {
     // Resolve
     console.log('resolving prediction with outcome:', outcome);
     await prediction.resolve(outcome, {
-      from: getState().network.activeAccountAddress
+      from: getState().network.activeAccountAddress,
+      gas: 50000
     });
   };
 }

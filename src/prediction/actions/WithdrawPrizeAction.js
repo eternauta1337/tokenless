@@ -18,7 +18,7 @@ export function withdrawPrize() {
     });
 
     // Claim
-    console.log('withdrawing prize...');
+    console.log('withdrawing prize...', getState().network.activeAccountAddress);
     await prediction.withdrawPrize({
       from: getState().network.activeAccountAddress,
       gas: 50000

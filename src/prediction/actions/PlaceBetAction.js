@@ -26,7 +26,8 @@ export function placeBet(bet, betEther) {
     console.log('placing bet: ', prediction, betWei, getState().network.activeAccountAddress);
     await prediction.bet(bet, {
       from: getState().network.activeAccountAddress,
-      value: betWei
+      value: betWei,
+      gas: 110000
     });
   };
 }
