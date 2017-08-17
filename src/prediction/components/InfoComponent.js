@@ -30,7 +30,7 @@ const InfoComponent = ({
     <div>
 
       {/* POT BALANCES */}
-      {balanceTotal > 0 &&
+      {balanceTotal > 0 && predictionState !== 3 &&
       <div className="progress">
         <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
             <span className="">
