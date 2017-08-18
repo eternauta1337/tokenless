@@ -1,15 +1,12 @@
 {
   "name": "tokenless",
   "version": "0.2.0",
-  "private": false,
-  "homepage": "https://ajsantander.github.io/tokenless",
+  "homepage": "",
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "rpc": "./scripts/rpc.sh",
-    "test": "node scripts/test.js --env=jsdom",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build_webpack"
+    "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {
     "autoprefixer": "6.5.1",
@@ -65,6 +62,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "ethereumjs-util": "^5.1.2",
+    "express": "^4.15.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "^15.4.2",

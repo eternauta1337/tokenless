@@ -19,7 +19,7 @@ export const EXPLORER_URL = {
 };
 
 // Router paths.
-const baseURL = process.env.PUBLIC_URL;
+const baseURL = '';
 export const PATH_CREATE = baseURL + '/create';
 export const PATH_PREDICTION = baseURL + '/prediction/:address';
 export const PATH_ROOT = baseURL + '/';
