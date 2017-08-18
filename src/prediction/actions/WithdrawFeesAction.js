@@ -8,7 +8,8 @@ export function withdrawFees() {
   return async function(dispatch, getState) {
     const prediction = getState().prediction.contract;
 
-    prediction.WithdrawFeesEvent().watch(async (error, result) => {
+    const event = prediction.WithdrawFeesEvent();
+    event.watch(async (error, result) => {
       console.log('WithdrawFeesEvent');
       if(error) {
         console.log('error withdrawing fees');
@@ -18,7 +19,7 @@ export function withdrawFees() {
         dispatch(connectPrediction(prediction.address));
         dispatch(forgetPreview(prediction.address));
       }
-      prediction.WithdrawFeesEvent().stopWatching();
+      event.stopWatching();
       dispatch(setWaiting(false));
     });
 
@@ -31,6 +32,7 @@ export function withdrawFees() {
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
+      event.stopWatching();
     });
   };
 }

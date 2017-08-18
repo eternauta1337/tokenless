@@ -12,7 +12,8 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
     console.log('acct:', acct);
 
     // Listen for bet event...
-    market.PredictionCreatedEvent().watch((error, result) => {
+    let event = market.PredictionCreatedEvent();
+    event.watch((error, result) => {
       console.log('PredictionCreatedEvent');
       if(error) {
         console.log('prediction creation error');
@@ -22,7 +23,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
         console.log('prediction created at:', predictionAddress);
         dispatch(push(`/prediction/${predictionAddress}`));
       }
-      market.PredictionCreatedEvent().stopWatching();
+      event.stopWatching();
       dispatch(setWaiting(false));
     });
 

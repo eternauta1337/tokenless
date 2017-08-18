@@ -11,18 +11,19 @@ export function placeBet(bet, betEther) {
     const prediction = getState().prediction.contract;
 
     // Listen for bet event...
-    prediction.BetEvent().watch((error) => {
+    const event = prediction.BetEvent();
+    event.watch((error) => {
       console.log('BetEvent');
       if(error) {
-        console.log('placing bet failed');
+        console.log('placing bet failed', bet);
       }
       else {
-        console.log('bet placed!');
+        console.log('bet placed!', bet);
         dispatch(connectPrediction(prediction.address));
         dispatch(forgetPreview(prediction.address));
       }
       dispatch(setWaiting(false));
-      prediction.BetEvent().stopWatching();
+      event.stopWatching();
     });
 
     dispatch(setWaiting(true));
@@ -36,6 +37,7 @@ export function placeBet(bet, betEther) {
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
+      event.stopWatching();
     });
   };
 }

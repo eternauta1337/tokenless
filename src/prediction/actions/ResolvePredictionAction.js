@@ -8,7 +8,9 @@ export function resolveMarket(outcome) {
     const prediction = getState().prediction.contract;
 
     // Listen for resolve event...
-    prediction.ResolveEvent().watch((error, result) => {
+
+    const event = prediction.ResolveEvent();
+    event.watch((error, result) => {
       console.log('ResolveEvent', error, result);
       if(error) {
         console.log('error resolving contract');
@@ -17,7 +19,7 @@ export function resolveMarket(outcome) {
         console.log('contract resolved!', result);
         dispatch(connectPrediction(prediction.address));
       }
-      prediction.ResolveEvent().stopWatching();
+      event.stopWatching();
       dispatch(setWaiting(false));
     });
 
@@ -30,6 +32,7 @@ export function resolveMarket(outcome) {
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
+      event.stopWatching();
     });
   };
 }

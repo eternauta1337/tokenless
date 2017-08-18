@@ -8,7 +8,8 @@ export function withdrawPrize() {
     const prediction = getState().prediction.contract;
     // console.log('prediction:', prediction);
 
-    prediction.WithdrawPrizeEvent().watch(async (error, result) => {
+    let event = prediction.WithdrawPrizeEvent();
+    event.watch(async (error, result) => {
       console.log('WithdrawPrizeEvent', error, result);
       if(error) {
         console.log('error withdrawing prize');
@@ -17,7 +18,7 @@ export function withdrawPrize() {
         console.log('withdraw prize succesful!', result);
         dispatch(connectPrediction(prediction.address));
       }
-      prediction.WithdrawPrizeEvent().stopWatching();
+      event.stopWatching();
       dispatch(setWaiting(false));
     });
 
@@ -30,6 +31,7 @@ export function withdrawPrize() {
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
+      event.stopWatching();
     });
   };
 }
