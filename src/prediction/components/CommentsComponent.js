@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDisqusThread from 'react-disqus-thread';
+import ReactDisqusComments from 'react-disqus-comments';
+import {PATH_PREDICTION, SITE_URL} from "../../constants";
 
 class CommentsComponent extends React.Component {
 
@@ -10,7 +11,13 @@ class CommentsComponent extends React.Component {
   render() {
     return (
       <div>
-        <ReactDisqusThread title="Market Discussion"/>
+        <ReactDisqusComments
+          shortname="tokenless"
+          identifier={this.props.address}
+          title="Prediction discussion"
+          url={SITE_URL + PATH_PREDICTION + '/' + this.props.address}
+          category_id=""
+          onNewComment={() => {}}/>
       </div>
     );
   }

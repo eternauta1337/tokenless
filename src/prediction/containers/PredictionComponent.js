@@ -179,7 +179,9 @@ class Prediction extends React.Component {
           {/* COMMENTS */}
           <br/>
           <br/>
-          <CommentsComponent/>
+          <CommentsComponent
+            address={this.props.address}
+          />
 
         </div>
 
