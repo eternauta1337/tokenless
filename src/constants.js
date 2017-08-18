@@ -1,12 +1,12 @@
 // General.
-export const DEBUG_MODE = true; // activates a debug panel useful for development
-export const USE_INJECTED_WEB3 = false; // for use with eg. metamask
-export const TARGET_LIVE_NETWORK = 'testrpc'; // ropsten, mainnet, testrpc
+export const DEBUG_MODE = false; // activates a debug panel useful for development
+export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
+export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 
 // Market contract urls.
 export const MARKET_ADDRESS = {
   mainnet: '',
-  ropsten: '0xa2d93fe188660e0ff8fdf27dd32b6568f0822055',
+  ropsten: '0x7b6103e6be6cfad55c167fa94c148ac459ecc847',
   testrpc: '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a'
 };
 
