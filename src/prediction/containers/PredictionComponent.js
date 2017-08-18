@@ -9,7 +9,6 @@ import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import CommentsComponent from '../components/CommentsComponent';
-import RandomGifComponent from '../../common/components/RandomGifComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -55,17 +54,11 @@ class Prediction extends React.Component {
 
   render() {
 
-    // CONNECTING...
-    if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting..."/>;
-    }
-
-    {/* PROCESSING... */}
-    if(this.props.isWaiting) {
+    {/* CONNECTING/PROCESSING... */}
+    if(!this.props.isConnected || this.props.isWaiting) {
       return (
         <div>
-          <ConnectComponent title="Processing transaction..."/>
-          <RandomGifComponent/>
+          <ConnectComponent title={!this.props.isConnected ? "Connecting..." : "Processing..."}/>
         </div>
       );
     }

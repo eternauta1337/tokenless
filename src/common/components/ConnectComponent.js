@@ -1,5 +1,6 @@
 import React from 'react';
 import BubblePreloader from 'react-bubble-preloader';
+import RandomGifComponent from '../../common/components/RandomGifComponent';
 
 const ConnectComponent = ({title}) => {
   return (
@@ -13,6 +14,7 @@ const ConnectComponent = ({title}) => {
           colors={['#ffbb33', '#FF8800', '#ff4444']}
         />
       </div>
+      <RandomGifComponent/>
     </div>
   );
 };

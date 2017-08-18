@@ -4,7 +4,6 @@ import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import RandomGifComponent from '../../common/components/RandomGifComponent';
 import {
   DEBUG_MODE
 } from '../../constants';
@@ -26,12 +25,11 @@ class CreatePredictionComponent extends React.Component {
 
   render() {
 
-    {/* PROCESSING... */}
+    {/* CONNECTING/PROCESSING... */}
     if(this.props.isWaiting) {
       return (
         <div>
-          <ConnectComponent title="Processing transaction..."/>
-          <RandomGifComponent/>
+          <ConnectComponent title="Processing..."/>
         </div>
       );
     }

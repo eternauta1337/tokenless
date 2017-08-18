@@ -34,9 +34,13 @@ class Market extends React.Component {
 
   render() {
 
-    // CONNECTING...
-    if (!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with the market..."/>;
+    {/* CONNECTING/PROCESSING... */}
+    if(!this.props.isConnected || this.props.isWaiting) {
+      return (
+        <div>
+          <ConnectComponent title={!this.props.isConnected ? "Connecting..." : "Processing..."}/>
+        </div>
+      );
     }
 
     return (
