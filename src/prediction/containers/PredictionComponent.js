@@ -9,6 +9,7 @@ import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import CommentsComponent from '../components/CommentsComponent';
+import Giphy from '../../common/components/RandomGifsComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -57,6 +58,16 @@ class Prediction extends React.Component {
     // CONNECTING...
     if(!this.props.isConnected) {
       return <ConnectComponent title="Connecting with the prediction smart contract..."/>;
+    }
+
+    {/* PROCESSING... */}
+    if(this.props.isWaiting) {
+      return (
+        <div>
+          <ConnectComponent title="Processing transaction..."/>
+          <Giphy firstInput={'computers'} />
+        </div>
+      );
     }
 
     // Pre-process some of the prediction's data for display.
@@ -166,7 +177,9 @@ class Prediction extends React.Component {
           </div>
 
           {/* COMMENTS */}
-          {/*<CommentsComponent/>*/}
+          <br/>
+          <br/>
+          <CommentsComponent/>
 
         </div>
 
@@ -183,7 +196,8 @@ const mapStateToProps = (state, ownProps) => {
     blockNumber: state.network.blockNumber,
     web3: state.network.web3,
     bcTimestamp: state.network.currentTime,
-    ...state.prediction
+    ...state.prediction,
+    isWaiting: state.network.isWaiting
   };
 };
 

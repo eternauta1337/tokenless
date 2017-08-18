@@ -1,5 +1,5 @@
 // General.
-export const DEBUG_MODE = true; // activates a debug panel useful for development
+export const DEBUG_MODE = false; // activates a debug panel useful for development
 export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
 export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 
@@ -7,7 +7,7 @@ export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 export const MARKET_ADDRESS_TESTRPC =
   '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a';
 export const MARKET_ADDRESS_ROPSTEN =
-  '0x6C12aF0d66552f5379D626D921755203686767b5';
+  '0xa2d93fe188660e0ff8fdf27dd32b6568f0822055';
 export const MARKET_ADDRESS_MAINNET =
   '';
 
@@ -24,3 +24,6 @@ export const PATH_CREATE = baseURL + '/create';
 export const PATH_PREDICTION = baseURL + '/prediction/:address';
 export const PATH_ROOT = baseURL + '/';
 export const PATH_ABOUT = baseURL + '/about';
+
+// Old ropsten markets (most recent on top):
+// 0x6C12aF0d66552f5379D626D921755203686767b5

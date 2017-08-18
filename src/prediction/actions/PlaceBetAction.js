@@ -1,6 +1,7 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {TARGET_LIVE_NETWORK} from "../../constants";
+import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function placeBet(bet, betEther) {
   console.log('placeBet()', bet, betEther);
@@ -20,8 +21,11 @@ export function placeBet(bet, betEther) {
         dispatch(connectPrediction(prediction.address));
         dispatch(forgetPreview(prediction.address));
       }
+      dispatch(setWaiting(false));
       prediction.BetEvent().stopWatching();
     });
+
+    dispatch(setWaiting(true));
 
     // Place bet
     const betWei = web3.toWei(betEther, 'ether');

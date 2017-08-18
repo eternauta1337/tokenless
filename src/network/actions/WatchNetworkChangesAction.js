@@ -10,9 +10,9 @@ export function watchNetworkChanges() {
     const web3 = getState().network.web3;
 
     // Watch transactions.
-    web3.eth.filter('pending').watch(function(error, result){
-      console.log('pending transaction (filter):', result);
-    });
+    // web3.eth.filter('pending').watch(function(error, result){
+    //   console.log('pending transaction (filter):', result);
+    // });
 
     // Query the network with an interval.
     setInterval(async () => {

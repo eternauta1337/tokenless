@@ -9,10 +9,10 @@ const FinishComponent = () => {
       <div className="panel-body">
         <form className="">
           <div className="form-group">
-            <small className="text-info">
+            <h4 className="text-info">
               This prediction has been resolved and all bets, prizes
               and fees have been withdrawn from the smart contract.
-            </small>
+            </h4>
           </div>
         </form>
       </div>

@@ -25,7 +25,7 @@ require('babel-polyfill');
 * 3) Interactively unlock the contract owner account.
 *
 * After the node starts and the account is unlocked, outside of geth, run:
-* truffle migrate --network ropsten
+* truffle migrate --network ropsten --reset
 *
 * */
 

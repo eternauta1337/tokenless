@@ -1,5 +1,6 @@
 import { connectPrediction } from '.';
 import {TARGET_LIVE_NETWORK} from "../../constants";
+import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function withdrawPrize() {
   console.log('withdrawPrize()');
@@ -17,7 +18,10 @@ export function withdrawPrize() {
         dispatch(connectPrediction(prediction.address));
       }
       prediction.WithdrawPrizeEvent().stopWatching();
+      dispatch(setWaiting(false));
     });
+
+    dispatch(setWaiting(true));
 
     // Claim
     console.log('withdrawing prize...', getState().network.activeAccountAddress);

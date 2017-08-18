@@ -1,6 +1,7 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {TARGET_LIVE_NETWORK} from "../../constants";
+import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function withdrawFees() {
   console.log('withdrawFees()');
@@ -18,7 +19,10 @@ export function withdrawFees() {
         dispatch(forgetPreview(prediction.address));
       }
       prediction.WithdrawFeesEvent().stopWatching();
+      dispatch(setWaiting(false));
     });
+
+    dispatch(setWaiting(true));
 
     // Claim
     console.log('withdrawing fees...', getState().network.activeAccountAddress);

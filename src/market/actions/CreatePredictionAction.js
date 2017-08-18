@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import * as dateUtil from '../../utils/DateUtil';
 import {TARGET_LIVE_NETWORK} from "../../constants";
+import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function createPrediction(statement, betEndDate, withdrawEndDate) {
   console.log('createPrediction()', statement, betEndDate, withdrawEndDate);
@@ -8,7 +9,6 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
 
     const market = getState().market.contract;
     const acct = getState().network.activeAccountAddress;
-    const web3 = getState().network.web3;
     console.log('acct:', acct);
 
     // Listen for bet event...
@@ -23,7 +23,10 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
         dispatch(push(`/prediction/${predictionAddress}`));
       }
       market.PredictionCreatedEvent().stopWatching();
+      dispatch(setWaiting(false));
     });
+
+    dispatch(setWaiting(true));
 
     // Send transaction.
     const unixBet = dateUtil.dateToUnix(betEndDate);

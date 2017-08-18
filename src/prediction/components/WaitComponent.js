@@ -10,20 +10,20 @@ const WaitComponent = ({ isOwned }) => {
 
         {/* OWNER */}
         {!isOwned &&
-          <p>
+          <h4>
             Waiting for the owner to resolve this prodiction.
             This can happen any time now.
             Please come back to check if the prediction has been resolved, and most importantly,
             to see if you have a prize to claim!
-          </p>
+          </h4>
         }
 
         {/* PLAYER */}
         {isOwned &&
-          <p>
+          <h4>
             Waiting for players to withdraw their prizes. You will be able to withdraw your fees
             after the withdrawal end date.
-          </p>
+          </h4>
         }
 
       </div>

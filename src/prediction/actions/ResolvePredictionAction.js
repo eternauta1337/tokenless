@@ -1,5 +1,6 @@
 import { connectPrediction } from '.';
 import {TARGET_LIVE_NETWORK} from "../../constants";
+import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
@@ -17,7 +18,10 @@ export function resolveMarket(outcome) {
         dispatch(connectPrediction(prediction.address));
       }
       prediction.ResolveEvent().stopWatching();
+      dispatch(setWaiting(false));
     });
+
+    dispatch(setWaiting(true));
 
     // Resolve
     console.log('resolving prediction with outcome:', outcome);

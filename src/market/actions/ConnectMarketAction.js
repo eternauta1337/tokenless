@@ -30,7 +30,7 @@ export function connectMarket() {
     // Get prediction info.
     market.address = targetAddr;
     market.minWithdrawEndTimestampDelta = ( await contract.minWithdrawEndTimestampDelta.call() ).toNumber();
-    market.predictionAddresses = await contract.getPredictions();
+    market.predictionAddresses = (await contract.getPredictions()).reverse();
     // console.log('market', market);
 
     dispatch({

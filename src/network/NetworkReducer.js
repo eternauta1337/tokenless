@@ -2,6 +2,7 @@ import {
   CONNECT_NETWORK,
   SET_ACTIVE_ACCOUNT_INDEX,
   UPDATE_NETWORK,
+  SET_WAITING
 } from './actions';
 import {
   USE_INJECTED_WEB3
@@ -12,6 +13,7 @@ const initialState = {
   web3: undefined,
   activeAccountIndex: undefined,
   activeAccountAddress: undefined,
+  isWaiting: false
   /* additional blockchain params */
 };
 
@@ -25,6 +27,12 @@ export default function(state = initialState, action) {
       ...state,
       web3: action.payload,
       isConnected: true
+    };
+
+  case SET_WAITING:
+    return {
+      ...state,
+      isWaiting: action.payload
     };
 
   case UPDATE_NETWORK:

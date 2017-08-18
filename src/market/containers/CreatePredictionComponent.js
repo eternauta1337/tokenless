@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
+import ConnectComponent from '../../common/components/ConnectComponent';
+import Giphy from '../../common/components/RandomGifsComponent';
 import {
   DEBUG_MODE
 } from '../../constants';
@@ -14,6 +16,7 @@ class CreatePredictionComponent extends React.Component {
 
   handleCreateSubmit() {
     const statement = this.statementInputField.value;
+    // console.log('dates:', this.betEndDate, this.withdrawEndDate);
     this.props.createPrediction(statement, this.betEndDate, this.withdrawEndDate);
   }
 
@@ -23,8 +26,18 @@ class CreatePredictionComponent extends React.Component {
 
   render() {
 
+    {/* PROCESSING... */}
+    if(this.props.isWaiting) {
+      return (
+        <div>
+          <ConnectComponent title="Processing transaction..."/>
+          <Giphy firstInput={'computers'} />
+        </div>
+      );
+    }
+
     // Pre-populate date files with 2 dates in the near future.
-    let now = this.props.bcTimestamp || dateUtil.dateToUnix(new Date());
+    let now = dateUtil.dateToUnix(new Date());
     let betDate = dateUtil.unixToDate(now + 60 * 60);
     this.betEndDate = betDate;
     let withdrawDate = dateUtil.unixToDate(now + 2 * 60 * 60);
@@ -111,7 +124,8 @@ class CreatePredictionComponent extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     bcTimestamp: state.network.currentTime,
-    minWithdrawEndTimestampDelta: state.market.minWithdrawEndTimestampDelta
+    minWithdrawEndTimestampDelta: state.market.minWithdrawEndTimestampDelta,
+    isWaiting: state.network.isWaiting
   };
 };
 

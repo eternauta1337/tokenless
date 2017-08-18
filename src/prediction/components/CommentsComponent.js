@@ -1,25 +1,25 @@
 import React from 'react';
 import ReactDisqusThread from 'react-disqus-thread';
 
-const CommentsComponent = ({
-  predictionAddress
-}) => {
+class CommentsComponent extends React.Component {
 
-  const handleNewComment = function() {
-    console.log('new comment');
-  };
+  shouldComponentUpdate(nextProps) {
+    return false;
+  }
 
-  return (
-    <div>
-      <ReactDisqusThread
-				shortname="tokenless"
-				identifier={`tokenless-prediction-${predictionAddress}`}
-				title="Market Discussion"
-				url={`http://www.example.com/prediction${predictionAddress}`}
-				category_id=""
-				onNewComment={handleNewComment}/>
-    </div>
-  );
-};
+  render() {
+    return (
+      <div>
+        <ReactDisqusThread
+        shortname="tokenless"
+        identifier={`tokenless-prediction-${this.props.predictionAddress}`}
+        title="Market Discussion"
+        url={`http://www.example.com/prediction${this.props.predictionAddress}`}
+        category_id=""
+        onNewComment={this.props.handleNewComment}/>
+      </div>
+    );
+  }
+}
 
 export default CommentsComponent;

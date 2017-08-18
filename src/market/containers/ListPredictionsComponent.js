@@ -53,7 +53,7 @@ class ListPredictions extends React.Component {
                 {!this.state.fetching && this.props.addresses.length === 0 &&
                   <div className="alert alert-default">
                     <span className="text-muted">
-                      No predictions exist. Be the first to create one...
+                      No predictions yet.
                     </span>
                   </div>
                 }
