@@ -14,7 +14,8 @@ Start UI server:
 ```npm start```
 
 Run custom testrpc:
-```npm run rpc```
+```npm run rpc 0```
+(you may replace the 0 for any other block mining time)
 
 Configure [constants.js](https://github.com/ajsantander/tokenless/blob/master/src/constants.js) to use testrpc
 DEBUG_MODE
