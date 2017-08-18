@@ -10,13 +10,7 @@ class CommentsComponent extends React.Component {
   render() {
     return (
       <div>
-        <ReactDisqusThread
-        shortname="tokenless"
-        identifier={`tokenless-prediction-${this.props.predictionAddress}`}
-        title="Market Discussion"
-        url={`http://www.example.com/prediction${this.props.predictionAddress}`}
-        category_id=""
-        onNewComment={this.props.handleNewComment}/>
+        <ReactDisqusThread title="Market Discussion"/>
       </div>
     );
   }
