@@ -10,7 +10,7 @@ contract('PredictionMarket (General)', function(accounts) {
     // console.log('accounts:', web3.eth.accounts);
   });
 
-  it.only('should be able to create a prediction with transferred ownership', async function() {
+  it('should be able to create a prediction with transferred ownership', async function() {
 
     const market = await PredictionMarket.new(
       dateUtil.daysToSeconds(5),

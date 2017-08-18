@@ -15,12 +15,16 @@ Install packages:
 Run custom testrpc:
 ```npm run rpc 0```
 (you may replace the 0 for any other block mining time)
+This script is handy for quickly restarting the testrpc and re-deploying the contract, 
+always with the same address, at the same time.
 
 Start UI server:
 ```npm start```
 
 Run Solidity Tests:
 ```truffle test```
+
+![solidity tests](/img/soltest.png?raw=true "Solidity Tests")
 
 Deploy:
 ```npm run deploy```
