@@ -16,7 +16,7 @@ class CreatePredictionComponent extends React.Component {
 
   handleCreateSubmit() {
     const statement = this.statementInputField.value;
-    // console.log('dates:', this.betEndDate, this.withdrawEndDate);
+    console.log('dates:', this.betEndDate, this.withdrawEndDate);
     this.props.createPrediction(statement, this.betEndDate, this.withdrawEndDate);
   }
 
@@ -38,9 +38,9 @@ class CreatePredictionComponent extends React.Component {
 
     // Pre-populate date files with 2 dates in the near future.
     let now = dateUtil.dateToUnix(new Date());
-    let betDate = dateUtil.unixToDate(now + 60 * 60);
+    let betDate = DEBUG_MODE ? dateUtil.unixToDate(now + 5 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
     this.betEndDate = betDate;
-    let withdrawDate = dateUtil.unixToDate(now + 2 * 60 * 60);
+    let withdrawDate = DEBUG_MODE ? dateUtil.unixToDate(now + 10 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 14 ) );
     this.withdrawEndDate = withdrawDate;
 
     return (
