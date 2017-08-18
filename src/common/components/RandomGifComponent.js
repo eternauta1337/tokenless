@@ -2,7 +2,7 @@ import React from 'react';
 
 class RandomGifComponent extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
 
     const q = "computers"; // search query
 

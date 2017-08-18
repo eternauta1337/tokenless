@@ -31,7 +31,7 @@ class CreatePredictionComponent extends React.Component {
       return (
         <div>
           <ConnectComponent title="Processing transaction..."/>
-          <RandomGifComponent firstInput={'computers'} />
+          <RandomGifComponent/>
         </div>
       );
     }
