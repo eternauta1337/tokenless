@@ -4,7 +4,7 @@ import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import Giphy from '../../common/components/RandomGifsComponent';
+import RandomGifComponent from '../../common/components/RandomGifComponent';
 import {
   DEBUG_MODE
 } from '../../constants';
@@ -31,7 +31,7 @@ class CreatePredictionComponent extends React.Component {
       return (
         <div>
           <ConnectComponent title="Processing transaction..."/>
-          <Giphy firstInput={'computers'} />
+          <RandomGifComponent firstInput={'computers'} />
         </div>
       );
     }
