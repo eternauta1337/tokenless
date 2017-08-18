@@ -9,7 +9,7 @@ import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import CommentsComponent from '../components/CommentsComponent';
-import Giphy from '../../common/components/RandomGifsComponent';
+import RandomGifComponent from '../../common/components/RandomGifComponent';
 import '../../styles/index.css';
 import {
   resetMarket,
@@ -57,7 +57,7 @@ class Prediction extends React.Component {
 
     // CONNECTING...
     if(!this.props.isConnected) {
-      return <ConnectComponent title="Connecting with the prediction smart contract..."/>;
+      return <ConnectComponent title="Connecting..."/>;
     }
 
     {/* PROCESSING... */}
@@ -65,7 +65,7 @@ class Prediction extends React.Component {
       return (
         <div>
           <ConnectComponent title="Processing transaction..."/>
-          <Giphy firstInput={'computers'} />
+          <RandomGifComponent firstInput={'computers'} />
         </div>
       );
     }
