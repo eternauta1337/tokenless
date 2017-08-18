@@ -11,22 +11,6 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
     const acct = getState().network.activeAccountAddress;
     console.log('acct:', acct);
 
-    // Listen for bet event...
-    let event = market.PredictionCreatedEvent();
-    event.watch((error, result) => {
-      console.log('PredictionCreatedEvent');
-      if(error) {
-        console.log('prediction creation error');
-      }
-      else {
-        const predictionAddress = result.args.predictionAddress;
-        console.log('prediction created at:', predictionAddress);
-        dispatch(push(`/prediction/${predictionAddress}`));
-      }
-      event.stopWatching();
-      dispatch(setWaiting(false));
-    });
-
     dispatch(setWaiting(true));
 
     // Send transaction.
@@ -43,7 +27,11 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       }
     ).catch((err) => {
       console.log(err);
-      event.stopWatching();
+      dispatch(setWaiting(false));
+    }).then((result) => {
+      console.log('prediction created:', result);
+      const predictionAddress = result.logs[0].args.predictionAddress;
+      dispatch(push(`/prediction/${predictionAddress}`));
       dispatch(setWaiting(false));
     });
   };

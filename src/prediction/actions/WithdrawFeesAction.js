@@ -8,21 +8,6 @@ export function withdrawFees() {
   return async function(dispatch, getState) {
     const prediction = getState().prediction.contract;
 
-    const event = prediction.WithdrawFeesEvent();
-    event.watch(async (error, result) => {
-      console.log('WithdrawFeesEvent');
-      if(error) {
-        console.log('error withdrawing fees');
-      }
-      else {
-        console.log('withdraw fees succesful!');
-        dispatch(connectPrediction(prediction.address));
-        dispatch(forgetPreview(prediction.address));
-      }
-      event.stopWatching();
-      dispatch(setWaiting(false));
-    });
-
     dispatch(setWaiting(true));
 
     // Claim
@@ -32,8 +17,12 @@ export function withdrawFees() {
       gas: USE_INJECTED_WEB3 ? undefined : 4000000
     }).catch((err) => {
       console.log(err);
-      event.stopWatching();
       dispatch(setWaiting(false));
+    }).then(() => {
+      dispatch(setWaiting(false));
+      console.log('withdraw fees succesful!');
+      dispatch(connectPrediction(prediction.address));
+      dispatch(forgetPreview(prediction.address));
     });
   };
 }

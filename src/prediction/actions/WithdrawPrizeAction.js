@@ -8,20 +8,6 @@ export function withdrawPrize() {
     const prediction = getState().prediction.contract;
     // console.log('prediction:', prediction);
 
-    let event = prediction.WithdrawPrizeEvent();
-    event.watch(async (error, result) => {
-      console.log('WithdrawPrizeEvent', error, result);
-      if(error) {
-        console.log('error withdrawing prize');
-      }
-      else {
-        console.log('withdraw prize succesful!', result);
-        dispatch(connectPrediction(prediction.address));
-      }
-      event.stopWatching();
-      dispatch(setWaiting(false));
-    });
-
     dispatch(setWaiting(true));
 
     // Claim
@@ -31,7 +17,10 @@ export function withdrawPrize() {
       gas: USE_INJECTED_WEB3 ? undefined : 4000000
     }).catch((err) => {
       console.log(err);
-      event.stopWatching();
+      dispatch(setWaiting(false));
+    }).then(() => {
+      console.log('withdraw prize succesful!');
+      dispatch(connectPrediction(prediction.address));
       dispatch(setWaiting(false));
     });
   };

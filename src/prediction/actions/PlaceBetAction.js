@@ -10,22 +10,6 @@ export function placeBet(bet, betEther) {
     const web3 = getState().network.web3;
     const prediction = getState().prediction.contract;
 
-    // Listen for bet event...
-    const event = prediction.BetEvent();
-    event.watch((error) => {
-      console.log('BetEvent');
-      if(error) {
-        console.log('placing bet failed', bet);
-      }
-      else {
-        console.log('bet placed!', bet);
-        dispatch(connectPrediction(prediction.address));
-        dispatch(forgetPreview(prediction.address));
-      }
-      dispatch(setWaiting(false));
-      event.stopWatching();
-    });
-
     dispatch(setWaiting(true));
 
     // Place bet
@@ -37,7 +21,11 @@ export function placeBet(bet, betEther) {
       gas: USE_INJECTED_WEB3 ? undefined : 4000000
     }).catch((err) => {
       console.log(err);
-      event.stopWatching();
+      dispatch(setWaiting(false));
+    }).then(() => {
+      console.log('bet placed!', bet);
+      dispatch(connectPrediction(prediction.address));
+      dispatch(forgetPreview(prediction.address));
       dispatch(setWaiting(false));
     });
   };

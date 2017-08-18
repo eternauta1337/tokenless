@@ -7,22 +7,6 @@ export function resolveMarket(outcome) {
 
     const prediction = getState().prediction.contract;
 
-    // Listen for resolve event...
-
-    const event = prediction.ResolveEvent();
-    event.watch((error, result) => {
-      console.log('ResolveEvent', error, result);
-      if(error) {
-        console.log('error resolving contract');
-      }
-      else {
-        console.log('contract resolved!', result);
-        dispatch(connectPrediction(prediction.address));
-      }
-      event.stopWatching();
-      dispatch(setWaiting(false));
-    });
-
     dispatch(setWaiting(true));
 
     // Resolve
@@ -32,7 +16,10 @@ export function resolveMarket(outcome) {
       gas: USE_INJECTED_WEB3 ? undefined : 4000000
     }).catch((err) => {
       console.log(err);
-      event.stopWatching();
+      dispatch(setWaiting(false));
+    }).then(() => {
+      console.log('contract resolved!');
+      dispatch(connectPrediction(prediction.address));
       dispatch(setWaiting(false));
     });
   };
