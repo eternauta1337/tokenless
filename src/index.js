@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import AppComponent from './main/components/AppComponent';
 import PredictionComponent from './prediction/containers/PredictionComponent';
 import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
-import ListPredictionsComponent from './market/containers/ListPredictionsComponent';
+import MarketComponent from './market/containers/MarketComponent';
 import AboutComponent from './about/components/AboutComponent';
 import { connectNetwork } from './network/actions';
 import {
@@ -26,7 +26,7 @@ ReactDOM.render((
     <Provider store={store}>
       <Router history={syncHistoryWithStore(browserHistory, store)}>
         <Route path="/" component={AppComponent}>
-          <IndexRoute component={ListPredictionsComponent}/>
+          <IndexRoute component={MarketComponent}/>
           <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
           <Route path={PATH_PREDICTION} component={PredictionComponent}/>
           <Route path={PATH_ABOUT} component={AboutComponent}/>

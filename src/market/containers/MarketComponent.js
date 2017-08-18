@@ -13,7 +13,7 @@ import {
   EXPLORER_URL
 } from "../../constants";
 
-class ListPredictions extends React.Component {
+class Market extends React.Component {
 
   constructor() {
     super();
@@ -144,9 +144,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ListPredictionsComponent = connect(
+const MarketComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListPredictions);
+)(Market);
 
-export default ListPredictionsComponent;
+export default MarketComponent;
