@@ -24,7 +24,14 @@ class App extends Component {
           <div className="text-center">
             <small className="text-muted">
               <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>
-              Powered by OpenZeppelin
+              Powered by OpenZeppelin |&nbsp;
+              <a
+                href="https://github.com/ajsantander/tokenless"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fa fa-github" aria-hidden="true"></i>&nbsp;Github
+              </a>
             </small>
           </div>
         </footer>

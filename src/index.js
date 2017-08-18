@@ -21,24 +21,24 @@ import './styles/datetime.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
+// UI entry point and routes.
+ReactDOM.render((
+    <Provider store={store}>
+      <Router history={syncHistoryWithStore(browserHistory, store)}>
+        <Route path="/" component={AppComponent}>
+          <IndexRoute component={ListPredictionsComponent}/>
+          <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
+          <Route path={PATH_PREDICTION} component={PredictionComponent}/>
+          <Route path={PATH_ABOUT} component={AboutComponent}/>
+        </Route>
+      </Router>
+    </Provider>
+  ),
+  document.getElementById('root')
+);
+
 window.addEventListener('load', () => {
 
   // Initialize web3 and store in state.
   store.dispatch(connectNetwork());
-
-  // UI entry point and routes.
-  ReactDOM.render((
-      <Provider store={store}>
-        <Router history={syncHistoryWithStore(browserHistory, store)}>
-          <Route path="/" component={AppComponent}>
-            <IndexRoute component={ListPredictionsComponent}/>
-            <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
-            <Route path={PATH_PREDICTION} component={PredictionComponent}/>
-            <Route path={PATH_ABOUT} component={AboutComponent}/>
-          </Route>
-        </Router>
-      </Provider>
-    ),
-    document.getElementById('root')
-  );
 });
