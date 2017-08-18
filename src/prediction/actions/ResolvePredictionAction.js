@@ -29,10 +29,11 @@ export function resolveMarket(outcome) {
     console.log('resolving prediction with outcome:', outcome);
     prediction.resolve(outcome, {
       from: getState().network.activeAccountAddress,
-      gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
-    }).catch(() => {
-      dispatch(setWaiting(false));
+      gas: USE_INJECTED_WEB3 ? undefined : 4000000
+    }).catch((err) => {
+      console.log(err);
       event.stopWatching();
+      dispatch(setWaiting(false));
     });
   };
 }

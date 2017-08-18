@@ -39,9 +39,11 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       unixWith,
       {
         from: acct,
-        gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
+        gas: USE_INJECTED_WEB3 ? undefined : 4000000
       }
-    ).catch(() => {
+    ).catch((err) => {
+      console.log(err);
+      event.stopWatching();
       dispatch(setWaiting(false));
     });
   };
