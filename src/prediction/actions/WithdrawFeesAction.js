@@ -1,6 +1,6 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
-import {TARGET_LIVE_NETWORK} from "../../constants";
+import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function withdrawFees() {
@@ -29,7 +29,7 @@ export function withdrawFees() {
     console.log('withdrawing fees...', getState().network.activeAccountAddress);
     prediction.withdrawFees({
       from: getState().network.activeAccountAddress,
-      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+      gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
       event.stopWatching();

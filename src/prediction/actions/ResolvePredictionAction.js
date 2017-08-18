@@ -1,5 +1,5 @@
 import { connectPrediction } from '.';
-import {TARGET_LIVE_NETWORK} from "../../constants";
+import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function resolveMarket(outcome) {
@@ -29,7 +29,7 @@ export function resolveMarket(outcome) {
     console.log('resolving prediction with outcome:', outcome);
     prediction.resolve(outcome, {
       from: getState().network.activeAccountAddress,
-      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+      gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
       event.stopWatching();

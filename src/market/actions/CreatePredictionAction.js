@@ -1,6 +1,6 @@
 import { push } from 'react-router-redux';
 import * as dateUtil from '../../utils/DateUtil';
-import {TARGET_LIVE_NETWORK} from "../../constants";
+import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function createPrediction(statement, betEndDate, withdrawEndDate) {
@@ -39,7 +39,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       unixWith,
       {
         from: acct,
-        gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+        gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
       }
     ).catch(() => {
       dispatch(setWaiting(false));

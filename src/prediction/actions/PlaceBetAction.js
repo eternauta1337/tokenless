@@ -1,6 +1,6 @@
 import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
-import {TARGET_LIVE_NETWORK} from "../../constants";
+import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 
 export function placeBet(bet, betEther) {
@@ -34,7 +34,7 @@ export function placeBet(bet, betEther) {
     prediction.bet(bet, {
       from: getState().network.activeAccountAddress,
       value: betWei,
-      gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+      gas: USE_INJECTED_WEB3 === 'testrpc' ? 4000000 : undefined
     }).catch(() => {
       dispatch(setWaiting(false));
       event.stopWatching();

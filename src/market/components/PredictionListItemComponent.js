@@ -24,10 +24,10 @@ const MarketListItemComponent = ({
 
           {/* BALANCE */}
           {balance > 0 &&
-            <span>{balance} eth&nbsp;</span>
+            <span>{balance} eth </span>
           }
 
-          {/* STATAE */}
+          {/* STATE */}
           <span className={`label label-${predictionStateClass}`}>
             {preview.predictionStateStr}
           </span>
