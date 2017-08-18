@@ -3,11 +3,13 @@
 # 0: 0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39
 # 1: 0x6704fbfcd5ef766b287262fa2281c105d57246a6
 
-# Read params.
-blocktime=$@
+echo "starting testrpc..."
 
-# Default params.
-# TODO
+# Read block time (only param for now).
+blocktime=$@
+if [ -z "$blocktime" ]; then
+ blocktime=0
+fi
 
 # Stop testrpc if it's running (assumes it was started by this script).
 testrpc_running() {
