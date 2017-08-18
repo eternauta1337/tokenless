@@ -29,12 +29,6 @@ class RandomGifComponent extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="text-center">
-          <small className="text-muted text-center">
-            This might take a few seconds. Please be patient.
-          </small>
-        </div>
-        <br/>
         <div id="giphyme"></div>
       </div>
     );
