@@ -11,7 +11,7 @@ const WaitComponent = ({ isOwned }) => {
         {/* OWNER */}
         {!isOwned &&
           <h4>
-            Waiting for the owner to resolve this prodiction.
+            Waiting for the owner to resolve this prediction.
             This can happen any time now.
             Please come back to check if the prediction has been resolved, and most importantly,
             to see if you have a prize to claim!
