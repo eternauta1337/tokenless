@@ -33,18 +33,20 @@ const InfoComponent = ({
       {balanceTotal > 0 && predictionState !== 3 &&
       <div className="progress">
         <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
+          {posPercent > 5 &&
             <span className="">
-              <span className="glyphicon glyphicon-thumbs-up"></span>
-              &nbsp;
+              <span className="glyphicon glyphicon-thumbs-up"></span>&nbsp;
               {positivePredicionBalance}&nbsp;ETH
             </span>
+          }
         </div>
         <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
+          {negPercent > 5 &&
             <span className="">
-              <span className="glyphicon glyphicon-thumbs-down"></span>
-              &nbsp;
+              <span className="glyphicon glyphicon-thumbs-up"></span>&nbsp;
               {negativePredicionBalance}&nbsp;ETH
             </span>
+          }
         </div>
       </div>
       }
