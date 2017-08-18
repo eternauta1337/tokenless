@@ -23,6 +23,7 @@ export function connectNetwork() {
       const provider = new Web3.providers.HttpProvider('http://localhost:8545');
       web3 = new Web3(provider);
     }
+    if(!web3) return;
     console.log('web3 provider:', web3.currentProvider !== undefined);
 
     dispatch({

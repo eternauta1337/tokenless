@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import NavigationComponent from './NavigationComponent';
 import DebugComponent from '../../debug/components/DebugComponent';
+import IncompatibleComponent from './IncompatibleComponent';
+import { connect } from 'react-redux';
 import {
-  DEBUG_MODE
+  DEBUG_MODE, TARGET_LIVE_NETWORK, USE_INJECTED_WEB3
 } from '../../constants';
 
 class App extends Component {
   render() {
+
+    // INCOMPATIBLE.
+    const isChrome = !!window.chrome && !!window.chrome.webstore;
+    const hasMetamask = USE_INJECTED_WEB3 && !!this.props.web3;
+    const onProperNetwork = (this.props.networkName === undefined) || (this.props.networkName && this.props.networkName === TARGET_LIVE_NETWORK);
+    console.log('compatibility: ', isChrome, hasMetamask, onProperNetwork);
+    if(!isChrome || !hasMetamask || !onProperNetwork) {
+      return <IncompatibleComponent isChrome={isChrome} hasMetamask={hasMetamask} onProperNetwork={onProperNetwork}/>;
+    }
+
     return (
       <div className="">
 
@@ -48,4 +60,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    web3: state.network.web3,
+    networkName: state.network.networkName
+  };
+}
+
+export default connect(mapStateToProps, null)(App);
