@@ -31,8 +31,7 @@ class RandomGifComponent extends React.Component {
       <div className="container">
         <div className="text-center">
           <small className="text-muted text-center">
-            This might take a few seconds. Please be patient.<br/>
-            (it's only 2017)
+            This might take a few seconds. Please be patient.
           </small>
         </div>
         <br/>
