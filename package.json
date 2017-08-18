@@ -6,6 +6,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "rpc": "./scripts/rpc.sh",
+    "killrpc": "kill -9 $(cat scripts/data/testrpc_pid)",
     "test": "node scripts/test.js --env=jsdom",
     "predeploy": "npm run build",
     "deploy": "firebase deploy"
