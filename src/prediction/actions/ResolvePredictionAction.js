@@ -25,9 +25,11 @@ export function resolveMarket(outcome) {
 
     // Resolve
     console.log('resolving prediction with outcome:', outcome);
-    await prediction.resolve(outcome, {
+    prediction.resolve(outcome, {
       from: getState().network.activeAccountAddress,
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+    }).catch(() => {
+      dispatch(setWaiting(false));
     });
   };
 }

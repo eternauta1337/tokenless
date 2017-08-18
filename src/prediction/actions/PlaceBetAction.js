@@ -30,10 +30,12 @@ export function placeBet(bet, betEther) {
     // Place bet
     const betWei = web3.toWei(betEther, 'ether');
     console.log('placing bet: ', prediction, betWei, getState().network.activeAccountAddress);
-    await prediction.bet(bet, {
+    prediction.bet(bet, {
       from: getState().network.activeAccountAddress,
       value: betWei,
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+    }).catch(() => {
+      dispatch(setWaiting(false));
     });
   };
 }

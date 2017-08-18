@@ -26,10 +26,11 @@ export function withdrawFees() {
 
     // Claim
     console.log('withdrawing fees...', getState().network.activeAccountAddress);
-    await prediction.withdrawFees({
+    prediction.withdrawFees({
       from: getState().network.activeAccountAddress,
-      gas: 50000,
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+    }).catch(() => {
+      dispatch(setWaiting(false));
     });
   };
 }

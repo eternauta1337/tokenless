@@ -25,9 +25,11 @@ export function withdrawPrize() {
 
     // Claim
     console.log('withdrawing prize...', getState().network.activeAccountAddress);
-    await prediction.withdrawPrize({
+    prediction.withdrawPrize({
       from: getState().network.activeAccountAddress,
       gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
+    }).catch(() => {
+      dispatch(setWaiting(false));
     });
   };
 }

@@ -32,7 +32,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
     const unixBet = dateUtil.dateToUnix(betEndDate);
     const unixWith = dateUtil.dateToUnix(withdrawEndDate);
     console.log('creating prediction:', statement, unixBet, unixWith);
-    await market.createPrediction(
+    market.createPrediction(
       statement,
       unixBet,
       unixWith,
@@ -40,6 +40,8 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
         from: acct,
         gas: TARGET_LIVE_NETWORK === 'testrpc' ? 4000000 : undefined
       }
-    );
+    ).catch(() => {
+      dispatch(setWaiting(false));
+    });
   };
 }
