@@ -10,8 +10,7 @@ const InfoComponent = ({
                          betEndDate,
                          withdrawalEndDate,
                          outcome,
-                         balance,
-                         bcTimestamp
+                         balance
                        }) => {
 
   let predictionStateClass = 'success';
@@ -43,7 +42,7 @@ const InfoComponent = ({
         <div className="progress-bar progress-bar-danger" style={{width: `${negPercent}%`}}>
           {negPercent > 5 &&
             <span className="">
-              <span className="glyphicon glyphicon-thumbs-up"></span>&nbsp;
+              <span className="glyphicon glyphicon-thumbs-down"></span>&nbsp;
               {negativePredicionBalance}&nbsp;ETH
             </span>
           }
@@ -78,14 +77,14 @@ const InfoComponent = ({
         </li>
 
         {/* DATES */}
-        {predictionState === 0 &&
+        {predictionState !== 3 &&
           <li className='list-inline-item'>
             <span className="label label-default">
               Bets end on: {dateUtil.unixToStr(betEndDate)}
             </span>
           </li>
         }
-        {predictionState === 2 &&
+        {predictionState !== 3 &&
           <li className='list-inline-item'>
             <span className="label label-default">
               Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
