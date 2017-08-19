@@ -7,7 +7,7 @@ const MarketListItemComponent = ({
   preview
 }) => {
 
-  console.log('preview', preview);
+  // console.log('preview', preview);
 
   return (
     <Link

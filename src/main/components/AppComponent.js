@@ -15,7 +15,7 @@ class App extends Component {
     const hasMetamask = !USE_INJECTED_WEB3 || (USE_INJECTED_WEB3 && !!this.props.web3);
     const loggedInWithMetamask = !USE_INJECTED_WEB3 || this.props.activeAccountAddress !== undefined;
     const onProperNetwork = !USE_INJECTED_WEB3 || (this.props.networkName === undefined) || (this.props.networkName && this.props.networkName === TARGET_LIVE_NETWORK);
-    console.log('compatibility: ', isChrome, hasMetamask, loggedInWithMetamask, onProperNetwork);
+    // console.log('compatibility: ', isChrome, hasMetamask, loggedInWithMetamask, onProperNetwork);
     if(!isChrome || !hasMetamask || !loggedInWithMetamask || !onProperNetwork) {
       return <IncompatibleComponent isChrome={isChrome} hasMetamask={hasMetamask} loggedInWithMetamask={loggedInWithMetamask} onProperNetwork={onProperNetwork}/>;
     }

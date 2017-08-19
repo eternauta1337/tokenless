@@ -37,7 +37,7 @@ export function connectPrediction(address) {
     if(prediction.predictionState === 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
     }
-    console.log('prediction: ', prediction);
+    // console.log('prediction: ', prediction);
 
     dispatch({
       type: CONNECT_MARKET,

@@ -29,7 +29,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       console.log(err);
       dispatch(setWaiting(false));
     }).then((result) => {
-      console.log('prediction created:', result);
+      console.log('prediction created');
       const predictionAddress = result.logs[0].args.predictionAddress;
       dispatch(push(`/prediction/${predictionAddress}`));
       dispatch(setWaiting(false));

@@ -55,7 +55,7 @@ class Prediction extends React.Component {
   render() {
 
     // CONNECTING/PROCESSING...
-    if(true || !this.props.isConnected || this.props.isWaiting) {
+    if(!this.props.isConnected || this.props.isWaiting) {
       return (
         <div>
           <ConnectComponent title={!this.props.isConnected ? "Connecting..." : "Processing..."}/>
