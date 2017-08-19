@@ -10,7 +10,7 @@ const HistoryComponent = ({
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
-        <strong>Bet history</strong>
+        <strong>Recent bets</strong>
       </div>
       <div className="panel-body">
         <table className="table table-striped table-hover">
@@ -28,10 +28,8 @@ const HistoryComponent = ({
           <tbody>
             {_.map(betHistory, (item) => {
               const isSelf = item.from === player;
-              console.log('isSelf', isSelf);
-              console.log(item.from, player);
               return (
-                <tr className={isSelf ? 'info' : 'default'}>
+                <tr className={isSelf ? 'info' : 'default'} key={item.tx}>
                   <td>
 
                     {/* SENDER */}
