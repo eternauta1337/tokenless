@@ -6,7 +6,7 @@ const MarketArtifacts = require('../../build/contracts/PredictionMarket.json');
 const PredictionArtifacts = require('../../build/contracts/Prediction.json');
 const util = require('../../src/utils/Web3Util');
 const constants = require('../../src/constants');
-import * as dateUtil from '../../src/utils/DateUtil';
+const dateUtil = require('../../src/utils/DateUtil');
 
 const addr0 = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39';
 
@@ -17,14 +17,12 @@ module.exports = async function(callback) {
   // Retrieve deployed prediction prediction.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
-  const market = await Market.at(constants.MARKET_ADDRESS);
-  console.log('prediction retrieved');
+  const market = await Market.at(constants.MARKET_ADDRESS['testrpc']);
+  console.log('market retrieved');
 
   // Create a bunch of predictions.
-  const Prediction = TruffleContract(PredictionArtifacts);
-  Prediction.setProvider(web3.currentProvider);
-  // createDeterministicPredictions(prediction, Prediction);
-  createRandomPredictions(20, prediction, market);
+  // createDeterministicPredictions(market);
+  createRandomPredictions(20, market);
 
   callback();
 };
@@ -52,11 +50,11 @@ async function createDeterministicPredictions(market) {
     const prediction = predictions[i];
     const creationTransaction = await market.createPrediction(
       prediction.statement,
-      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(duration),
-      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(duration + 5),
+      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(prediction.duration),
+      dateUtil.dateToUnix(new Date()) + dateUtil.daysToSeconds(prediction.duration + 5),
       {
         from: addr0,
-        gas: 1000000
+        gas: 4000000
       }
     );
 
@@ -75,12 +73,16 @@ async function createRandomPredictions(num, market) {
   console.log('createRandomPredictions()', num);
   for(let i = 0; i < num; i++) {
 
+    const duration = Math.floor(1000 * Math.random()) + 10;
+
     // Create prediction.
     const creationTransaction = await market.createPrediction(
       "Random prediction " + i,
-      getRandomInt(1, 1000), {
+      dateUtil.dateToUnix(new Date()) + duration,
+      dateUtil.dateToUnix(new Date()) + duration + 200,
+      {
         from: addr0,
-        gas: 1000000
+        gas: 4000000
       }
     );
 
