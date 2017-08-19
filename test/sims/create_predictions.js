@@ -22,7 +22,7 @@ module.exports = async function(callback) {
 
   // Create a bunch of predictions.
   // createDeterministicPredictions(market);
-  createRandomPredictions(20, market);
+  createRandomPredictions(10, market);
 
   callback();
 };

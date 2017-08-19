@@ -14,7 +14,7 @@ import { connectNetwork } from './network/actions';
 import {
   PATH_PREDICTION,
   PATH_CREATE,
-  PATH_ABOUT
+  PATH_ABOUT, USE_CACHE
 } from './constants';
 import './styles/index.css';
 import './styles/datetime.css';
@@ -42,3 +42,8 @@ window.addEventListener('load', () => {
     document.getElementById('root')
   );
 });
+
+// Clear cache?
+if(!USE_CACHE) {
+  window.localStorage.clear();
+}

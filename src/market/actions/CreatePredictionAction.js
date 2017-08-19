@@ -2,6 +2,7 @@ import { push } from 'react-router-redux';
 import * as dateUtil from '../../utils/DateUtil';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
+import {getPredictionPreview} from "./GetPredictionPreviewAction";
 
 export function createPrediction(statement, betEndDate, withdrawEndDate) {
   console.log('createPrediction()', statement, betEndDate, withdrawEndDate);
@@ -33,6 +34,7 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
       const predictionAddress = result.logs[0].args.predictionAddress;
       dispatch(push(`/prediction/${predictionAddress}`));
       dispatch(setWaiting(false));
+      dispatch(getPredictionPreview(predictionAddress));
     });
   };
 }

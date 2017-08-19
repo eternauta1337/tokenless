@@ -1,6 +1,7 @@
 import { connectPrediction } from '.';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
+import {forgetPreview} from "../../market/actions/ForgetPredictionPreviewAction";
 
 export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
@@ -21,6 +22,7 @@ export function resolveMarket(outcome) {
       console.log('contract resolved!');
       dispatch(connectPrediction(prediction.address));
       dispatch(setWaiting(false));
+      dispatch(forgetPreview(prediction.address));
     });
   };
 }

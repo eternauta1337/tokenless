@@ -19,17 +19,64 @@ class Market extends React.Component {
     super();
     this.state = {
       lastRecordedBlockNumber: 0,
-      fetching: false
+      fetching: false,
+      pendingPreviews: []
     };
   }
-
-  componentWillReceiveProps(nextProps) {
-    this.refreshPreviews(nextProps);
+  
+  componentWillMount() {
+    this.pendingPreviews = [];
+    this.refreshFactory();
   }
 
-  componentWillMount() {
-    this.refreshFactory();
-    this.refreshPreviews(this.props);
+  shouldComponentUpdate(nextProps) {
+
+    // Check which previews have been updated.
+    for(let i = 0; i < nextProps.addresses.length; i++) {
+      const address = nextProps.addresses[i];
+      const preview = nextProps.previews[address];
+      const isPending = this.state.pendingPreviews.includes(address);
+      if(preview && isPending) {
+        this.state.pendingPreviews.splice(this.state.pendingPreviews.indexOf(address), 1);
+      }
+    }
+
+    // Render if there are no pending previews.
+    return this.pendingPreviews.length === 0;
+  }
+
+  componentDidUpdate() {
+
+    // Request missing previews.
+    let reqCount = 0;
+    for(let i = 0; i < this.props.addresses.length; i++) {
+      const address = this.props.addresses[i];
+      const preview = this.props.previews[address];
+      if(!preview) {
+        const alreadyPending = this.state.pendingPreviews.includes(address);
+        if(!alreadyPending) {
+
+          // Trigger fetch.
+          // console.log('will request: ', i);
+          this.props.getPredictionPreview(address);
+          this.state.pendingPreviews.push(address);
+
+          // Control batch.
+          reqCount++;
+          if(reqCount >= 1) return;
+        }
+      }
+    }
+  }
+
+  refreshFactory() {
+    if (this.props.isNetworkConnected) {
+      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
+      if (!this.props.isConnected || blockAdvanced) {
+        if (this.props.blockNumber) this.setState({lastRecordedBlockNumber: this.props.blockNumber});
+        this.props.connectMarket();
+      }
+    }
   }
 
   render() {
@@ -103,31 +150,6 @@ class Market extends React.Component {
           </div>
         </div>
     );
-  }
-
-  refreshFactory() {
-    if (this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if (!this.props.isConnected || blockAdvanced) {
-        if (this.props.blockNumber) this.setState({lastRecordedBlockNumber: this.props.blockNumber});
-        this.props.connectMarket();
-      }
-    }
-  }
-
-  refreshPreviews(props) {
-    let fetching = false;
-    _.each(props.addresses, (address) => {
-      if (!props.previews[address]) {
-        props.getPredictionPreview(address);
-        fetching = true;
-        return false;
-      }
-      else if (props.previews[address].isFetching) return false;
-    });
-    this.setState({
-      fetching
-    });
   }
 }
 

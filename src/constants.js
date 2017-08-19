@@ -1,14 +1,22 @@
 // General.
-export const DEBUG_MODE = false; // activates a debug panel useful for development
-export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
-export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
+export const DEBUG_MODE = true; // activates a debug panel useful for development
+export const USE_INJECTED_WEB3 = false; // for use with eg. metamask
+export const TARGET_LIVE_NETWORK = 'testrpc'; // ropsten, mainnet, testrpc
+export const GIPHY_API_KEY = '5e2f35d1a57a44ae8415389a4c2efaab';
+export const USE_CACHE = true;
 
 // Market contract urls.
 export const MARKET_ADDRESS = {
   mainnet: '',
-  ropsten: '0x7b6103e6be6cfad55c167fa94c148ac459ecc847',
+  ropsten: '0x385a77447f640b9a06bbbce70c6eaa401dce3810',
   testrpc: '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a'
 };
+
+// Old ropsten markets (most recent on top):
+// 0x7b6103e6be6cfad55c167fa94c148ac459ecc847
+// 0x385a77447f640b9a06bbbce70c6eaa401dce3810
+// 0xa2d93fe188660e0ff8fdf27dd32b6568f0822055
+// 0x6C12aF0d66552f5379D626D921755203686767b5
 
 // Block explorer urls.
 export const EXPLORER_URL = {
@@ -23,10 +31,7 @@ export const PATH_CREATE = baseURL + '/create';
 export const PATH_PREDICTION = baseURL + '/prediction/:address';
 export const PATH_ROOT = baseURL + '/';
 export const PATH_ABOUT = baseURL + '/about';
-
 export const SITE_URL = 'https://tokenless-32142.firebaseapp.com/';
 
-// Old ropsten markets (most recent on top):
-// 0x385a77447f640b9a06bbbce70c6eaa401dce3810
-// 0xa2d93fe188660e0ff8fdf27dd32b6568f0822055
-// 0x6C12aF0d66552f5379D626D921755203686767b5
+// Local storage.
+export const STORAGE_PREVIEW_KEY = 'tk_preview_';
