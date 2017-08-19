@@ -7,6 +7,13 @@ const UserInfoComponent = ({
   predictionState
 }) => {
 
+  // Dont show if invalid.
+  if(
+    playerPositiveBalance === undefined ||
+    playerNegativeBalance === undefined
+  ) return null;
+
+  // Don't show if empty.
   if(
     playerPositiveBalance === 0 &&
     playerNegativeBalance === 0 &&
@@ -31,7 +38,7 @@ const UserInfoComponent = ({
         { playerNegativeBalance > 0 &&
         <div>
           <small className="text-muted">
-            Bets on yes: {playerNegativeBalance} eth
+            Bets on no: {playerNegativeBalance} eth
           </small>
         </div>
         }

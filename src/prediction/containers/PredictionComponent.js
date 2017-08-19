@@ -8,6 +8,7 @@ import WithdrawComponent from '../components/WithdrawComponent';
 import FinishComponent from '../components/FinishComponent';
 import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
+import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
 import '../../styles/index.css';
 import {
@@ -66,6 +67,8 @@ class Prediction extends React.Component {
     // Pre-process some of the prediction's data for display.
     const isOwned =
       this.props.activeAccountAddress === this.props.owner;
+
+    // console.log('betHistory', this.props.betHistory);
 
     return (
       <div className="container">
@@ -156,6 +159,14 @@ class Prediction extends React.Component {
             playerPositiveBalance={this.props.playerPositiveBalance}
             playerNegativeBalance={this.props.playerNegativeBalance}
           />
+
+          {/* HISTORY */}
+          {this.props.betHistory && this.props.betHistory.length > 0 &&
+            <HistoryComponent
+              player={this.props.activeAccountAddress}
+              betHistory={this.props.betHistory}
+            />
+          }
 
           {/* LINK TO EXPLORER */}
           <div>

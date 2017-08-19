@@ -6,6 +6,8 @@ import * as stateUtil from '../../utils/PredictionState';
 export const CONNECT_PREDICTION = 'prediction/CONNECT';
 export const UPDATE_PREDICTION = 'prediction/UPDATE_PREDICTION';
 
+let watchedBetEvent;
+
 export function connectPrediction(address) {
   return async function(dispatch, getState) {
     console.log('connectPrediction()', address);
@@ -22,6 +24,30 @@ export function connectPrediction(address) {
     let prediction = {};
     prediction.address = address;
     prediction.contract = contract;
+
+    // Bet history.
+    console.log('watch bets:');
+    prediction.betHistory = [];
+    if(watchedBetEvent) {
+      watchedBetEvent.stopWatching();
+    }
+    const event = contract.BetEvent(
+      {},
+      {fromBlock:0, toBlock: 'latest'}
+    );
+    event.watch((err, res) => {
+      if(!err) {
+        console.log('res', res);
+        const data = res.args;
+        prediction.betHistory.push({
+          tx: res.transactionHash,
+          from: data.from,
+          prediction: data.prediction,
+          value: +web3.fromWei(data.value, 'ether').toNumber()
+        });
+      }
+    });
+    watchedBetEvent = event;
 
     // Try to get cached info.
     let preview = getState().market.previews[address];

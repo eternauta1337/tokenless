@@ -9,12 +9,13 @@ export function placeBet(bet, betEther) {
 
     const web3 = getState().network.web3;
     const prediction = getState().prediction.contract;
+    console.log('prediction', prediction);
 
     dispatch(setWaiting(true));
 
     // Place bet
     const betWei = web3.toWei(betEther, 'ether');
-    console.log('placing bet: ', prediction, betWei, getState().network.activeAccountAddress);
+    console.log('placing bet: ', bet, betWei, getState().network.activeAccountAddress);
     prediction.bet(bet, {
       from: getState().network.activeAccountAddress,
       value: betWei,
@@ -23,7 +24,7 @@ export function placeBet(bet, betEther) {
       console.log(err);
       dispatch(setWaiting(false));
     }).then(() => {
-      console.log('bet placed!', bet);
+      console.log('bet placed!');
       dispatch(connectPrediction(prediction.address));
       dispatch(forgetPreview(prediction.address));
       dispatch(setWaiting(false));
