@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
+import * as info from '../../../package.json';
 import {
   PATH_CREATE,
   PATH_ROOT,
-  PATH_ABOUT
+  PATH_ABOUT, SHOW_VERSION
 } from '../../constants';
 
 const NavigationComponent = ({ path }) => {
@@ -22,6 +23,9 @@ const NavigationComponent = ({ path }) => {
                   </svg>
                 </span>
                 <span>tokenless.pm</span>
+                {SHOW_VERSION &&
+                  <small> v{info.version}</small>
+                }
               </div>
             </Link>
           </div>

@@ -1,14 +1,15 @@
 // General.
 export const DEBUG_MODE = true; // activates a debug panel useful for development
-export const USE_INJECTED_WEB3 = false; // for use with eg. metamask
-export const TARGET_LIVE_NETWORK = 'testrpc'; // ropsten, mainnet, testrpc
+export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
+export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 export const GIPHY_API_KEY = '5e2f35d1a57a44ae8415389a4c2efaab';
 export const USE_CACHE = true;
+export const SHOW_VERSION = true;
 
 // Market contract urls.
 export const MARKET_ADDRESS = {
   mainnet: '',
-  ropsten: '0x385a77447f640b9a06bbbce70c6eaa401dce3810',
+  ropsten: '0x7b6103e6be6cfad55c167fa94c148ac459ecc847',
   testrpc: '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a'
 };
 
