@@ -23,35 +23,6 @@ export function connectPrediction(address) {
     prediction.address = address;
     prediction.contract = contract;
 
-    // Bet history.
-    // console.log('watch bets:');
-    prediction.betHistory = [];
-    const currentBlock = getState().network.blockNumber;
-    // console.log('currentBlock', currentBlock);
-    if(currentBlock) {
-      let startBlock = currentBlock - 10000;
-      if(startBlock < 0) startBlock = 0;
-      const event = contract.BetEvent(
-        {},
-        {fromBlock:startBlock, toBlock: 'latest'}
-      );
-      event.watch((err, res) => {
-        if(!err) {
-          // console.log('res', res);
-          const data = res.args;
-          prediction.betHistory.push({
-            tx: res.transactionHash,
-            from: data.from,
-            prediction: data.prediction,
-            value: +web3.fromWei(data.value, 'ether').toNumber()
-          });
-        }
-        else {
-          console.log('err', err);
-        }
-      });
-    }
-
     // Try to get cached info.
     let preview = getState().market.previews[address];
     if(preview) {
@@ -110,6 +81,44 @@ export function connectPrediction(address) {
       payload: prediction
     });
     // console.log('prediction: ', prediction);
+
+    // Bet history.
+    console.log('watch bets:');
+    const currentBlock = getState().network.blockNumber;
+    if(currentBlock) {
+      let startBlock = currentBlock - 10000;
+      if(startBlock < 0) startBlock = 0;
+      const event = contract.BetEvent(
+        {},
+        {fromBlock:startBlock, toBlock: 'latest'}
+      );
+      event.get((err, res) => {
+        if(!err) {
+          console.log('res', res);
+          if(!prediction.betHistory && res.length > 0) {
+            prediction.betHistory = [];
+          }
+          for(let i = 0; i < res.length; i++) {
+            const item = res[i];
+            const data = item.args;
+            prediction.betHistory.splice(0, 0, {
+              tx: item.transactionHash,
+              from: data.from,
+              prediction: data.prediction,
+              value: +web3.fromWei(data.value, 'ether').toNumber()
+            });
+          }
+        }
+        else {
+          console.log('err', err);
+        }
+
+        dispatch({
+          type: CONNECT_PREDICTION,
+          payload: prediction
+        });
+      });
+    }
 
   };
 }

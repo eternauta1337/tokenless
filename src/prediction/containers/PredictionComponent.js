@@ -161,12 +161,10 @@ class Prediction extends React.Component {
           />
 
           {/* HISTORY */}
-          {this.props.betHistory && this.props.betHistory.length > 0 &&
-            <HistoryComponent
-              player={this.props.activeAccountAddress}
-              betHistory={this.props.betHistory}
-            />
-          }
+          <HistoryComponent
+            player={this.props.activeAccountAddress}
+            betHistory={this.props.betHistory}
+          />
 
           {/* LINK TO EXPLORER */}
           <div>
