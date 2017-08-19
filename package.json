@@ -8,6 +8,7 @@
     "rpc": "./scripts/rpc.sh",
     "killrpc": "kill -9 $(cat scripts/data/testrpc_pid)",
     "test": "node scripts/test.js --env=jsdom",
+    "sim:create": "truffle exec test/sims/create_predictions.js",
     "predeploy": "npm run build",
     "deploy": "firebase deploy"
   },
