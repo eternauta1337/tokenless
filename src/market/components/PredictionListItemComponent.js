@@ -7,61 +7,50 @@ const MarketListItemComponent = ({
   preview
 }) => {
 
-  // FULL PREVIEW
-  if(preview && !preview.isFetching) {
-    const title = preview ? preview.statement : address;
-    const balance = preview ? preview.balance : 0;
-    let predictionStateClass = 'success';
-    if (preview.predictionState === 1) predictionStateClass = 'warning';
-    if (preview.predictionState === 2) predictionStateClass = 'danger';
-    if (preview.predictionState === 3) predictionStateClass = 'default';
-    return (
-      <Link
-        to={`/prediction/${address}`}
-        className="list-group-item">
-        {title}
-        <div className="pull-right">
+  console.log('preview', preview);
 
-          {/* BALANCE */}
-          {balance > 0 &&
-            <span>{balance} eth </span>
-          }
+  return (
+    <Link
+      to={`/prediction/${address}`}
+      className="list-group-item"
+    >
+      {/* FULL */}
+      {preview && !preview.isFetching &&
+        <div>
+          {preview.statement}
+          <div className="pull-right">
 
-          {/* STATE */}
-          <span className={`label label-${predictionStateClass}`}>
-            {preview.predictionStateStr}
-          </span>
+            {/* BALANCE */}
+            {preview.balance > 0 &&
+            <span>{preview.balance} eth </span>
+            }
 
+            {/* STATE */}
+            <span className={`label label-${preview.predictionState === 0 ? 'success' : preview.predictionState === 1 ? 'warning' : preview.predictionState === 2 ? 'danger' : 'default'}`}>
+              {preview.predictionStateStr}
+            </span>
+
+          </div>
         </div>
-      </Link>
-    );
-  }
+      }
 
-  // SPINNER...
-  else if(preview && preview.isFetching) {
-    return (
-      <li className="list-group-item" key={address}>
+      {/* LOADING */}
+      {preview && preview.isFetching &&
         <BubblePreloader
           bubble={{ width: '1rem', height: '1rem' }}
           animation={{ speed: 2 }}
           className=""
           colors={['#ffbb33', '#FF8800', '#ff4444']}
         />
-      </li>
-    );
-  }
+      }
 
-  // ADDRESS
-  else {
-    return (
-      <Link
-        to={`/prediction/${address}`}
-        className="list-group-item"
-        >
-        {address}
-      </Link>
-    );
-  }
+      {/* ADDRESS */}
+      {!preview &&
+        <span>{address}</span>
+      }
+
+    </Link>
+  );
 };
 
 export default MarketListItemComponent;
