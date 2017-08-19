@@ -20,16 +20,15 @@ const InfoComponent = ({
   let stateStr = predictionStateStr;
   if (predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yes' : 'No'}`;
 
-  const balanceTotal = positivePredicionBalance + negativePredicionBalance;
-  const posPercent = 100 * positivePredicionBalance / balanceTotal;
-  const negPercent = 100 * negativePredicionBalance / balanceTotal;
+  const posPercent = 100 * positivePredicionBalance / balance;
+  const negPercent = 100 * negativePredicionBalance / balance;
 
   return (
 
     <div>
 
       {/* POT BALANCES */}
-      {balanceTotal > 0 && predictionState !== 3 &&
+      {balance !== undefined && balance > 0 && predictionState !== 3 &&
       <div className="progress">
         <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
           {posPercent > 5 &&
@@ -54,11 +53,13 @@ const InfoComponent = ({
       <ul className='list'>
 
         {/* TOTAL BALANCE */}
-        <li className='list-inline-item'>
+        {balance !== undefined &&
+          <li className='list-inline-item'>
             <span className="label label-info">
               Contract balance: {balance}
             </span>
-        </li>
+          </li>
+        }
 
         {/* OWNED */}
         {isOwned &&
@@ -77,14 +78,14 @@ const InfoComponent = ({
         </li>
 
         {/* DATES */}
-        {predictionState !== 3 &&
+        {betEndDate !== undefined && predictionState !== 3 &&
           <li className='list-inline-item'>
             <span className="label label-default">
               Bets end on: {dateUtil.unixToStr(betEndDate)}
             </span>
           </li>
         }
-        {predictionState !== 3 &&
+        {withdrawalEndDate !== undefined && predictionState !== 3 &&
           <li className='list-inline-item'>
             <span className="label label-default">
               Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}

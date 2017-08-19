@@ -1,5 +1,6 @@
 import {
-  CONNECT_MARKET,
+  CONNECT_PREDICTION,
+  UPDATE_PREDICTION,
   RESET_MARKET
 } from './actions';
 
@@ -12,10 +13,20 @@ const initialState = {
 export default function(state = initialState, action) {
   // console.log('PredictionReducer', action);
 
+  let prediction;
+
   switch(action.type) {
 
-  case CONNECT_MARKET:
-    const prediction = action.payload;
+  case CONNECT_PREDICTION:
+    prediction = action.payload;
+    return {
+      ...state,
+      ...prediction,
+      isConnected: true
+    };
+
+  case UPDATE_PREDICTION:
+    prediction = action.payload;
     return {
       ...state,
       ...prediction,
