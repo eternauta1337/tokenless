@@ -4,6 +4,7 @@ import {TARGET_LIVE_NETWORK} from "../../constants";
 const IncompatibleComponent = ({
   isChrome,
   hasMetamask,
+  loggedInWithMetamask,
   onProperNetwork
 }) => {
   return (
@@ -28,6 +29,13 @@ const IncompatibleComponent = ({
         <div>
           <h3>This application requires the Metamask Google Chrome etension.</h3><br/>
           <h4><a href="https://metamask.io/">Get Metamask</a></h4>
+        </div>
+        }
+
+        {/* METAMASK LOGIN */}
+        { !loggedInWithMetamask &&
+        <div>
+          <h3>Please unlock your metamask wallet.</h3><br/>
         </div>
         }
 

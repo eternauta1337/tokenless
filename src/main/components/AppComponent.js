@@ -13,10 +13,11 @@ class App extends Component {
     // INCOMPATIBLE.
     const isChrome = !!window.chrome && !!window.chrome.webstore;
     const hasMetamask = !USE_INJECTED_WEB3 || (USE_INJECTED_WEB3 && !!this.props.web3);
+    const loggedInWithMetamask = !USE_INJECTED_WEB3 || this.props.activeAccountAddress !== undefined;
     const onProperNetwork = !USE_INJECTED_WEB3 || (this.props.networkName === undefined) || (this.props.networkName && this.props.networkName === TARGET_LIVE_NETWORK);
-    console.log('compatibility: ', isChrome, hasMetamask, onProperNetwork);
-    if(!isChrome || !hasMetamask || !onProperNetwork) {
-      return <IncompatibleComponent isChrome={isChrome} hasMetamask={hasMetamask} onProperNetwork={onProperNetwork}/>;
+    console.log('compatibility: ', isChrome, hasMetamask, loggedInWithMetamask, onProperNetwork);
+    if(!isChrome || !hasMetamask || !loggedInWithMetamask || !onProperNetwork) {
+      return <IncompatibleComponent isChrome={isChrome} hasMetamask={hasMetamask} loggedInWithMetamask={loggedInWithMetamask} onProperNetwork={onProperNetwork}/>;
     }
 
     return (
@@ -64,6 +65,7 @@ function mapStateToProps(state) {
   return {
     web3: state.network.web3,
     networkName: state.network.networkName,
+    activeAccountAddress: state.network.activeAccountAddress
   };
 }
 
