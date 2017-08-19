@@ -63,7 +63,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.network.web3,
-    networkName: state.network.networkName
+    networkName: state.network.networkName,
   };
 }
 

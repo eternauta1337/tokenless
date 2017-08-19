@@ -34,7 +34,7 @@ class Market extends React.Component {
 
   render() {
 
-    {/* CONNECTING/PROCESSING... */}
+    // CONNECTING/PROCESSING...
     if(!this.props.isConnected || this.props.isWaiting) {
       return (
         <div>

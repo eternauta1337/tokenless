@@ -25,7 +25,7 @@ class CreatePredictionComponent extends React.Component {
 
   render() {
 
-    {/* CONNECTING/PROCESSING... */}
+    // CONNECTING/PROCESSING...
     if(this.props.isWaiting) {
       return (
         <div>
@@ -75,9 +75,9 @@ class CreatePredictionComponent extends React.Component {
                     onChange={(moment) => this.betEndDate = moment.toDate()}
                   />
                   <small className="text-muted">
-                    Upon this date, the prediction should be resolved by it's owner to yes or no,
+                    Upon this date, the prediction can be resolved by it's owner to yes or no,
                     meaning that all bets will be closed and that
-                    players can start withdrawing prizes.
+                    players can start withdrawing their prizes.
                   </small>
                 </div>
 
@@ -97,7 +97,8 @@ class CreatePredictionComponent extends React.Component {
                   {this.props.minWithdrawEndTimestampDelta !== undefined &&
                    this.props.minWithdrawEndTimestampDelta !== 0 &&
                     <small className="text-muted">
-                      (The minimum of this market is {dateUtil.unixToHumanizedDuration(this.props.minWithdrawEndTimestampDelta)})
+                      (The minimum of this market is {dateUtil.unixToHumanizedDuration(this.props.minWithdrawEndTimestampDelta)}
+                       after the resolution date.)
                     </small>
                   }
                 </div>
