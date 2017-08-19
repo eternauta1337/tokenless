@@ -6,12 +6,12 @@ class RandomGifComponent extends React.PureComponent {
   componentDidMount() {
 
     const tags = [
-      'computers', 'patience', "8bit",
-      'waiting', 'bored', 'boring', 'anxiety', 'kitten', 'owl', 'slow'
+      'computers', 'patience', "8bit", 'relax', 'coffee',
+      'waiting', 'bored', 'boring', 'kitten', 'owl', 'slow'
     ];
     const idx = Math.floor(Math.random() * tags.length);
     const tag = tags[idx];
-    console.log('giphy tag:', tag);
+    // console.log('giphy tag:', tag);
 
     const request = new XMLHttpRequest();
     request.open('GET', 'https://api.giphy.com/v1/gifs/random?api_key=' + GIPHY_API_KEY + '&tag=' + tag, true);
