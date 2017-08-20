@@ -12,7 +12,7 @@ import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
 import '../../styles/index.css';
 import {
-  resetMarket,
+  resetPrediction,
   connectPrediction,
   placeBet,
   resolveMarket,
@@ -32,7 +32,7 @@ class Prediction extends React.Component {
   }
 
   componentWillMount() {
-    this.props.resetMarket();
+    this.props.resetPrediction();
     this.refreshMarket(this.props);
   }
 
@@ -66,6 +66,8 @@ class Prediction extends React.Component {
 
     // Pre-process some of the prediction's data for display.
     const isOwned =
+      this.props.owner !== undefined &&
+      this.props.activeAccountAddress !== undefined &&
       this.props.activeAccountAddress === this.props.owner;
 
     // console.log('betHistory', this.props.betHistory);
@@ -96,13 +98,15 @@ class Prediction extends React.Component {
             />
 
           {/* FINISH */}
-          {this.props.predictionState >= 3 &&
+          {this.props.predictionState !== undefined &&
+          this.props.predictionState >= 3 &&
             <FinishComponent/>
           }
 
           {/* WITHDRAW PRIZE */}
           {!isOwned &&
-            this.props.predictionState === 2 &&
+          this.props.predictionState !== undefined &&
+          this.props.predictionState === 2 &&
             this.props.estimatePrize > 0 &&
             <WithdrawComponent
               claimAmount={this.props.estimatePrize}
@@ -112,7 +116,8 @@ class Prediction extends React.Component {
 
           {/* WITHDRAW FEES */}
           { isOwned &&
-            this.props.predictionState === 2 &&
+          this.props.predictionState !== undefined &&
+          this.props.predictionState === 2 &&
             this.props.bcTimestamp > this.props.withdrawEndDate &&
             <WithdrawComponent
               claimAmount={this.props.balance}
@@ -121,14 +126,18 @@ class Prediction extends React.Component {
           }
 
           {/* RESOLVE */}
-          {isOwned && this.props.predictionState === 1 &&
+          {isOwned &&
+          this.props.predictionState !== undefined &&
+          this.props.predictionState === 1 &&
             <ResolveComponent
               resolveMarket={this.props.resolveMarket}
               />
           }
 
           {/* PLAYER WAIT */}
-          {!isOwned && this.props.predictionState === 1 &&
+          {!isOwned &&
+          this.props.predictionState !== undefined &&
+          this.props.predictionState === 1 &&
             <WaitComponent
               isOwned={false}
             />
@@ -136,7 +145,8 @@ class Prediction extends React.Component {
 
           {/* OWNER WAIT */}
           {isOwned &&
-           this.props.predictionState === 2 &&
+          this.props.predictionState !== undefined &&
+          this.props.predictionState === 2 &&
            this.props.bcTimestamp < this.props.withdrawEndDate &&
             <WaitComponent
               isOwned={true}
@@ -144,7 +154,7 @@ class Prediction extends React.Component {
           }
 
           {/* BET */}
-          {this.props.predictionState === 0 &&
+          {this.props.predictionState !== undefined && this.props.predictionState === 0 &&
             <PlaceBetComponent
               isOwned={isOwned}
               placeBet={this.props.placeBet}
@@ -161,10 +171,12 @@ class Prediction extends React.Component {
           />
 
           {/* HISTORY */}
-          <HistoryComponent
-            player={this.props.activeAccountAddress}
-            betHistory={this.props.betHistory}
-          />
+          {this.props.balance !== undefined && this.props.balance !== 0 &&
+            <HistoryComponent
+              player={this.props.activeAccountAddress}
+              betHistory={this.props.betHistory}
+            />
+          }
 
           {/* LINK TO EXPLORER */}
           <div>
@@ -212,7 +224,7 @@ const mapDispatchToProps = (dispatch) => {
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
     withdrawPrize: () => dispatch(withdrawPrize()),
     withdrawFees: () => dispatch(withdrawFees()),
-    resetMarket: () => dispatch(resetMarket())
+    resetPrediction: () => dispatch(resetPrediction())
   };
 };
 

@@ -39,6 +39,6 @@ export function watchNetworkChanges() {
       // if(!getState().web3) {
       //   dispatch(connectNetwork());
       // }
-    }, 5000);
+    }, 60000);
   };
 }

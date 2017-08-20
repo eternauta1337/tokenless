@@ -1,12 +1,13 @@
 import {
   CONNECT_PREDICTION,
   UPDATE_PREDICTION,
-  RESET_MARKET
+  RESET_PREDICTION
 } from './actions';
 
 const initialState = {
   contract: undefined,
   isConnected: false,
+  targetPredictionAddress: undefined,
   /* additional prediction params are decomposed */
 };
 
@@ -22,7 +23,8 @@ export default function(state = initialState, action) {
     return {
       ...state,
       ...prediction,
-      isConnected: true
+      isConnected: true,
+      targetPredictionAddress: prediction.address
     };
 
   case UPDATE_PREDICTION:
@@ -33,7 +35,7 @@ export default function(state = initialState, action) {
       isConnected: true
     };
 
-  case RESET_MARKET:
+  case RESET_PREDICTION:
     return initialState;
 
   default:

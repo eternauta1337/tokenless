@@ -27,6 +27,7 @@ class Market extends React.Component {
   componentWillMount() {
     this.pendingPreviews = [];
     this.refreshFactory();
+    this.requestPending();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -46,9 +47,14 @@ class Market extends React.Component {
   }
 
   componentDidUpdate() {
+    this.requestPending();
+  }
+
+  requestPending() {
 
     // Request missing previews.
     let reqCount = 0;
+    if(!this.props.addresses) return;
     for(let i = 0; i < this.props.addresses.length; i++) {
       const address = this.props.addresses[i];
       const preview = this.props.previews[address];
