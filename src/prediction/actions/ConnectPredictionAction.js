@@ -134,6 +134,6 @@ function checkContinue(address, getState) {
   if(!cont && !address) cont = true;
   if(!cont && !targetAddress) cont = true;
   if(!cont && targetAddress === address) cont = true;
-  console.log('cont', cont);
+  // console.log('cont', cont);
   return cont;
 }

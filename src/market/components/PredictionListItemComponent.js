@@ -40,7 +40,7 @@ const MarketListItemComponent = ({
           bubble={{ width: '1rem', height: '1rem' }}
           animation={{ speed: 2 }}
           className=""
-          colors={['#ffbb33', '#FF8800', '#ff4444']}
+          colors={['#cccccc', '#aaaaaa', '#999999']}
         />
       }
 

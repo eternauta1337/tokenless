@@ -21,7 +21,7 @@ const HistoryComponent = ({
             bubble={{ width: '1rem', height: '1rem' }}
             animation={{ speed: 2 }}
             className=""
-            colors={['#ffbb33', '#FF8800', '#ff4444']}
+            colors={['#cccccc', '#aaaaaa', '#999999']}
           />
         }
 
@@ -62,7 +62,11 @@ const HistoryComponent = ({
 
                   {/* TX */}
                   <small>
-                    <a href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}tx/${item.tx}`}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}tx/${item.tx}`}
+                    >
                       {item.tx}
                     </a>
                   </small>

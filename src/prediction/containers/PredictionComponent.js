@@ -59,7 +59,10 @@ class Prediction extends React.Component {
     if(!this.props.isConnected || this.props.isWaiting) {
       return (
         <div>
-          <ConnectComponent title={!this.props.isConnected ? "Connecting..." : "Processing..."}/>
+          <ConnectComponent
+            useGif={this.props.isWaiting}
+            title={!this.props.isConnected ? "Connecting..." : "Processing..."}
+          />
         </div>
       );
     }
@@ -154,7 +157,7 @@ class Prediction extends React.Component {
           }
 
           {/* BET */}
-          {this.props.predictionState !== undefined && this.props.predictionState === 0 &&
+          {this.props.owner !== undefined && this.props.predictionState !== undefined && this.props.predictionState === 0 &&
             <PlaceBetComponent
               isOwned={isOwned}
               placeBet={this.props.placeBet}

@@ -26,7 +26,7 @@ class Market extends React.Component {
   
   componentWillMount() {
     this.pendingPreviews = [];
-    this.refreshFactory();
+    this.refreshFactory(true);
     this.requestPending();
   }
 
@@ -75,10 +75,10 @@ class Market extends React.Component {
     }
   }
 
-  refreshFactory() {
+  refreshFactory(force = false) {
     if (this.props.isNetworkConnected) {
       const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if (!this.props.isConnected || blockAdvanced) {
+      if (force || !this.props.isConnected || blockAdvanced) {
         if (this.props.blockNumber) this.setState({lastRecordedBlockNumber: this.props.blockNumber});
         this.props.connectMarket();
       }

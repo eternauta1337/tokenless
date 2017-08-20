@@ -1,6 +1,7 @@
 import { connectPrediction } from '.';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
+import {resetPrediction} from "./ResetPredictionAction";
 
 export function withdrawPrize() {
   console.log('withdrawPrize()');
@@ -20,6 +21,7 @@ export function withdrawPrize() {
       dispatch(setWaiting(false));
     }).then(() => {
       console.log('withdraw prize succesful!');
+      dispatch(resetPrediction());
       dispatch(connectPrediction(prediction.address));
       dispatch(setWaiting(false));
     });

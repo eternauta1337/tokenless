@@ -2,6 +2,7 @@ import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
+import {resetPrediction} from "./ResetPredictionAction";
 
 export function withdrawFees() {
   console.log('withdrawFees()');
@@ -21,6 +22,7 @@ export function withdrawFees() {
     }).then(() => {
       dispatch(setWaiting(false));
       console.log('withdraw fees succesful!');
+      dispatch(resetPrediction());
       dispatch(connectPrediction(prediction.address));
       dispatch(forgetPreview(prediction.address));
     });

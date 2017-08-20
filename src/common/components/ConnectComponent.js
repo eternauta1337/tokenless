@@ -2,7 +2,10 @@ import React from 'react';
 import BubblePreloader from 'react-bubble-preloader';
 import RandomGifComponent from '../../common/components/RandomGifComponent';
 
-const ConnectComponent = ({title}) => {
+const ConnectComponent = ({
+  title,
+  useGif
+}) => {
   return (
     <div className="container">
 
@@ -26,7 +29,9 @@ const ConnectComponent = ({title}) => {
       <br/>
 
       {/* GIF */}
-      <RandomGifComponent/>
+      {useGif &&
+        <RandomGifComponent/>
+      }
 
     </div>
   );
