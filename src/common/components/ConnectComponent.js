@@ -23,7 +23,7 @@ const ConnectComponent = ({
       {/* SUBTITLE */}
       <div className="text-center">
         <small className="text-muted text-center">
-          This might take a few seconds. Hang in there...
+          This may take a few seconds. Hang in there...
         </small>
       </div>
       <br/>

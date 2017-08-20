@@ -61,7 +61,7 @@ class Prediction extends React.Component {
         <div>
           <ConnectComponent
             useGif={this.props.isWaiting}
-            title={!this.props.isConnected ? "Connecting..." : "Processing..."}
+            title={!this.props.isConnected ? "Connecting with smart contract..." : "Processing transaction..."}
           />
         </div>
       );

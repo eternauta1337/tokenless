@@ -91,7 +91,7 @@ class Market extends React.Component {
     if(!this.props.isConnected || this.props.isWaiting) {
       return (
         <div>
-          <ConnectComponent title={!this.props.isConnected ? "Connecting..." : "Processing..."}/>
+          <ConnectComponent title={!this.props.isConnected ? "Connecting with smart contract..." : "Processing transaction..."}/>
         </div>
       );
     }
