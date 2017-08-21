@@ -25,7 +25,7 @@ export function connectPrediction(address) {
     prediction.contract = contract;
 
     // Try to reuse preview data.
-    console.log('get basic data');
+    // console.log('get basic data');
     const preview = getState().market.previews[address];
     if(preview && preview.statement) prediction.statement = preview.statement;
     else prediction.statement = await contract.statement.call();
@@ -39,7 +39,7 @@ export function connectPrediction(address) {
     // Incremental updates below...
     // ----------------------------------
 
-    console.log('get state');
+    // console.log('get state');
     prediction.outcome = await contract.outcome.call();
     prediction.predictionState = (await contract.getState()).toNumber();
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
@@ -49,7 +49,7 @@ export function connectPrediction(address) {
       payload: prediction
     });
 
-    console.log('get balances');
+    // console.log('get balances');
     prediction.balance = await web3util.getBalanceInEther(address, web3);
     prediction.positivePredicionBalance = +web3.fromWei(await contract.totals.call(true), 'ether').toNumber();
     prediction.negativePredicionBalance = +web3.fromWei(await contract.totals.call(false), 'ether').toNumber();
@@ -59,7 +59,7 @@ export function connectPrediction(address) {
       payload: prediction
     });
 
-    console.log('get owner');
+    // console.log('get owner');
     prediction.owner = await contract.owner.call();
     if(prediction.predictionState === 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
@@ -70,7 +70,7 @@ export function connectPrediction(address) {
       payload: prediction
     });
 
-    console.log('get dates');
+    // console.log('get dates');
     prediction.betEndDate = ( await contract.betEndTimestamp.call() ).toNumber();
     prediction.withdrawEndDate = ( await contract.withdrawEndTimestamp.call() ).toNumber();
     if(!checkContinue(address, getState)) return;
@@ -79,7 +79,7 @@ export function connectPrediction(address) {
       payload: prediction
     });
 
-    console.log('get player balances');
+    // console.log('get player balances');
     prediction.playerPositiveBalance = +web3.fromWei(await contract.getUserBalance(true, {from: player}), 'ether').toNumber();
     prediction.playerNegativeBalance = +web3.fromWei(await contract.getUserBalance(false, {from: player}), 'ether').toNumber();
     if(!checkContinue(address, getState)) return;
@@ -90,7 +90,7 @@ export function connectPrediction(address) {
 
     // Bet history.
     if(prediction.balance > 0) {
-      console.log('get bet history:');
+      // console.log('get bet history:');
       const currentBlock = getState().network.blockNumber;
       if(!checkContinue(address, getState)) return;
       if(currentBlock) {

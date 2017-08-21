@@ -121,6 +121,7 @@ class Market extends React.Component {
                     {_.map(this.props.addresses, (address) => {
                       const preview = this.props.previews[address];
                       return <MarketListItemComponent
+                        key={address}
                         address={address}
                         preview={preview}
                       />;
