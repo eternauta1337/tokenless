@@ -10,7 +10,7 @@ import {
 } from '../actions';
 import {
   TARGET_LIVE_NETWORK,
-  EXPLORER_URL
+  EXPLORER_URL, DEBUG_MODE
 } from "../../constants";
 
 class Market extends React.Component {
@@ -121,7 +121,6 @@ class Market extends React.Component {
                     {_.map(this.props.addresses, (address) => {
                       const preview = this.props.previews[address];
                       return <MarketListItemComponent
-                        key={address}
                         address={address}
                         preview={preview}
                       />;
@@ -150,6 +149,21 @@ class Market extends React.Component {
                   Explore Contract
                 </a>
               </div>
+
+              {/* FAUCET LINK */}
+              {TARGET_LIVE_NETWORK === 'ropsten' &&
+                <div>
+                  <br/>
+                  <a
+                    href="https://faucet.metamask.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="glyphicon glyphicon-tint" aria-hidden="true"></span>&nbsp;
+                    Metamask Faucet
+                  </a>
+                </div>
+              }
 
             </div>
 
