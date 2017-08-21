@@ -136,25 +136,32 @@ class Market extends React.Component {
                 Create a New Prediction
               </Link>
 
+              &nbsp;
+              &nbsp;
+
+              {/* LINK TO ABOUT */}
+              <Link to="/about">
+                <span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;
+                About
+              </Link>
+
               <br/>
               <br/>
 
               {/* LINK TO EXPLORER */}
-              <div>
-                <a
-                  href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}address/${this.props.address}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;
-                  Explore Contract
-                </a>
-              </div>
+              <a
+                href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}address/${this.props.address}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;
+                Explore Contract
+              </a>
 
               {/* FAUCET LINK */}
               {TARGET_LIVE_NETWORK === 'ropsten' &&
-                <div>
-                  <br/>
+                <span>
+                  &nbsp;&nbsp;
                   <a
                     href="https://faucet.metamask.io/"
                     target="_blank"
@@ -163,7 +170,7 @@ class Market extends React.Component {
                     <span className="glyphicon glyphicon-tint" aria-hidden="true"></span>&nbsp;
                     Metamask Faucet
                   </a>
-                </div>
+                </span>
               }
 
             </div>
