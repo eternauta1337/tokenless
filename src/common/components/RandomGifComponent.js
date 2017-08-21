@@ -11,7 +11,7 @@ class RandomGifComponent extends React.PureComponent {
     ];
     const idx = Math.floor(Math.random() * tags.length);
     const tag = tags[idx];
-    // console.log('giphy tag:', tag);
+    console.log('giphy tag:', tag);
 
     const request = new XMLHttpRequest();
     request.open('GET', 'https://api.giphy.com/v1/gifs/random?api_key=' + GIPHY_API_KEY + '&tag=' + tag, true);

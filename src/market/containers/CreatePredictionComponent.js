@@ -15,7 +15,7 @@ class CreatePredictionComponent extends React.Component {
 
   handleCreateSubmit() {
     const statement = this.statementInputField.value;
-    console.log('dates:', this.betEndDate, this.withdrawEndDate);
+    // console.log('dates:', this.betEndDate, this.withdrawEndDate);
     this.props.createPrediction(statement, this.betEndDate, this.withdrawEndDate);
   }
 
