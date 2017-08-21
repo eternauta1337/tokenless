@@ -15,7 +15,7 @@ const NavigationComponent = ({ path }) => {
 
           {/* BRAND */}
           <div className="navbar-header">
-            <Link className="navbar-brand" to={PATH_ROOT}>
+            <div className="navbar-brand">
               <div className="brand">
                 <span className='icon'>
                   <svg width="14" height="14" viewBox="0 2 24 24">
@@ -27,7 +27,7 @@ const NavigationComponent = ({ path }) => {
                   <small> v{info.version}</small>
                 }
               </div>
-            </Link>
+            </div>
           </div>
 
           {/* NAV ITEMS */}

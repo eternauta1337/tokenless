@@ -36,6 +36,13 @@ body {
   padding-top: 13px;
 }
 
+/* Make navbar brand not hoverable */
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    background-color: transparent !important;
+    color: #999999 !important;
+}
+
 .brand * {
   vertical-align: middle;
 }
