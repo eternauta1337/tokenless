@@ -29,7 +29,7 @@ class CreatePredictionComponent extends React.Component {
     if(this.props.isWaiting) {
       return (
         <div>
-          <ConnectComponent title="Processing transaction..."/>
+          <ConnectComponent title="Processing transaction..." useGif={true}/>
         </div>
       );
     }
