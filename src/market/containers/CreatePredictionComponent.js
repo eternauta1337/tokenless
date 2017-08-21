@@ -5,7 +5,7 @@ import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
 import ConnectComponent from '../../common/components/ConnectComponent';
 import {
-  DEBUG_MODE
+  DEBUG_MODE, TARGET_LIVE_NETWORK
 } from '../../constants';
 import {
   createPrediction
@@ -36,9 +36,9 @@ class CreatePredictionComponent extends React.Component {
 
     // Pre-populate date files with 2 dates in the near future.
     let now = dateUtil.dateToUnix(new Date());
-    let betDate = DEBUG_MODE ? dateUtil.unixToDate(now + 5 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
+    let betDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 5 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
     this.betEndDate = betDate;
-    let withdrawDate = DEBUG_MODE ? dateUtil.unixToDate(now + 10 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 14 ) );
+    let withdrawDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 10 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 14 ) );
     this.withdrawEndDate = withdrawDate;
 
     return (
