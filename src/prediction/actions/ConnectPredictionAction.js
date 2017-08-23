@@ -115,6 +115,7 @@ export function updatePredictionStatement(address) {
 // ----------------------------------
 
 export function updateDynamicPredictionData(address) {
+  console.log('updateDynamicPredictionData()');
   return async function(dispatch) {
     dispatch(updatePredictionState(address));
     dispatch(updatePredictionBalances(address));

@@ -10,7 +10,6 @@ import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
-import '../../styles/index.css';
 import {
   resetPrediction,
   connectPrediction,
@@ -23,34 +22,13 @@ import {EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
 
 class Prediction extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      lastRecordedBlockNumber: 0,
-      lastRecordedPlayerAddress: ''
-    };
-  }
-
   componentWillMount() {
     this.props.resetPrediction();
-    this.refreshMarket(this.props);
+    this.props.connectPrediction(this.props.routeParams.address);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.refreshMarket(nextProps);
-  }
-
-  refreshMarket(props) {
-    if(props.isNetworkConnected) {
-      const blockAdvanced = props.blockNumber !== undefined && (props.blockNumber > this.state.lastRecordedBlockNumber);
-      const addressChanged = props.activeAccountAddress !== this.state.lastRecordedPlayerAddress;
-      if(!props.isConnected || blockAdvanced || addressChanged) {
-        if(props.blockNumber) this.setState({ lastRecordedBlockNumber: props.blockNumber });
-        if(props.activeAccountAddress) this.setState({ lastRecordedPlayerAddress: props.activeAccountAddress });
-        console.log('PredictionComponent requesting update... block advanced', blockAdvanced, 'addressChanged', addressChanged);
-        props.connectPrediction(props.routeParams.address);
-      }
-    }
+  componentWillUnmount() {
+    this.props.resetPrediction();
   }
 
   render() {
@@ -174,12 +152,12 @@ class Prediction extends React.Component {
           />
 
           {/* HISTORY */}
-          {this.props.balance !== undefined && this.props.balance !== 0 &&
-            <HistoryComponent
-              player={this.props.activeAccountAddress}
-              betHistory={this.props.betHistory}
-            />
-          }
+          {/*{this.props.balance !== undefined && this.props.balance !== 0 &&*/}
+            {/*<HistoryComponent*/}
+              {/*player={this.props.activeAccountAddress}*/}
+              {/*betHistory={this.props.betHistory}*/}
+            {/*/>*/}
+          {/*}*/}
 
           {/* LINK TO EXPLORER */}
           <div>

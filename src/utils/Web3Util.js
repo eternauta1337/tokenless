@@ -93,6 +93,9 @@ export async function skipBlock(web3) {
       }
     );
   });
+
+  // Console snippet:
+  // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_mine", id: 0});
 }
 
 export function getTimestamp(web3) {
