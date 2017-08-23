@@ -5,82 +5,25 @@ import {Link} from 'react-router';
 import MarketListItemComponent from '../components/PredictionListItemComponent';
 import ConnectComponent from '../../common/components/ConnectComponent';
 import {
-  getPredictionPreview,
-  connectMarket
+  getPredictionPreview
 } from '../actions';
 import {
   TARGET_LIVE_NETWORK,
-  EXPLORER_URL, DEBUG_MODE
+  EXPLORER_URL,
 } from "../../constants";
 
 class Market extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      lastRecordedBlockNumber: 0,
-      fetching: false,
-      pendingPreviews: []
-    };
-  }
-  
-  componentWillMount() {
-    this.pendingPreviews = [];
-    this.refreshFactory(true);
-    this.requestPending();
-  }
-
-  shouldComponentUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
 
     // Check which previews have been updated.
-    for(let i = 0; i < nextProps.addresses.length; i++) {
-      const address = nextProps.addresses[i];
-      const preview = nextProps.previews[address];
-      const isPending = this.state.pendingPreviews.includes(address);
-      if(preview && isPending) {
-        this.state.pendingPreviews.splice(this.state.pendingPreviews.indexOf(address), 1);
-      }
-    }
-
-    // Render if there are no pending previews.
-    return this.pendingPreviews.length === 0;
-  }
-
-  componentDidUpdate() {
-    this.requestPending();
-  }
-
-  requestPending() {
-
-    // Request missing previews.
-    let reqCount = 0;
-    if(!this.props.addresses) return;
-    for(let i = 0; i < this.props.addresses.length; i++) {
-      const address = this.props.addresses[i];
-      const preview = this.props.previews[address];
-      if(!preview) {
-        const alreadyPending = this.state.pendingPreviews.includes(address);
-        if(!alreadyPending) {
-
-          // Trigger fetch.
-          // console.log('will request: ', i);
-          this.props.getPredictionPreview(address);
-          this.state.pendingPreviews.push(address);
-
-          // Control batch.
-          reqCount++;
-          if(reqCount >= 1) return;
+    if(nextProps.addresses) {
+      for(let i = 0; i < nextProps.addresses.length; i++) {
+        const address = nextProps.addresses[i];
+        const preview = nextProps.previews[address];
+        if(!preview) {
+          nextProps.getPredictionPreview(address);
         }
-      }
-    }
-  }
-
-  refreshFactory(force = false) {
-    if (this.props.isNetworkConnected) {
-      const blockAdvanced = this.props.blockNumber && (this.props.blockNumber > this.state.lastRecordedBlockNumber);
-      if (force || !this.props.isConnected || blockAdvanced) {
-        if (this.props.blockNumber) this.setState({lastRecordedBlockNumber: this.props.blockNumber});
-        this.props.connectMarket();
       }
     }
   }
@@ -96,6 +39,8 @@ class Market extends React.Component {
       );
     }
 
+    const showNoItems = this.props.addresses === undefined || (this.props.addresses && this.props.addresses.length === 0);
+
     return (
       <div className="container">
 
@@ -107,7 +52,7 @@ class Market extends React.Component {
               <div className="">
 
                 {/* NO ITEMS */}
-                {!this.state.fetching && this.props.addresses.length === 0 &&
+                {showNoItems &&
                   <div className="alert alert-default">
                     <span className="text-muted">
                       No predictions yet.
@@ -116,7 +61,7 @@ class Market extends React.Component {
                 }
 
                 {/* LIST */}
-                {this.props.addresses.length > 0 &&
+                {this.props.addresses && this.props.addresses.length > 0 &&
                   <ul className="list-group">
                     {_.map(this.props.addresses, (address) => {
                       const preview = this.props.previews[address];
@@ -193,7 +138,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    connectMarket: () => dispatch(connectMarket()),
     getPredictionPreview: (address) => dispatch(getPredictionPreview(address))
   };
 };

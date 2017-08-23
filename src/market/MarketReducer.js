@@ -3,6 +3,7 @@ import {
   CONNECT_MARKET,
   GET_PREDICTION_PREVIEW,
   FORGET_PREVIEW,
+  UPDATE_MARKET
 } from './actions';
 
 const initialState = {
@@ -15,15 +16,24 @@ export default function(state = initialState, action) {
   // console.log('MarketReducer', state, action);
 
   let newState;
+  let market;
 
   switch(action.type) {
 
   case CONNECT_MARKET:
-    const market = action.payload;
+    market = action.payload;
     newState = {
       ...state,
       ...market,
       isConnected: true
+    };
+    break;
+
+  case UPDATE_MARKET:
+    market = action.payload;
+    newState = {
+      ...state,
+      ...market
     };
     break;
 

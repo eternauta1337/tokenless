@@ -3,6 +3,7 @@ import * as web3Util from '../../utils/Web3Util';
 import _ from 'lodash';
 import {CHECK_NETWORK_TICK} from "../../constants";
 import { updateDynamicPredictionData } from '../../prediction/actions';
+import {updateDynamicMarketData} from "../../market/actions/ConnectMarketAction";
 
 export const UPDATE_NETWORK = 'network/UPDATE_NETWORK';
 
@@ -50,16 +51,15 @@ export function watchNetworkChanges() {
         payload: blockchain
       });
 
+      // Update market.
+      dispatch(updateDynamicMarketData());
+
       // Check if focused prediction needs to be updated.
       const isPredictionConnected = getState().prediction.isConnected;
       // console.log('need to update prediction:', isPredictionConnected);
       if(isPredictionConnected) {
-        updateDynamicPredictionData(getState().prediction.targetPredictionAddress);
+        dispatch(updateDynamicPredictionData(getState().prediction.targetPredictionAddress));
       }
-
-      // if(!getState().web3) {
-      //   dispatch(connectNetwork());
-      // }
     }, CHECK_NETWORK_TICK);
   };
 }
