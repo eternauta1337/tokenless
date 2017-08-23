@@ -2,7 +2,8 @@ import TruffleContract from 'truffle-contract';
 import PredictionArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
 import * as stateUtil from '../../utils/PredictionState';
-import {STORAGE_PREVIEW_KEY, USE_CACHE} from "../../constants";
+import _ from 'lodash';
+import {STORAGE_PREDICTION_KEY, STORAGE_PREVIEW_KEY, USE_CACHE} from "../../constants";
 
 export const GET_PREDICTION_PREVIEW = 'prediction/GET_PREDICTION_PREVIEW';
 
@@ -18,13 +19,28 @@ export function getPredictionPreview(address) {
       return;
     }
 
-    // Try to retrieve from cache.
+    // Try to retrieve preview from cache.
     let cached;
     if(USE_CACHE) {
       const cachedRaw = window.localStorage[STORAGE_PREVIEW_KEY + address];
       if(cachedRaw) {
         // console.log('using cached version');
         cached = JSON.parse(cachedRaw);
+      }
+    }
+
+    // Try to reuse a cached prediction to populate the preview.
+    if(USE_CACHE && !cached) {
+      const cachedPredRaw = window.localStorage[STORAGE_PREDICTION_KEY + address];
+      console.log('reusing cached prediction to consolidate preview');
+      if(cachedPredRaw) {
+        const cachedPred = JSON.parse(cachedPredRaw);
+        cached = _.pick(cachedPred, [
+          'statement',
+          'balance',
+          'predictionState',
+          'predictionStateStr'
+        ]);
       }
     }
 
@@ -45,7 +61,7 @@ export function getPredictionPreview(address) {
 
     // Dispatch populated preview.
     preview.balance = await web3util.getBalanceInEther(address, web3);
-    preview.statement = await contract.statement.call();
+    if(!preview.statement) preview.statement = await contract.statement.call();
     preview.predictionState = (await contract.getState()).toNumber();
     preview.predictionStateStr = stateUtil.predictionStateToStr(preview.predictionState);
     preview.isFetching = false;
