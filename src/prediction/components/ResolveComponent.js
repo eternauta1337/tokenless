@@ -15,16 +15,16 @@ const ResolveComponent = ({ resolveMarket }) => {
         <form className="">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-info"
             onClick={(evt) => handleResolveButtonClick(true)}>
-            The Prediction Ocurred
+            Did Happen
           </button>
           &nbsp;
           <button
             type="button"
             className="btn btn-danger"
             onClick={(evt) => handleResolveButtonClick(false)}>
-            The Prediction did not Occur
+            Didn't Happen
           </button>
         </form>
       </div>

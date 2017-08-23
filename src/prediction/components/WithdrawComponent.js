@@ -15,14 +15,12 @@ const WithdrawComponent = ({
         <strong>Congratulations! You have funds to withdraw from this prediction.</strong>
       </div>
       <div className="panel-body">
-        <div className="form-group">
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={(evt) => handleButtonClick()}>
-            Withdraw {claimAmount} eth
-          </button>
-        </div>
+        <button
+          type="button"
+          className="btn btn-info"
+          onClick={(evt) => handleButtonClick()}>
+          Withdraw {claimAmount} eth
+        </button>
       </div>
     </div>
   );

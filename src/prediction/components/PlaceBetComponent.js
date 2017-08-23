@@ -50,7 +50,7 @@ const PlaceBetComponent = ({
             {/* YES */}
             <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-info"
             onClick={(evt) => handleBetSubmit(true)}>
             Will Happen
             </button>

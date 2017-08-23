@@ -30,7 +30,7 @@ const InfoComponent = ({
       {/* POT BALANCES */}
       {balance !== undefined && balance > 0 && predictionState !== 3 &&
       <div className="progress">
-        <div className="progress-bar progress-bar-primary" style={{width: `${posPercent}%`}}>
+        <div className="progress-bar progress-bar-info" style={{width: `${posPercent}%`}}>
           {posPercent > 5 &&
             <span className="">
               <span className="glyphicon glyphicon-thumbs-up"></span>&nbsp;
@@ -55,7 +55,7 @@ const InfoComponent = ({
         {/* TOTAL BALANCE */}
         {balance !== undefined &&
           <li className='list-inline-item'>
-            <span className="label label-info">
+            <span className="label label-primary">
               Contract balance: {balance}
             </span>
           </li>
@@ -64,7 +64,7 @@ const InfoComponent = ({
         {/* OWNED */}
         {isOwned &&
         <li className='list-inline-item'>
-            <span className="label label-info">
+            <span className="label label-primary">
               You own this prediction
             </span>
         </li>
