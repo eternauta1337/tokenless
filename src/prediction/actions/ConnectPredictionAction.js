@@ -172,6 +172,7 @@ export function updatePredictionState(address) {
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
     const preview = getState().market.previews[address];
     if(preview) preview.predictionState = prediction.predictionState;
+    if(preview) preview.predictionStateStr = prediction.predictionStateStr;
     if (!checkContinue(address, getState)) return;
     cachePrediction(address, prediction);
     dispatch({

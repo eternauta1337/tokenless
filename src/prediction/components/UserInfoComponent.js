@@ -30,25 +30,25 @@ const UserInfoComponent = ({
         {/* BALANCES */}
         { playerPositiveBalance > 0 &&
           <div>
-            <small className="text-muted">
+            <h4 className="text-muted">
               Bets on yes: {playerPositiveBalance} eth
-            </small>
+            </h4>
           </div>
         }
         { playerNegativeBalance > 0 &&
         <div>
-          <small className="text-muted">
+          <h4 className="text-muted">
             Bets on no: {playerNegativeBalance} eth
-          </small>
+          </h4>
         </div>
         }
 
         {/* PRIZE */}
         { predictionState === 2 && playerPrizes > 0 &&
           <div>
-            <small className="text-muted">
+            <h4 className="text-muted">
               Prize to claim: {playerPrizes} eth
-            </small>
+            </h4>
           </div>
         }
 

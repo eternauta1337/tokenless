@@ -57,11 +57,13 @@ class Prediction extends React.Component {
       <div className="container">
 
         {/* STATEMENT */}
-        <div className="page-header">
-          <h1 className="prediction-statement">
-            "{this.props.statement}"
-          </h1>
-        </div>
+        {this.props.statement &&
+          <div className="page-header">
+            <h1 className="prediction-statement">
+              "{this.props.statement}"
+            </h1>
+          </div>
+        }
 
         <div className="">
 

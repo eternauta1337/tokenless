@@ -26,7 +26,7 @@ const MarketListItemComponent = ({
             }
 
             {/* STATE */}
-            <span className={`label label-${preview.predictionState === 0 ? 'success' : preview.predictionState === 1 ? 'warning' : preview.predictionState === 2 ? 'danger' : 'default'}`}>
+            <span className={`label label-${preview.predictionState === 0 ? 'success' : preview.predictionState === 1 ? 'warning' : preview.predictionState === 2 ? 'danger' : 'primary'}`}>
               {preview.predictionStateStr}
             </span>
 

@@ -21,7 +21,7 @@ const PlaceBetComponent = ({
   };
 
   return (
-    <div className='panel panel-info'>
+    <div className={`panel panel-${!isOwned ? 'info' : 'default'}`}>
       <div className="panel-heading">
         <strong>Place a bet</strong>
       </div>
