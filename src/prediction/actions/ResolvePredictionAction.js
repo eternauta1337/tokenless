@@ -1,6 +1,5 @@
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
-import {forgetPreview} from "../../market/actions/ForgetPredictionPreviewAction";
 import {
   updatePredictionState
 } from ".";
@@ -26,7 +25,6 @@ export function resolveMarket(outcome) {
 
       // Invalidate prediction data.
       dispatch(updatePredictionState(prediction.address));
-      dispatch(forgetPreview(prediction.address));
     });
   };
 }

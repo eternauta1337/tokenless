@@ -1,7 +1,6 @@
 import {
   updatePredictionBalances
 } from '.';
-import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 
@@ -26,7 +25,6 @@ export function withdrawFees() {
 
       // Invalidate prediction data.
       dispatch(updatePredictionBalances(prediction.address));
-      dispatch(forgetPreview(prediction.address));
     });
   };
 }

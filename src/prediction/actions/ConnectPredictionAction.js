@@ -149,6 +149,8 @@ export function updatePredictionBalances(address) {
     const web3 = getState().network.web3;
     console.log('get balances');
     prediction.balance = await web3util.getBalanceInEther(address, web3);
+    const preview = getState().market.previews[address];
+    if(preview) preview.balance = prediction.balance;
     prediction.positivePredicionBalance = +web3.fromWei(await contract.totals.call(true), 'ether').toNumber();
     prediction.negativePredicionBalance = +web3.fromWei(await contract.totals.call(false), 'ether').toNumber();
     if (!checkContinue(address, getState)) return;
@@ -168,6 +170,8 @@ export function updatePredictionState(address) {
     prediction.outcome = await contract.outcome.call();
     prediction.predictionState = (await contract.getState()).toNumber();
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
+    const preview = getState().market.previews[address];
+    if(preview) preview.predictionState = prediction.predictionState;
     if (!checkContinue(address, getState)) return;
     cachePrediction(address, prediction);
     dispatch({

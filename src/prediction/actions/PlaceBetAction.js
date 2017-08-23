@@ -1,4 +1,3 @@
-import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 import {
@@ -33,7 +32,6 @@ export function placeBet(bet, betEther) {
       // Invalidate prediction data.
       dispatch(updatePredictionBalances(prediction.address));
       dispatch(updatePredictionPlayerBalances(prediction.address));
-      dispatch(forgetPreview(prediction.address));
     });
   };
 }

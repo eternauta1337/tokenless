@@ -2,7 +2,6 @@ import _ from 'lodash';
 import {
   CONNECT_MARKET,
   GET_PREDICTION_PREVIEW,
-  FORGET_PREVIEW,
   UPDATE_MARKET
 } from './actions';
 
@@ -45,14 +44,6 @@ export default function(state = initialState, action) {
         ...state.previews,
         [preview.address]: preview
       }
-    };
-    break;
-
-  case FORGET_PREVIEW:
-    const address = action.payload;
-    newState = {
-      ...state,
-      previews: _.omit(state.previews, address)
     };
     break;
 
