@@ -31,8 +31,7 @@ export default function(state = initialState, action) {
     prediction = action.payload;
     return {
       ...state,
-      ...prediction,
-      isConnected: true
+      ...prediction
     };
 
   case RESET_PREDICTION:
