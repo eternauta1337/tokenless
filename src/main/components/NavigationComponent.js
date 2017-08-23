@@ -10,8 +10,8 @@ import {
 const NavigationComponent = ({ path }) => {
   return (
     <div>
-      <nav className="navbar navbar-inverse navbar-fixed-top">
-        <div className="container">
+      <nav className="navbar navbar-default navbar-fixed-top">
+        <div className="container-fluid">
 
           {/* BRAND */}
           <div className="navbar-header">
@@ -23,15 +23,14 @@ const NavigationComponent = ({ path }) => {
                   </svg>
                 </span>
                 <span>tokenless.pm</span>
-                {SHOW_VERSION &&
-                  <small> v{info.version}</small>
-                }
               </div>
             </div>
           </div>
 
-          {/* NAV ITEMS */}
+          {/* ITEMS */}
           <div className="navbar-collapse collapse">
+
+            {/* NAV ITEMS (LEFT) */}
             <ul className="nav navbar-nav">
 
               {/* PREDICTION LIST */}
@@ -50,6 +49,19 @@ const NavigationComponent = ({ path }) => {
               </li>
 
             </ul>
+
+            {/* NAV ITEMS (RIGHT) */}
+            <ul className="nav navbar-nav navbar-right">
+
+              {/* VERSION */}
+              {SHOW_VERSION &&
+                <li>
+                  <a> v{info.version}</a>
+                </li>
+              }
+
+            </ul>
+
           </div>
 
         </div>

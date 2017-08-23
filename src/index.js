@@ -19,7 +19,7 @@ import {
 import './styles/index.css';
 import './styles/datetime.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+import './styles/themes/bootstrap-slate-theme.css';
 
 window.addEventListener('load', () => {
 

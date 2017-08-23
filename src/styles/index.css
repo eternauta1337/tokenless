@@ -18,7 +18,8 @@ body {
 }
 
 .debugPanel {
-  background-color: lightgray;
+  color: slategray;
+  background-color: darkslategray;
   padding: 10px;
 }
 
@@ -29,7 +30,7 @@ body {
 }
 
 .icon {
-  fill: gray;
+  fill: white;
 }
 
 .navbar .navbar-brand {
@@ -37,10 +38,10 @@ body {
 }
 
 /* Make navbar brand not hoverable */
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus {
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
     background-color: transparent !important;
-    color: #999999 !important;
+    color: #c8c8c8 !important;
 }
 
 .brand * {
@@ -53,7 +54,7 @@ body {
 }
 
 .footer-muted {
-    background-color: white;
+    background-color: transparent;
     position: absolute;
     left: 0;
     bottom: 0;
