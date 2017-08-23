@@ -1,8 +1,9 @@
-import { connectPrediction } from '.';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 import {forgetPreview} from "../../market/actions/ForgetPredictionPreviewAction";
-import {resetPrediction} from "./ResetPredictionAction";
+import {
+  updatePredictionState
+} from ".";
 
 export function resolveMarket(outcome) {
   return async function(dispatch, getState) {
@@ -21,9 +22,10 @@ export function resolveMarket(outcome) {
       dispatch(setWaiting(false));
     }).then(() => {
       console.log('contract resolved!');
-      dispatch(connectPrediction(prediction.address));
       dispatch(setWaiting(false));
-      dispatch(resetPrediction());
+
+      // Invalidate prediction data.
+      dispatch(updatePredictionState(prediction.address));
       dispatch(forgetPreview(prediction.address));
     });
   };

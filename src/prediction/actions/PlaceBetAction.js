@@ -1,8 +1,10 @@
-import { connectPrediction } from '.';
 import { forgetPreview } from '../../market/actions/ForgetPredictionPreviewAction';
 import {USE_INJECTED_WEB3} from "../../constants";
 import {setWaiting} from "../../network/actions/SetWaitingAction";
-import {resetPrediction} from "./ResetPredictionAction";
+import {
+  updatePredictionBalances,
+  updatePredictionPlayerBalances
+} from ".";
 
 export function placeBet(bet, betEther) {
   console.log('placeBet()', bet, betEther);
@@ -26,10 +28,12 @@ export function placeBet(bet, betEther) {
       dispatch(setWaiting(false));
     }).then(() => {
       console.log('bet placed!');
-      dispatch(resetPrediction());
-      dispatch(connectPrediction(prediction.address));
-      dispatch(forgetPreview(prediction.address));
       dispatch(setWaiting(false));
+
+      // Invalidate prediction data.
+      dispatch(updatePredictionBalances(prediction.address));
+      dispatch(updatePredictionPlayerBalances(prediction.address));
+      dispatch(forgetPreview(prediction.address));
     });
   };
 }
