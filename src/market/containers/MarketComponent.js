@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import MarketListItemComponent from '../components/PredictionListItemComponent';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import Log from 'react-log-lifecycle';
 import { push } from 'react-router-redux';
 import {
   getPredictionPreview
@@ -13,7 +12,7 @@ import {
   EXPLORER_URL, FETCH_PREDICTIONS_BATCH,
 } from "../../constants";
 
-class Market extends Log {
+class Market extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log('componentWillReceiveProps()', nextProps.routeParams.page);
