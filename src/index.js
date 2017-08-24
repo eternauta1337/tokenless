@@ -1,7 +1,7 @@
 import store from './main/store';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router, Route, Redirect } from 'react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -31,6 +31,7 @@ window.addEventListener('load', () => {
   ReactDOM.render((
       <Provider store={store}>
         <Router history={syncHistoryWithStore(browserHistory, store)}>
+          <Redirect from="/" to="list/0"/>
           <Route path="/" component={AppComponent}>
             <Route path={PATH_LIST} component={MarketComponent}/>
             <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
