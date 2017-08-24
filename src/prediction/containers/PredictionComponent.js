@@ -10,6 +10,7 @@ import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
+import BubblePreloader from 'react-bubble-preloader';
 import {
   resetPrediction,
   connectPrediction,
@@ -63,6 +64,14 @@ class Prediction extends React.Component {
               "{this.props.statement}"
             </h1>
           </div>
+        }
+        {!this.props.statement &&
+          <BubblePreloader
+            bubble={{ width: '1rem', height: '1rem' }}
+            animation={{ speed: 2 }}
+            className=""
+            colors={['#cccccc', '#aaaaaa', '#999999']}
+          />
         }
 
         <div className="">
