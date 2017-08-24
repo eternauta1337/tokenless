@@ -74,7 +74,6 @@ class PlaceBetComponent extends React.Component {
 }
 
 const fields = ['betValue'];
-
 const validate = values => {
   console.log('validate', values);
   const { betValue } = values;
