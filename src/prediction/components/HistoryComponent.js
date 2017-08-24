@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import BubblePreloader from 'react-bubble-preloader';
-import {EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
+import {ETH_SYMBOL, EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
 
 const HistoryComponent = ({
                             player,
@@ -76,7 +76,7 @@ const HistoryComponent = ({
                 <td>{item.prediction === true ? 'yes' : 'no'}</td>
 
                 {/* ETH */}
-                <td>{item.value} eth</td>
+                <td>{item.value}{ETH_SYMBOL}</td>
 
               </tr>
             );

@@ -7,6 +7,7 @@ export const USE_CACHE = true;
 export const SHOW_VERSION = true;
 export const CHECK_NETWORK_TICK = 5000;
 export const CHECK_ACCOUNT_TICK = 500;
+export const ETH_SYMBOL = ' Ξ';
 
 // Market contract urls.
 export const MARKET_ADDRESS = {

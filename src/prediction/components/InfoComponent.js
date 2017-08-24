@@ -1,5 +1,6 @@
 import React from 'react';
 import * as dateUtil from '../../utils/DateUtil';
+import {ETH_SYMBOL} from "../../constants";
 
 const InfoComponent = ({
                          positivePredicionBalance,
@@ -35,7 +36,7 @@ const InfoComponent = ({
           {posPercent > 5 &&
             <span className="">
               <span className="glyphicon glyphicon-thumbs-up"></span>&nbsp;
-              {positivePredicionBalance}&nbsp;ETH
+              {positivePredicionBalance}{ETH_SYMBOL}
             </span>
           }
         </div>
@@ -43,7 +44,7 @@ const InfoComponent = ({
           {negPercent > 5 &&
             <span className="">
               <span className="glyphicon glyphicon-thumbs-down"></span>&nbsp;
-              {negativePredicionBalance}&nbsp;ETH
+              {negativePredicionBalance}{ETH_SYMBOL}
             </span>
           }
         </div>
@@ -56,8 +57,8 @@ const InfoComponent = ({
         {/* TOTAL BALANCE */}
         {balance !== undefined &&
           <li className='list-inline-item'>
-            <span className="label label-primary">
-              Contract balance: {balance}
+            <span className="label label-info">
+              Balance: {balance}{ETH_SYMBOL}
             </span>
           </li>
         }

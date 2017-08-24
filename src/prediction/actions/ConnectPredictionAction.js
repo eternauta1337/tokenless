@@ -1,8 +1,9 @@
 import TruffleContract from 'truffle-contract';
-import MarketArtifacts from '../../../build/contracts/Prediction.json';
+import PredictionArtifacts from '../../../build/contracts/Prediction.json';
 import * as web3util from '../../utils/Web3Util';
 import * as stateUtil from '../../utils/PredictionState';
 import {STORAGE_PREDICTION_KEY, USE_CACHE} from "../../constants";
+import { push } from 'react-router-redux';
 import _ from 'lodash';
 
 export const CONNECT_PREDICTION = 'prediction/CONNECT';
@@ -32,24 +33,34 @@ export function connectPrediction(address) {
     });
 
     // Retrieve prediction contract.
-    const Market = TruffleContract(MarketArtifacts);
-    Market.setProvider(web3.currentProvider);
-    const contract = await Market.at(address);
-    prediction.contract = contract;
-    if(!checkContinue(address, getState)) return;
-    cachePrediction(address, prediction);
-    dispatch({
-      type: UPDATE_PREDICTION,
-      payload: prediction
-    });
+    const Prediction = TruffleContract(PredictionArtifacts);
+    Prediction.setProvider(web3.currentProvider);
+    try {
+      const contract = await Prediction.at(address);
+      console.log('connected to prediction');
 
-    // Update static data.
-    dispatch(updatePredictionStatement(address));
-    dispatch(updatePredictionOwner(address));
-    dispatch(updatePredictionDates(address));
+      prediction.contract = contract;
+      if (!checkContinue(address, getState)) return;
+      cachePrediction(address, prediction);
+      dispatch({
+        type: UPDATE_PREDICTION,
+        payload: prediction
+      });
 
-    // Update dynamic data.
-    dispatch(updateDynamicPredictionData(address));
+      // Update static data.
+      dispatch(updatePredictionStatement(address));
+      dispatch(updatePredictionOwner(address));
+      dispatch(updatePredictionDates(address));
+
+      // Update dynamic data.
+        dispatch(updateDynamicPredictionData(address));
+    }
+    catch(err) {
+      console.log('error connecting prediction:', err);
+
+      // Redirect to 404.
+      dispatch(push(`/404`));
+    }
   };
 }
 
@@ -66,6 +77,7 @@ export function updatePredictionOwner(address) {
     const player = getState().network.activeAccountAddress;
     console.log('get owner');
     prediction.owner = await contract.owner.call();
+    if (!checkContinue(address, getState)) return;
     if (prediction.predictionState === 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
     }
@@ -85,6 +97,7 @@ export function updatePredictionDates(address) {
     const contract = getState().prediction.contract;
     console.log('get dates');
     prediction.betEndDate = ( await contract.betEndTimestamp.call() ).toNumber();
+    if (!checkContinue(address, getState)) return;
     prediction.withdrawEndDate = ( await contract.withdrawEndTimestamp.call() ).toNumber();
     if (!checkContinue(address, getState)) return;
     cachePrediction(address, prediction);
@@ -132,6 +145,7 @@ export function updatePredictionPlayerBalances(address) {
     const player = getState().network.activeAccountAddress;
     console.log('get player balances');
     prediction.playerPositiveBalance = +web3.fromWei(await contract.getUserBalance(true, {from: player}), 'ether').toNumber();
+    if (!checkContinue(address, getState)) return;
     prediction.playerNegativeBalance = +web3.fromWei(await contract.getUserBalance(false, {from: player}), 'ether').toNumber();
     if (!checkContinue(address, getState)) return;
     cachePrediction(address, prediction);
@@ -149,9 +163,11 @@ export function updatePredictionBalances(address) {
     const web3 = getState().network.web3;
     console.log('get balances');
     prediction.balance = await web3util.getBalanceInEther(address, web3);
+    if (!checkContinue(address, getState)) return;
     const preview = getState().market.previews[address];
     if(preview) preview.balance = prediction.balance;
     prediction.positivePredicionBalance = +web3.fromWei(await contract.totals.call(true), 'ether').toNumber();
+    if (!checkContinue(address, getState)) return;
     prediction.negativePredicionBalance = +web3.fromWei(await contract.totals.call(false), 'ether').toNumber();
     if (!checkContinue(address, getState)) return;
     cachePrediction(address, prediction);
@@ -168,7 +184,9 @@ export function updatePredictionState(address) {
     const contract = getState().prediction.contract;
     console.log('get state');
     prediction.outcome = await contract.outcome.call();
+    if (!checkContinue(address, getState)) return;
     prediction.predictionState = (await contract.getState()).toNumber();
+    if (!checkContinue(address, getState)) return;
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
     const preview = getState().market.previews[address];
     if(preview) preview.predictionState = prediction.predictionState;

@@ -1,4 +1,5 @@
 import React from 'react';
+import {ETH_SYMBOL} from "../../constants";
 
 const UserInfoComponent = ({
   playerPositiveBalance,
@@ -31,19 +32,19 @@ const UserInfoComponent = ({
           {/* BALANCES */}
           { playerPositiveBalance > 0 &&
             <div>
-              Bets on yes: {playerPositiveBalance} eth
+              Bets on yes: {playerPositiveBalance}{ETH_SYMBOL}
             </div>
           }
           { playerNegativeBalance > 0 &&
           <div>
-            Bets on no: {playerNegativeBalance} eth
+            Bets on no: {playerNegativeBalance}{ETH_SYMBOL}
           </div>
           }
 
           {/* PRIZE */}
           { predictionState === 2 && playerPrizes > 0 &&
             <div>
-              Prize to claim: {playerPrizes} eth
+              Prize to claim: {playerPrizes}{ETH_SYMBOL}
             </div>
           }
 

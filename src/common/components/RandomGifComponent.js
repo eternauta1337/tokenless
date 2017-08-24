@@ -16,12 +16,15 @@ class RandomGifComponent extends React.PureComponent {
   injectGif() {
 
     // Select a tag.
-    const tags = [
-      'computers', 'patience', "8bit", 'relax', 'coffee', 'whatever',
-      'waiting', 'bored', 'boring', 'kitten', 'owl', 'slow'
-    ];
-    const idx = Math.floor(Math.random() * tags.length);
-    const tag = tags[idx];
+    let tag = this.props.tag;
+    if(!tag) {
+      const tags = [
+        'computers', 'patience', "8bit", 'relax', 'coffee', 'whatever',
+        'waiting', 'bored', 'boring', 'kitten', 'owl', 'slow'
+      ];
+      const idx = Math.floor(Math.random() * tags.length);
+      tag = tags[idx];
+    }
     console.log('giphy tag:', tag);
 
     // Make url request.

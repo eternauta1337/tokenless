@@ -25,7 +25,12 @@ export function connectMarket() {
     if(!contract) {
       const Market = TruffleContract(PredictionMarketArtifacts);
       Market.setProvider(web3.currentProvider);
+      try {
       contract = await Market.at(marketAddress);
+      }
+      catch(err) {
+        console.log('error connecting market:', err);
+      }
       // console.log('market contract retrieved');
     }
     market.contract = contract;

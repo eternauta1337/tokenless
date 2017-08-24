@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import BubblePreloader from 'react-bubble-preloader';
+import {ETH_SYMBOL} from "../../constants";
 
 const MarketListItemComponent = ({
   address,
@@ -22,7 +23,7 @@ const MarketListItemComponent = ({
 
             {/* BALANCE */}
             {preview.balance > 0 &&
-            <span>{preview.balance} eth </span>
+            <span>{preview.balance}{ETH_SYMBOL}&nbsp;</span>
             }
 
             {/* STATE */}

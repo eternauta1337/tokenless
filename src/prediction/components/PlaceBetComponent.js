@@ -1,5 +1,6 @@
 import React from 'react';
 import { form } from 'react-inform';
+import {ETH_SYMBOL} from "../../constants";
 
 class PlaceBetComponent extends React.Component {
 
@@ -39,7 +40,7 @@ class PlaceBetComponent extends React.Component {
               <input
                 type="text"
                 className="form-control"
-                placeholder="0 eth"
+                placeholder={`0${ETH_SYMBOL}`}
                 {...betValue.props}
               />
               <div className="text-danger">

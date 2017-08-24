@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import AppComponent from './main/components/AppComponent';
+import NotFoundComponent from './main/components/NotFoundComponent';
 import PredictionComponent from './prediction/containers/PredictionComponent';
 import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
 import MarketComponent from './market/containers/MarketComponent';
@@ -35,6 +36,7 @@ window.addEventListener('load', () => {
             <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
             <Route path={PATH_PREDICTION} component={PredictionComponent}/>
             <Route path={PATH_ABOUT} component={AboutComponent}/>
+            <Route path='*' exact={true} component={NotFoundComponent}/>
           </Route>
         </Router>
       </Provider>
