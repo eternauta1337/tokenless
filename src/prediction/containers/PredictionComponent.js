@@ -83,6 +83,7 @@ class Prediction extends React.Component {
             positivePredicionBalance={this.props.positivePredicionBalance}
             negativePredicionBalance={this.props.negativePredicionBalance}
             isOwned={isOwned}
+            activeAccountAddress={this.props.activeAccountAddress}
             predictionState={this.props.predictionState}
             predictionStateStr={this.props.predictionStateStr}
             outcome={this.props.outcome}
@@ -90,15 +91,16 @@ class Prediction extends React.Component {
             />
 
           {/* FINISH */}
-          {this.props.predictionState !== undefined &&
-          this.props.predictionState >= 3 &&
+          { this.props.predictionState !== undefined &&
+            this.props.predictionState >= 3 &&
             <FinishComponent/>
           }
 
           {/* WITHDRAW PRIZE */}
-          {!isOwned &&
-          this.props.predictionState !== undefined &&
-          this.props.predictionState === 2 &&
+          { this.props.activeAccountAddress !== undefined &&
+            !isOwned &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 2 &&
             this.props.estimatePrize > 0 &&
             <WithdrawComponent
               claimAmount={this.props.estimatePrize}
@@ -107,9 +109,10 @@ class Prediction extends React.Component {
           }
 
           {/* WITHDRAW FEES */}
-          { isOwned &&
-          this.props.predictionState !== undefined &&
-          this.props.predictionState === 2 &&
+          { this.props.activeAccountAddress !== undefined &&
+            isOwned &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 2 &&
             this.props.bcTimestamp > this.props.withdrawEndDate &&
             <WithdrawComponent
               claimAmount={this.props.balance}
@@ -118,35 +121,41 @@ class Prediction extends React.Component {
           }
 
           {/* RESOLVE */}
-          {isOwned &&
-          this.props.predictionState !== undefined &&
-          this.props.predictionState === 1 &&
+          { this.props.activeAccountAddress !== undefined &&
+            isOwned &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 1 &&
             <ResolveComponent
               resolveMarket={this.props.resolveMarket}
               />
           }
 
           {/* PLAYER WAIT */}
-          {!isOwned &&
-          this.props.predictionState !== undefined &&
-          this.props.predictionState === 1 &&
+          { this.props.activeAccountAddress !== undefined &&
+            !isOwned &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 1 &&
             <WaitComponent
               isOwned={false}
             />
           }
 
           {/* OWNER WAIT */}
-          {isOwned &&
-          this.props.predictionState !== undefined &&
-          this.props.predictionState === 2 &&
-           this.props.bcTimestamp < this.props.withdrawEndDate &&
+          { this.props.activeAccountAddress !== undefined &&
+            isOwned &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 2 &&
+            this.props.bcTimestamp < this.props.withdrawEndDate &&
             <WaitComponent
               isOwned={true}
             />
           }
 
           {/* BET */}
-          {this.props.owner !== undefined && this.props.predictionState !== undefined && this.props.predictionState === 0 &&
+          { this.props.activeAccountAddress !== undefined &&
+            this.props.owner !== undefined &&
+            this.props.predictionState !== undefined &&
+            this.props.predictionState === 0 &&
             <PlaceBetComponent
               isOwned={isOwned}
               placeBet={this.props.placeBet}
@@ -154,13 +163,15 @@ class Prediction extends React.Component {
           }
 
           {/* USER INFO */}
-          <UserInfoComponent
-            bcTimestamp={this.props.bcTimestamp}
-            predictionState={this.props.predictionState}
-            playerPrizes={this.props.estimatePrize}
-            playerPositiveBalance={this.props.playerPositiveBalance}
-            playerNegativeBalance={this.props.playerNegativeBalance}
-          />
+          { this.props.activeAccountAddress !== undefined &&
+            <UserInfoComponent
+              bcTimestamp={this.props.bcTimestamp}
+              predictionState={this.props.predictionState}
+              playerPrizes={this.props.estimatePrize}
+              playerPositiveBalance={this.props.playerPositiveBalance}
+              playerNegativeBalance={this.props.playerNegativeBalance}
+            />
+          }
 
           {/* HISTORY */}
           {/*{this.props.balance !== undefined && this.props.balance !== 0 &&*/}

@@ -10,7 +10,8 @@ const InfoComponent = ({
                          betEndDate,
                          withdrawalEndDate,
                          outcome,
-                         balance
+                         balance,
+                         activeAccountAddress
                        }) => {
 
   let predictionStateClass = 'success';
@@ -89,6 +90,15 @@ const InfoComponent = ({
           <li className='list-inline-item'>
             <span className="label label-default">
               Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
+            </span>
+          </li>
+        }
+
+        {/* UNLOCK ACCOUNT */}
+        { activeAccountAddress === undefined &&
+          <li className='list-inline-item'>
+            <span className="label label-danger">
+              Unlock your metamask wallet to interact with this prediction
             </span>
           </li>
         }

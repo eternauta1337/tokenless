@@ -1,11 +1,12 @@
 // General.
-export const DEBUG_MODE = false; // activates a debug panel useful for development
+export const DEBUG_MODE = true; // activates a debug panel useful for development
 export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
 export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
 export const GIPHY_API_KEY = '5e2f35d1a57a44ae8415389a4c2efaab';
 export const USE_CACHE = true;
 export const SHOW_VERSION = true;
 export const CHECK_NETWORK_TICK = 5000;
+export const CHECK_ACCOUNT_TICK = 500;
 
 // Market contract urls.
 export const MARKET_ADDRESS = {

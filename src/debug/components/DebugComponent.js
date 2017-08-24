@@ -73,8 +73,8 @@ class Debug extends React.Component {
         {/* ACCOUNT BALANCE */}
         &nbsp;
         <small>
-          {this.props.globalState.network.activeAccountAddress}&nbsp;|&nbsp;
-          {this.state.accountBalance}&nbsp;
+          Active acct: {this.props.globalState.network.activeAccountAddress}&nbsp;|&nbsp;
+          {this.state.accountBalance} eth&nbsp;
         </small>
         <br/>
 

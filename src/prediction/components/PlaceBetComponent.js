@@ -75,7 +75,7 @@ class PlaceBetComponent extends React.Component {
 
 const fields = ['betValue'];
 const validate = values => {
-  console.log('validate', values);
+  // console.log('validate', values);
   const { betValue } = values;
   const errors = {};
   if (!betValue || betValue.length === 0) errors.betValue = 'Bet value is required.';

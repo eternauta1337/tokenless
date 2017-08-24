@@ -4,7 +4,7 @@ const UserInfoComponent = ({
   playerPositiveBalance,
   playerNegativeBalance,
   playerPrizes,
-  predictionState
+  predictionState,
 }) => {
 
   // Dont show if invalid.
@@ -27,30 +27,26 @@ const UserInfoComponent = ({
       </div>
       <div className="panel-body">
 
-        {/* BALANCES */}
-        { playerPositiveBalance > 0 &&
-          <div>
-            <h4 className="text-muted">
-              Bets on yes: {playerPositiveBalance} eth
-            </h4>
-          </div>
-        }
-        { playerNegativeBalance > 0 &&
-        <div>
-          <h4 className="text-muted">
-            Bets on no: {playerNegativeBalance} eth
-          </h4>
-        </div>
-        }
 
-        {/* PRIZE */}
-        { predictionState === 2 && playerPrizes > 0 &&
+          {/* BALANCES */}
+          { playerPositiveBalance > 0 &&
+            <div>
+              Bets on yes: {playerPositiveBalance} eth
+            </div>
+          }
+          { playerNegativeBalance > 0 &&
           <div>
-            <h4 className="text-muted">
-              Prize to claim: {playerPrizes} eth
-            </h4>
+            Bets on no: {playerNegativeBalance} eth
           </div>
-        }
+          }
+
+          {/* PRIZE */}
+          { predictionState === 2 && playerPrizes > 0 &&
+            <div>
+              Prize to claim: {playerPrizes} eth
+            </div>
+          }
+
 
       </div>
     </div>

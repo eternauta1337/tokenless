@@ -124,10 +124,16 @@ class CreatePredictionComponent extends React.Component {
                 {/* SUBMIT */}
                 <button
                   type="button"
+                  disabled={this.props.activeAccountAddress === undefined}
                   className="btn btn-info"
                   onClick={(evt) => this.handleCreateSubmit()}>
                   Create Prediction
                 </button>
+                {this.props.activeAccountAddress === undefined &&
+                  <div className="text-danger">
+                    Please unlock your metamask wallet to create a prediction.
+                  </div>
+                }
 
               </form>
             </div>
@@ -141,6 +147,7 @@ class CreatePredictionComponent extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   CreatePredictionComponent.minWithdrawEndTimestampDelta = state.market.minWithdrawEndTimestampDelta;
   return {
+    activeAccountAddress: state.network.activeAccountAddress,
     bcTimestamp: state.network.currentTime,
     minWithdrawEndTimestampDelta: state.market.minWithdrawEndTimestampDelta,
     isWaiting: state.network.isWaiting

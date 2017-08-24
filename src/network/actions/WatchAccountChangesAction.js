@@ -1,6 +1,7 @@
 import {
   SET_ACTIVE_ACCOUNT_INDEX
 } from "./SetActiveAccountAction";
+import {CHECK_ACCOUNT_TICK} from "../../constants";
 
 export function watchAccountChanges() {
   console.log('watchAccountChanges()');
@@ -13,8 +14,8 @@ export function watchAccountChanges() {
       if(!web3) return;
       const candidate = web3.eth.accounts[0];
       // console.log('check account:', candidate, activeAcct);
-      if (candidate && candidate !== activeAcct) {
-        console.log('<<< account changed >>>');
+      if(activeAcct !== candidate) {
+        // console.log('<<< account changed >>>');
         clearInterval(interval);
         dispatch({
           type: SET_ACTIVE_ACCOUNT_INDEX,
@@ -22,6 +23,6 @@ export function watchAccountChanges() {
         });
         dispatch(watchAccountChanges());
       }
-    }, 1000);
+    }, CHECK_ACCOUNT_TICK);
   };
 }
