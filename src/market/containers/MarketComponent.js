@@ -1,27 +1,31 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import {Link} from 'react-router';
 import MarketListItemComponent from '../components/PredictionListItemComponent';
 import ConnectComponent from '../../common/components/ConnectComponent';
+import Log from 'react-log-lifecycle';
+import { push } from 'react-router-redux';
 import {
   getPredictionPreview
 } from '../actions';
 import {
   TARGET_LIVE_NETWORK,
-  EXPLORER_URL,
+  EXPLORER_URL, FETCH_PREDICTIONS_BATCH,
 } from "../../constants";
 
-class Market extends React.Component {
+class Market extends Log {
 
   componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps()', nextProps.routeParams.page);
 
     // Check which previews have been updated.
     if(nextProps.addresses) {
-      for(let i = 0; i < nextProps.addresses.length; i++) {
+      const offset = nextProps.routeParams.page * FETCH_PREDICTIONS_BATCH;
+      const limit = Math.min(offset + FETCH_PREDICTIONS_BATCH, nextProps.addresses.length);
+      for(let i = offset; i < limit; i++) {
         const address = nextProps.addresses[i];
         const preview = nextProps.previews[address];
-        // console.log('preview:', preview);
+        // console.log('preview:', i, preview);
         if(!preview) {
           nextProps.getPredictionPreview(address);
         }
@@ -41,6 +45,41 @@ class Market extends React.Component {
     }
 
     const showNoItems = this.props.addresses === undefined || (this.props.addresses && this.props.addresses.length === 0);
+    const offset = this.props.routeParams.page * FETCH_PREDICTIONS_BATCH || 0;
+
+    // Build pagination links.
+    const pageItems = [];
+    const nextPage = +this.props.routeParams.page + 1;
+    const prevPage = Math.max(+this.props.routeParams.page - 1, 0);
+    if(this.props.addresses && this.props.addresses.length > FETCH_PREDICTIONS_BATCH) {
+      for(let i = 0; i < this.props.addresses.length; i += FETCH_PREDICTIONS_BATCH) {
+        const page = Math.floor(i / FETCH_PREDICTIONS_BATCH);
+        pageItems.push(
+          <li className={+this.props.routeParams.page === page ? 'active' : ''}>
+            <Link to={`/list/${page}`}>
+              {page}
+            </Link>
+          </li>
+        );
+      }
+    }
+
+    // Build list items array.
+    const listItems = [];
+    console.log('offset', offset);
+    if(!showNoItems) {
+      const limit = Math.min(offset + FETCH_PREDICTIONS_BATCH, this.props.addresses.length);
+      for(let i = offset; i < limit; i++) {
+        const address = this.props.addresses[i];
+        const preview = this.props.previews[address];
+        listItems.push( <MarketListItemComponent
+          key={address}
+          address={address}
+          preview={preview}
+        />);
+      }
+      // console.log('listItems', listItems);
+    }
 
     return (
       <div className="container">
@@ -64,16 +103,28 @@ class Market extends React.Component {
                 {/* LIST */}
                 {this.props.addresses && this.props.addresses.length > 0 &&
                   <ul className="list-group">
-                    {_.map(this.props.addresses, (address) => {
-                      const preview = this.props.previews[address];
-                      return <MarketListItemComponent
-                        key={address}
-                        address={address}
-                        preview={preview}
-                      />;
-                    })}
+                    {listItems}
                   </ul>
                 }
+
+                {/* PAGINATION */}
+                { this.props.addresses && this.props.addresses.length > 0 &&
+                offset + FETCH_PREDICTIONS_BATCH < this.props.addresses.length &&
+                <ol className="pagination">
+                  <li>
+                    <Link to={`/list/${prevPage}`}>
+                      <i className="fa fa-chevron-left" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  {pageItems}
+                  <li>
+                    <Link to={`/list/${nextPage}`}>
+                      <i className="fa fa-chevron-right" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                </ol>
+                }
+
               </div>
 
               {/* LINK TO CREATE */}
@@ -139,7 +190,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPredictionPreview: (address) => dispatch(getPredictionPreview(address))
+    getPredictionPreview: (address) => dispatch(getPredictionPreview(address)),
+    push: (url) => dispatch(push(url))
   };
 };
 

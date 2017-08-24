@@ -48,6 +48,10 @@ body {
   vertical-align: middle;
 }
 
+ol {
+    margin-top: 0 !important;
+}
+
 .wrapper {
     margin: 0 0 70px; /* bottom = footer-muted height */
     padding: 25px;

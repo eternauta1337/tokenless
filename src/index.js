@@ -15,7 +15,7 @@ import { connectNetwork } from './network/actions';
 import {
   PATH_PREDICTION,
   PATH_CREATE,
-  PATH_ABOUT, USE_CACHE
+  PATH_ABOUT, USE_CACHE, PATH_LIST
 } from './constants';
 import './styles/index.css';
 import './styles/datetime.css';
@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
       <Provider store={store}>
         <Router history={syncHistoryWithStore(browserHistory, store)}>
           <Route path="/" component={AppComponent}>
-            <IndexRoute component={MarketComponent}/>
+            <Route path={PATH_LIST} component={MarketComponent}/>
             <Route path={PATH_CREATE} component={CreatePredictionComponent}/>
             <Route path={PATH_PREDICTION} component={PredictionComponent}/>
             <Route path={PATH_ABOUT} component={AboutComponent}/>
