@@ -10,7 +10,7 @@ export {
   updatePredictionBalances,
   updatePredictionState
 } from './ConnectPredictionAction';
-export { updateBetHistory } from './UpdateBetHistory';
+export { updateBetHistory } from './UpdateBetHistoryAction';
 export { RESET_PREDICTION, resetPrediction } from './ResetPredictionAction';
 export { placeBet } from './PlaceBetAction';
 export { resolveMarket } from './ResolvePredictionAction';

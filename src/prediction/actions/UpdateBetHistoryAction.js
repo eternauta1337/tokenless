@@ -22,7 +22,7 @@ async function checkNext(prediction, getState, dispatch) {
   updateAcountedBalances(prediction);
   if(!shouldContinueSearching(prediction)) return;
 
-  // console.log('should check');
+  console.log('should check');
 
   // Query block batch.
   const fromBlock = Math.max(prediction.lastBlockCheckpoint - HISTORY_CHECK_BATCH, 0);
@@ -71,17 +71,36 @@ function updateAcountedBalances(prediction) {
     if(bet.prediction) acumPos += bet.value;
     else acumNeg += bet.value;
   }
+  // console.log('update accoutned balances:', acumPos, acumNeg);
   prediction.historyAccountedPositiveBetBalance = acumPos;
   prediction.historyAccountedNegativeBetBalance = acumNeg;
 }
 
 function shouldContinueSearching(prediction) {
-  if(prediction.positivePredicionBalance === 0 && prediction.negativePredicionBalance === 0) return false;
-  if(prediction.lastBlockCheckpoint === 0) return false;
-  if(!prediction.historyAccountedPositiveBetBalance) return true;
-  if(!prediction.historyAccountedNegativeBetBalance) return true;
-  if(prediction.historyAccountedPositiveBetBalance < prediction.positivePredicionBalance) return true;
-  if(prediction.historyAccountedNegativeBetBalance < prediction.negativePredicionBalance) return true;
+  if(prediction.positivePredicionBalance === 0 && prediction.negativePredicionBalance === 0) {
+    // console.log('0 balances');
+    return false;
+  }
+  if(prediction.lastBlockCheckpoint === 0) {
+    // console.log('reached 0');
+    return false;
+  }
+  if(prediction.historyAccountedPositiveBetBalance === undefined) {
+    // console.log('no accounted pos balance');
+    return true;
+  }
+  if(prediction.historyAccountedNegativeBetBalance === undefined) {
+    // console.log('no accounted neg balance');
+    return true;
+  }
+  if(prediction.historyAccountedPositiveBetBalance < prediction.positivePredicionBalance) {
+    // console.log('pos balance not reached');
+    return true;
+  }
+  if(prediction.historyAccountedNegativeBetBalance < prediction.negativePredicionBalance) {
+    // console.log('neg balance not reached');
+    return true;
+  }
   return false;
 }
 
@@ -107,7 +126,7 @@ function getBetsInBlockRange(fromBlock, toBlock, prediction, getState) {
       if (!err) {
         // console.log('res', res);
         for (let i = 0; i < res.length; i++) {
-          // console.log('update bet history item');
+          console.log('update bet history item');
           const item = res[i];
           const data = item.args;
           bets.splice(0, 0, {
