@@ -73,8 +73,11 @@ export function getPredictionPreview(address) {
 
     // Store in cache.
     if(USE_CACHE) {
+      console.log('caching preview...');
+      const key = STORAGE_PREVIEW_KEY + address;
       const toCache = _.omit(preview, 'isFetching');
-      window.localStorage[STORAGE_PREVIEW_KEY + address] = JSON.stringify(toCache);
+      console.log('data', key, toCache);
+      window.localStorage[key] = JSON.stringify(toCache);
     }
   };
 }

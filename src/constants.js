@@ -1,7 +1,7 @@
 // General.
-export const DEBUG_MODE = false; // activates a debug panel useful for development
-export const USE_INJECTED_WEB3 = true; // for use with eg. metamask
-export const TARGET_LIVE_NETWORK = 'ropsten'; // ropsten, mainnet, testrpc
+export const DEBUG_MODE = true; // activates a debug panel useful for development
+export const USE_INJECTED_WEB3 = false; // for use with eg. metamask
+export const TARGET_LIVE_NETWORK = 'testrpc'; // ropsten, mainnet, testrpc
 export const GIPHY_API_KEY = '5e2f35d1a57a44ae8415389a4c2efaab';
 export const USE_CACHE = true;
 export const SHOW_VERSION = true;
@@ -39,6 +39,6 @@ export const PATH_ABOUT = baseURL + '/about';
 export const SITE_URL = 'https://tokenless-32142.firebaseapp.com/';
 
 // Local storage.
-export const STORAGE_PREVIEW_KEY = 'tk_preview_';
-export const STORAGE_PREDICTION_KEY = 'tk_prediction_';
-export const STORAGE_MARKET_KEY = 'tk_market_';
+export const STORAGE_PREVIEW_KEY = 'tk_preview_' + TARGET_LIVE_NETWORK + '_';
+export const STORAGE_PREDICTION_KEY = 'tk_prediction_' + TARGET_LIVE_NETWORK + '_';
+export const STORAGE_MARKET_KEY = 'tk_market_' + TARGET_LIVE_NETWORK + '_';
