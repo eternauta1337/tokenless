@@ -188,7 +188,7 @@ export function updatePredictionBetHistory(address) {
     const contract = getState().prediction.contract;
     const web3 = getState().network.web3;
     if (prediction.balance > 0) {
-      console.log('get bet history');
+      // console.log('get bet history');
       const currentBlock = getState().network.blockNumber;
       if (!checkContinue(address, getState)) return;
       if (currentBlock) {
@@ -197,13 +197,13 @@ export function updatePredictionBetHistory(address) {
         event.get((err, res) => {
           if (!checkContinue(address, getState)) return;
           if (!err) {
-            console.log('res', res);
+            // console.log('res', res);
             if (!prediction.betHistory) {
-              console.log('start bet history');
+              // console.log('start bet history');
               prediction.betHistory = [];
             }
             for (let i = 0; i < res.length; i++) {
-              console.log('update bet history item');
+              // console.log('update bet history item');
               const item = res[i];
               const data = item.args;
               prediction.betHistory.splice(0, 0, {

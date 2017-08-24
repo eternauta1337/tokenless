@@ -1,76 +1,92 @@
 import React from 'react';
+import { form } from 'react-inform';
 
-const PlaceBetComponent = ({
-  placeBet,
-  isOwned
-}) => {
+class PlaceBetComponent extends React.Component {
 
-  let betInputField;
-
-  const handleBetSubmit = function(prediction) {
-
-    const bet = betInputField.value;
-
-    // TODO: proper validation
-    if(isNaN(bet)) {
-      console.log('invalid form parameters');
-      return;
-    }
-
-    placeBet(prediction, betInputField.value);
+  handleBetSubmit(prediction) {
+    const { betValue } = this.props.fields;
+    this.props.form.forceValidate();
+    if(!this.props.form.isValid()) return;
+    this.props.placeBet(prediction, betValue.value);
   };
 
-  return (
-    <div className={`panel panel-${!isOwned ? 'info' : 'default'}`}>
-      <div className="panel-heading">
-        <strong>Place a bet</strong>
-      </div>
-      <div className="panel-body">
+  render() {
 
-        {/* OWNER CAN'T BET */}
-        { isOwned &&
+    const { betValue } = this.props.fields;
+
+    return (
+      <div className={`panel panel-${!this.props.isOwned ? 'info' : 'default'}`}>
+        <div className="panel-heading">
+          <strong>Place a bet</strong>
+        </div>
+        <div className="panel-body">
+
+          {/* OWNER CAN'T BET */}
+          {this.props.isOwned &&
           <div>
             <h4 className="text-muted">
               Sorry, owner's can't bet on their own predictions.
             </h4>
           </div>
-        }
+          }
 
-        {/* BET FORM */}
-        { !isOwned &&
-          <form className="">
-            <div className="form-group">
-            <input
-            className="form-control"
-            placeholder='0 Eth'
-            ref={ref => betInputField = ref}
-            />
+          {/* BET FORM */}
+          {!this.props.isOwned &&
+          <form>
+
+            {/* VALUE */}
+            <div className={`form-group ${betValue.error ? 'has-danger' : ''}`}>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="0 eth"
+                {...betValue.props}
+              />
+              <div className="text-danger">
+                {betValue.error}
+              </div>
             </div>
 
             {/* YES */}
             <button
-            type="button"
-            className="btn btn-info"
-            onClick={(evt) => handleBetSubmit(true)}>
-            Will Happen
+              type="button"
+              className="btn btn-info"
+              onClick={(evt) => this.handleBetSubmit(true)}>
+              Will Happen
             </button>
 
-            &nbsp;
             &nbsp;
 
             {/* NO */}
             <button
-            type="button"
-            className="btn btn-danger"
-            onClick={(evt) => handleBetSubmit(false)}>
-            Won't Happen
+              type="button"
+              className="btn btn-danger"
+              onClick={(evt) => this.handleBetSubmit(false)}>
+              Won't Happen
             </button>
           </form>
-        }
+          }
 
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+const fields = ['betValue'];
+
+const validate = values => {
+  console.log('validate', values);
+  const { betValue } = values;
+  const errors = {};
+  if (!betValue || betValue.length === 0) errors.betValue = 'Bet value is required.';
+  if(isNaN(betValue)) errors.betValue = 'Please enter a valid number.';
+  if(betValue > 50) errors.betValue = 'Whoa! Please enter a smaller bet.';
+  if(betValue < 0.01) errors.betValue = 'Please enter a larger bet.';
+  return errors;
 };
 
-export default PlaceBetComponent;
+export default form({
+  fields,
+  validate
+})(PlaceBetComponent);
