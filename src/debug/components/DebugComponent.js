@@ -72,10 +72,12 @@ class Debug extends React.Component {
 
         {/* ACCOUNT BALANCE */}
         &nbsp;
-        <small>
-          Active acct: {this.props.globalState.network.activeAccountAddress}&nbsp;|&nbsp;
-          {this.state.accountBalance} eth&nbsp;
-        </small>
+        { this.props.globalState.network.activeAccountAddress !== undefined &&
+          <small>
+            Active acct: {this.props.globalState.network.activeAccountAddress}&nbsp;|&nbsp;
+            {this.state.accountBalance} eth&nbsp;
+          </small>
+        }
         <br/>
 
         {/* NETWORK ID */}

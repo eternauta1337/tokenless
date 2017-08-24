@@ -174,12 +174,13 @@ class Prediction extends React.Component {
           }
 
           {/* HISTORY */}
-          {/*{this.props.balance !== undefined && this.props.balance !== 0 &&*/}
-            {/*<HistoryComponent*/}
-              {/*player={this.props.activeAccountAddress}*/}
-              {/*betHistory={this.props.betHistory}*/}
-            {/*/>*/}
-          {/*}*/}
+          {this.props.balance !== undefined &&
+            <HistoryComponent
+              balance={this.props.balance}
+              player={this.props.activeAccountAddress}
+              betHistory={this.props.betHistory}
+            />
+          }
 
           {/* LINK TO EXPLORER */}
           <div>

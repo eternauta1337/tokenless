@@ -15,22 +15,26 @@ const InfoComponent = ({
                          activeAccountAddress
                        }) => {
 
-  let predictionStateClass = 'success';
+  let predictionStateClass = 'info';
   if (predictionState === 1) predictionStateClass = 'warning';
   if (predictionState === 2 && outcome === false) predictionStateClass = 'danger';
 
   let stateStr = predictionStateStr;
   if (predictionState === 2) stateStr = `${predictionStateStr} for ${outcome ? 'Yes' : 'No'}`;
+  if (predictionState === 3) stateStr = `${predictionStateStr} as ${outcome ? 'Yes' : 'No'}`;
 
-  const posPercent = 100 * positivePredicionBalance / balance;
-  const negPercent = 100 * negativePredicionBalance / balance;
+  const historicalBalance = positivePredicionBalance + negativePredicionBalance;
+  const posPercent = historicalBalance === 0 ? 0 : 100 * positivePredicionBalance / historicalBalance;
+  const negPercent = historicalBalance === 0 ? 0 : 100 * negativePredicionBalance / historicalBalance;
+
+  const shouldHideBalances = positivePredicionBalance === 0 && negativePredicionBalance === 0;
 
   return (
 
     <div>
 
       {/* POT BALANCES */}
-      {balance !== undefined && balance > 0 && predictionState !== 3 &&
+      {balance !== undefined && !shouldHideBalances &&
       <div className="progress">
         <div className="progress-bar progress-bar-info" style={{width: `${posPercent}%`}}>
           {posPercent > 5 &&

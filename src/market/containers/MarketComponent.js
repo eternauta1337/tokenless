@@ -21,6 +21,7 @@ class Market extends React.Component {
       for(let i = 0; i < nextProps.addresses.length; i++) {
         const address = nextProps.addresses[i];
         const preview = nextProps.previews[address];
+        // console.log('preview:', preview);
         if(!preview) {
           nextProps.getPredictionPreview(address);
         }

@@ -8,9 +8,9 @@ export {
   updatePredictionStatement,
   updatePredictionPlayerBalances,
   updatePredictionBalances,
-  updatePredictionState,
-  updatePredictionBetHistory
+  updatePredictionState
 } from './ConnectPredictionAction';
+export { updateBetHistory } from './UpdateBetHistory';
 export { RESET_PREDICTION, resetPrediction } from './ResetPredictionAction';
 export { placeBet } from './PlaceBetAction';
 export { resolveMarket } from './ResolvePredictionAction';

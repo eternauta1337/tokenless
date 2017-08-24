@@ -5,18 +5,21 @@ import {ETH_SYMBOL, EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
 
 const HistoryComponent = ({
                             player,
-                            betHistory
+                            betHistory,
+                            balance
                           }) => {
+
+  const showSpinner = betHistory === undefined || (betHistory.length === 0 && balance !== 0);
 
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
-        <strong>Recent bets</strong>
+        <strong>Bet History</strong>
       </div>
       <div className="panel-body">
 
         {/* LOADING HISTORY */}
-        {!betHistory &&
+        {showSpinner &&
           <BubblePreloader
             bubble={{ width: '1rem', height: '1rem' }}
             animation={{ speed: 2 }}
@@ -26,8 +29,8 @@ const HistoryComponent = ({
         }
 
         {/* NO HISTORY */}
-        {betHistory && betHistory.length === 0 &&
-          <span>No Recent History</span>
+        {!showSpinner && betHistory && betHistory.length === 0 && balance === 0 &&
+          <span>No bets found.</span>
         }
 
         {/* SHOW HISTORY */}
@@ -37,7 +40,7 @@ const HistoryComponent = ({
           {/* TABLE HEADER */}
           <thead>
           <tr>
-            <th>From/Tx</th>
+            <th>From | Tx</th>
             <th>Bet</th>
             <th>Value</th>
           </tr>
@@ -56,7 +59,7 @@ const HistoryComponent = ({
 
                   {/* SENDER */}
                   <small>
-                    {item.from}
+                    From: {item.from}
                   </small>
                   <br/>
 
@@ -67,7 +70,7 @@ const HistoryComponent = ({
                       rel="noopener noreferrer"
                       href={`${EXPLORER_URL[TARGET_LIVE_NETWORK]}tx/${item.tx}`}
                     >
-                      {item.tx}
+                      Tx: {item.tx}
                     </a>
                   </small>
                 </td>

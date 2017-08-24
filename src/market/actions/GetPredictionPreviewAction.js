@@ -73,7 +73,8 @@ export function getPredictionPreview(address) {
 
     // Store in cache.
     if(USE_CACHE) {
-      window.localStorage[STORAGE_PREVIEW_KEY + address] = JSON.stringify(preview);
+      const toCache = _.omit(preview, 'isFetching');
+      window.localStorage[STORAGE_PREVIEW_KEY + address] = JSON.stringify(toCache);
     }
   };
 }
