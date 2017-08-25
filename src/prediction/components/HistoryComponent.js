@@ -14,7 +14,7 @@ const HistoryComponent = ({
   return (
     <div className='panel panel-default'>
       <div className="panel-heading">
-        <strong>Bet History</strong>
+        <strong>Bet history</strong>
       </div>
       <div className="panel-body">
 

@@ -9,10 +9,11 @@ const InfoComponent = ({
                          predictionState,
                          predictionStateStr,
                          betEndDate,
-                         withdrawalEndDate,
+                         withdrawPeriod,
                          outcome,
                          balance,
-                         activeAccountAddress
+                         activeAccountAddress,
+                         resolutionTimestamp
                        }) => {
 
   let predictionStateClass = 'info';
@@ -70,7 +71,7 @@ const InfoComponent = ({
         {/* OWNED */}
         {isOwned &&
         <li className='list-inline-item'>
-            <span className="label label-primary">
+            <span className="label label-info">
               You own this prediction
             </span>
         </li>
@@ -91,10 +92,10 @@ const InfoComponent = ({
             </span>
           </li>
         }
-        {withdrawalEndDate !== undefined && predictionState !== 3 &&
+        {predictionState >= 2 && resolutionTimestamp !== undefined &&
           <li className='list-inline-item'>
-            <span className="label label-default">
-              Withdrawals end on: {dateUtil.unixToStr(withdrawalEndDate)}
+            <span className="label label-warning">
+              Withdrawals end on: {dateUtil.unixToStr(resolutionTimestamp + withdrawPeriod)}
             </span>
           </li>
         }
@@ -102,7 +103,7 @@ const InfoComponent = ({
         {/* UNLOCK ACCOUNT */}
         { activeAccountAddress === undefined &&
           <li className='list-inline-item'>
-            <span className="label label-danger">
+            <span className="label label-warning">
               Unlock your metamask wallet to interact with this prediction
             </span>
           </li>

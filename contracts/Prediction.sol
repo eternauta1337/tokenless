@@ -19,19 +19,16 @@ contract Prediction is Ownable {
   string public statement;
   
   uint public betEndTimestamp;
-  uint public withdrawEndTimestamp;
+  uint public withdrawPeriod;
   uint public feePercent;
 
-  function Prediction(string _statement, uint _betEndTimestamp, uint _withdrawEndTimestamp, uint _feePercent) {
-    
+  function Prediction(string _statement, uint _betEndTimestamp, uint _withdrawPeriod, uint _feePercent) {
+    require(_betEndTimestamp > now);
+
     statement = _statement;
     feePercent = _feePercent;
     betEndTimestamp = _betEndTimestamp;
-    withdrawEndTimestamp = _withdrawEndTimestamp;
-    
-    // Validate timestamps.
-    require(_betEndTimestamp > now);
-    require(_withdrawEndTimestamp > _betEndTimestamp);
+    withdrawPeriod = _withdrawPeriod;
   }
 
   // --------------------------------------------------
@@ -67,12 +64,14 @@ contract Prediction is Ownable {
   // --------------------------------------------------
 
   bool public outcome;
+  uint public resolutionTimestamp;
 
   event ResolveEvent(bool selectedOutcome);
 
   function resolve(bool _outcome) onlyOwner onlyInState(State.Closed) {
     outcome = _outcome;
     resolved = true;
+    resolutionTimestamp = now;
     ResolveEvent(outcome);
   }
 
@@ -135,9 +134,10 @@ contract Prediction is Ownable {
   event WithdrawFeesEvent(address indexed from);
 
   function withdrawFees() onlyOwner onlyInState(State.Resolved) {
-    require(now > withdrawEndTimestamp);
+    uint elapsed = now.sub(resolutionTimestamp);
+    require(elapsed > withdrawPeriod);
     require(this.balance > 0);
-    assert(owner.send(this.balance)); 
+    assert(owner.send(this.balance));
     WithdrawFeesEvent(msg.sender);
   }
 

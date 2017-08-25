@@ -50,10 +50,9 @@ export function connectPrediction(address) {
       // Update static data.
       dispatch(updatePredictionStatement(address));
       dispatch(updatePredictionOwner(address));
-      dispatch(updatePredictionDates(address));
 
       // Update dynamic data.
-        dispatch(updateDynamicPredictionData(address));
+      dispatch(updateDynamicPredictionData(address));
     }
     catch(err) {
       console.log('error connecting prediction:', err);
@@ -93,13 +92,15 @@ export function updatePredictionOwner(address) {
 export function updatePredictionDates(address) {
   return async function(dispatch, getState) {
     const prediction = getState().prediction;
-    if(prediction.betEndDate && prediction.withdrawEndDate) return;
     const contract = getState().prediction.contract;
     console.log('get dates');
     prediction.betEndDate = ( await contract.betEndTimestamp.call() ).toNumber();
     if (!util.checkContinue(address, getState)) return;
-    prediction.withdrawEndDate = ( await contract.withdrawEndTimestamp.call() ).toNumber();
+    prediction.withdrawPeriod = ( await contract.withdrawPeriod.call() ).toNumber();
     if (!util.checkContinue(address, getState)) return;
+    prediction.resolutionTimestamp = ( await contract.resolutionTimestamp.call() ).toNumber();
+    if (!util.checkContinue(address, getState)) return;
+    // console.log('prediction:', prediction);
     util.cachePrediction(address, prediction);
     dispatch({
       type: UPDATE_PREDICTION,
@@ -109,6 +110,7 @@ export function updatePredictionDates(address) {
 }
 
 export function updatePredictionStatement(address) {
+  console.log('updatePredictionStatement()');
   return async function(dispatch, getState) {
     const prediction = getState().prediction;
     if(prediction.statement) return;
@@ -130,6 +132,7 @@ export function updatePredictionStatement(address) {
 export function updateDynamicPredictionData(address) {
   console.log('updateDynamicPredictionData()');
   return async function(dispatch) {
+    dispatch(updatePredictionDates(address));
     dispatch(updatePredictionState(address));
     dispatch(updatePredictionBalances(address));
     dispatch(updatePredictionPlayerBalances(address));

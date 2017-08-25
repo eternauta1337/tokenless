@@ -69,3 +69,12 @@ ol {
 .label-as-badge {
     border-radius: 1em;
 }
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid #272b30 !important;
+    margin: 1em 0;
+    padding: 0;
+}

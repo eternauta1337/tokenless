@@ -43,9 +43,9 @@ class PlaceBetComponent extends React.Component {
                 placeholder={`0${ETH_SYMBOL}`}
                 {...betValue.props}
               />
-              <div className="text-danger">
+              <small className="text-danger">
                 {betValue.error}
-              </div>
+              </small>
             </div>
 
             {/* YES */}

@@ -13,7 +13,7 @@ contract('Combined', function(accounts) {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       2
     );
 
@@ -73,7 +73,7 @@ contract('Combined', function(accounts) {
     const creationTransaction = await market.createPrediction(
       'The prediction prediction contract will work.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       {
         from: accounts[0],
         gas: 1500000

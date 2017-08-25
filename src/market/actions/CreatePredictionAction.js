@@ -5,8 +5,8 @@ import {setWaiting} from "../../network/actions/SetWaitingAction";
 import {getPredictionPreview} from "./GetPredictionPreviewAction";
 import {updateDynamicMarketData} from "./ConnectMarketAction";
 
-export function createPrediction(statement, betEndDate, withdrawEndDate) {
-  console.log('createPrediction()', statement, betEndDate, withdrawEndDate);
+export function createPrediction(statement, betEndDate, withdrawPeriod) {
+  console.log('createPrediction()', statement, betEndDate, withdrawPeriod);
   return async function(dispatch, getState) {
 
     const market = getState().market.contract;
@@ -17,12 +17,11 @@ export function createPrediction(statement, betEndDate, withdrawEndDate) {
 
     // Send transaction.
     const unixBet = dateUtil.dateToUnix(betEndDate);
-    const unixWith = dateUtil.dateToUnix(withdrawEndDate);
-    console.log('creating prediction:', statement, unixBet, unixWith);
+    console.log('creating prediction:', statement, unixBet, withdrawPeriod);
     market.createPrediction(
       statement,
       unixBet,
-      unixWith,
+      withdrawPeriod,
       {
         from: acct,
         gas: USE_INJECTED_WEB3 ? undefined : 4000000

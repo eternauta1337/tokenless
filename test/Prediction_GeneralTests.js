@@ -12,13 +12,13 @@ contract('Prediction (General)', function(accounts) {
   it('should contain a valid text statement', async function() {
 
     const betEndTimestamp = util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5);
-    const withdrawEndTimestamp = util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10);
+    const withdrawPeriod = dateUtil.daysToSeconds(10);
     // console.log('betEndTimestamp:', betEndTimestamp);
-    // console.log('withdrawEndTimestamp:', withdrawEndTimestamp);
+    // console.log('withdrawPeriod:', withdrawPeriod);
     const contract = await Prediction.new(
       "Bitcoin will reach $5000 in October 1.",
       betEndTimestamp,
-      withdrawEndTimestamp,
+      withdrawPeriod,
       2
     );
     // console.log('contract created');
@@ -29,31 +29,32 @@ contract('Prediction (General)', function(accounts) {
     assert.notEqual(statement.length, 0, 'text is invalid');
   });
 
-  it('should have a valid bet and withdraw end dates', async function() {
+  it('should have a valid bet end date and withdrawal period', async function() {
 
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       2
     );
+    // console.log('prediction created');
 
     // Assumes that tests are ran immediately after contract creation.
-    const betEndTimestamp = (await contract.betEndTimestamp.call()).toNumber();
-    const withdrawEndTimestamp = (await contract.withdrawEndTimestamp.call()).toNumber();
     const nowTimestamp = util.currentSimulatedDateUnix;
+    const betEndTimestamp = (await contract.betEndTimestamp.call()).toNumber();
     // console.log('betEndTimestamp: ', betEndTimestamp);
-    // console.log('withdrawEndTimestamp: ', withdrawEndTimestamp);
+    const withdrawPeriod = (await contract.withdrawPeriod.call()).toNumber();
+    // console.log('withdrawPeriod: ', withdrawPeriod);
 
     assert.isAbove(betEndTimestamp, nowTimestamp, 'bet end date is invalid');
-    assert.isAbove(withdrawEndTimestamp, betEndTimestamp, 'withdraw end date is invalid');
+    assert.isAbove(withdrawPeriod, 0, 'withdraw period is invalid');
   });
 
   it('it should correctly track its state', async function() {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       2
     );
     // console.log('contract created');
@@ -75,7 +76,7 @@ contract('Prediction (General)', function(accounts) {
     // Skip until bets are closed.
     // console.log('skipping betting period');
     await util.skipTime(dateUtil.daysToSeconds(6), web3);
-    // console.log('time: ', await util.getTimestamp(web3));
+    console.log('time: ', await util.getTimestamp(web3));
 
     // State should be 1 'CLOSED'.
     state = (await contract.getState()).toNumber();
@@ -85,6 +86,8 @@ contract('Prediction (General)', function(accounts) {
     // Resolve the prediction.
     // console.log('resolving...');
     await contract.resolve(true, {from: accounts[0]});
+    const resolutionTime = dateUtil.unixToDate((await contract.resolutionTimestamp.call()).toNumber());
+    // console.log('resolution timestamp: ', resolutionTime);
 
     // State should be 2 'RESOLVED'.
     state = (await contract.getState()).toNumber();
@@ -93,7 +96,7 @@ contract('Prediction (General)', function(accounts) {
 
     // Skip until withdrawals end.
     // console.log('skipping withdrawal period');
-    await util.skipTime(dateUtil.daysToSeconds(6), web3);
+    await util.skipTime(dateUtil.daysToSeconds(11), web3);
 
     // Withdraw all funds.
     // console.log('withdrawing funds');

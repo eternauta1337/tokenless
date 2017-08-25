@@ -25,7 +25,7 @@ contract('PredictionMarket (General)', function(accounts) {
     const creationTransaction = await market.createPrediction(
       'The prediction prediction contract will work.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       {
         from: accounts[0]
       }
@@ -63,19 +63,19 @@ contract('PredictionMarket (General)', function(accounts) {
     localAddresses.push((await market.createPrediction(
       'Prediction 0.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       {from: accounts[0]}
     )).logs[0].args.predictionAddress);
     localAddresses.push((await market.createPrediction(
       'Prediction 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       {from: accounts[0]}
     )).logs[0].args.predictionAddress);
     localAddresses.push((await market.createPrediction(
       'Prediction 2.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
-      util.currentSimulatedDateUnix + dateUtil.daysToSeconds(10),
+      dateUtil.daysToSeconds(10),
       {from: accounts[0]}
     )).logs[0].args.predictionAddress);
     // console.log('localAddresses', localAddresses);

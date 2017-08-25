@@ -14,11 +14,11 @@ contract PredictionMarket {
   // Init
   // --------------------------------------------------
   
-  uint public minWithdrawEndTimestampDelta;
+  uint public minWithdrawPeriod;
   uint public feePercent;
 
-  function PredictionMarket(uint _minWithdrawEndTimestampDelta, uint _feePercent) {
-    minWithdrawEndTimestampDelta = _minWithdrawEndTimestampDelta;
+  function PredictionMarket(uint _minWithdrawPeriod, uint _feePercent) {
+    minWithdrawPeriod = _minWithdrawPeriod;
     feePercent = _feePercent;
   }
 
@@ -28,17 +28,13 @@ contract PredictionMarket {
 
   event PredictionCreatedEvent(Prediction predictionAddress);
 
-  function createPrediction(string statement, uint betEndTimestamp, uint withdrawEndTimestamp) {
+  function createPrediction(string statement, uint betEndTimestamp, uint withdrawPeriod) {
 
-      // Contain withdraw end timestamp.
-      uint delta = withdrawEndTimestamp - betEndTimestamp;
-      uint adjustedWithdrawEndTimestamp = withdrawEndTimestamp;
-      if(delta < minWithdrawEndTimestampDelta) {
-          adjustedWithdrawEndTimestamp += minWithdrawEndTimestampDelta;
-      }
+      // Contain withdraw peried.
+      if(withdrawPeriod < minWithdrawPeriod) withdrawPeriod = minWithdrawPeriod;
 
       // Crate prediction and store address.
-      Prediction prediction = new Prediction(statement, betEndTimestamp, adjustedWithdrawEndTimestamp, feePercent);
+      Prediction prediction = new Prediction(statement, betEndTimestamp, withdrawPeriod, feePercent);
       predictions.push(prediction);
 
       // Transfer ownership to whoever called for

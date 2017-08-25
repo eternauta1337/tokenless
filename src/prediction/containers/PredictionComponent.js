@@ -79,7 +79,8 @@ class Prediction extends React.Component {
           {/* INFO */}
           <InfoComponent
             betEndDate={this.props.betEndDate}
-            withdrawalEndDate={this.props.withdrawEndDate}
+            resolutionTimestamp={this.props.resolutionTimestamp}
+            withdrawPeriod={this.props.withdrawPeriod}
             positivePredicionBalance={this.props.positivePredicionBalance}
             negativePredicionBalance={this.props.negativePredicionBalance}
             isOwned={isOwned}
@@ -113,7 +114,7 @@ class Prediction extends React.Component {
             isOwned &&
             this.props.predictionState !== undefined &&
             this.props.predictionState === 2 &&
-            this.props.bcTimestamp > this.props.withdrawEndDate &&
+            this.props.bcTimestamp > this.props.resolutionTimestamp + this.props.withdrawPeriod &&
             <WithdrawComponent
               claimAmount={this.props.balance}
               claimMethod={this.props.withdrawFees}
@@ -145,7 +146,7 @@ class Prediction extends React.Component {
             isOwned &&
             this.props.predictionState !== undefined &&
             this.props.predictionState === 2 &&
-            this.props.bcTimestamp < this.props.withdrawEndDate &&
+            this.props.bcTimestamp < this.props.resolutionTimestamp + this.props.withdrawPeriod &&
             <WaitComponent
               isOwned={true}
             />

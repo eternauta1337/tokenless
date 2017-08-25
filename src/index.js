@@ -11,6 +11,9 @@ import PredictionComponent from './prediction/containers/PredictionComponent';
 import CreatePredictionComponent from './market/containers/CreatePredictionComponent';
 import MarketComponent from './market/containers/MarketComponent';
 import AboutComponent from './about/components/AboutComponent';
+import moment from 'moment';
+import momentLocalizer from 'react-widgets/lib/localizers/moment';
+import numberLocalizer from 'react-widgets/lib/localizers/simple-number';
 import { connectNetwork } from './network/actions';
 import {
   PATH_PREDICTION,
@@ -21,6 +24,11 @@ import './styles/index.css';
 import './styles/datetime.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/themes/bootstrap-slate-theme.css';
+import 'react-widgets/dist/css/react-widgets.css';
+
+// Init localization.
+momentLocalizer(moment);
+numberLocalizer();
 
 window.addEventListener('load', () => {
 

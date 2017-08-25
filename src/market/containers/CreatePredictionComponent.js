@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
+import NumberPicker from 'react-widgets/lib/NumberPicker';
 import { form } from 'react-inform';
 import ConnectComponent from '../../common/components/ConnectComponent';
-import _ from 'lodash';
 import {
   DEBUG_MODE, TARGET_LIVE_NETWORK
 } from '../../constants';
@@ -13,30 +13,49 @@ import {
   createPrediction
 } from '../actions';
 
+function combinePeriods(days, hours, minutes) {
+  return days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60;
+}
+
 class CreatePredictionComponent extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
 
-    // Pre-populate date files with 2 dates in the near future.
+    // Default values.
     let now = dateUtil.dateToUnix(new Date());
     let betEndDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 5 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
-    let withdrawEndDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 10 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 14 ) );
-
     this.props.form.onValues({
       statement: DEBUG_MODE ? miscUtil.makeid() : '',
       betEndDate,
-      withdrawEndDate
+      withdrawPeriodDays: DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? 0 : 7,
+      withdrawPeriodHours: 0,
+      withdrawPeriodMinutes: DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? 5 : 0,
     });
   }
 
   handleCreateSubmit() {
-    const { statement, betEndDate, withdrawEndDate } = this.props.fields;
+
+    const {
+      statement,
+      betEndDate,
+      withdrawPeriodDays,
+      withdrawPeriodHours,
+      withdrawPeriodMinutes
+    } = this.props.fields;
+
+    // Final validation.
     this.props.form.forceValidate();
     if(!this.props.form.isValid()) return;
+
+    // Combine withdraw values.
+    const withdrawPeriod = combinePeriods(withdrawPeriodDays.value, withdrawPeriodHours.value, withdrawPeriodMinutes.value);
+    // console.log('period:', withdrawPeriod);
+
+    // Hit endpoint.
     this.props.createPrediction(
       statement.value,
       betEndDate.value,
-      withdrawEndDate.value
+      withdrawPeriod
     );
   }
 
@@ -51,7 +70,19 @@ class CreatePredictionComponent extends React.Component {
       );
     }
 
-    const { statement, betEndDate, withdrawEndDate } = this.props.fields;
+    const {
+      statement,
+      betEndDate,
+      withdrawPeriodDays,
+      withdrawPeriodHours,
+      withdrawPeriodMinutes
+    } = this.props.fields;
+    // console.log('fields', this.props.fields);
+
+    // Force cast values to numbers to avoid an annoying runtime error caused by react-widget.
+    withdrawPeriodDays.props.value = +withdrawPeriodDays.props.value;
+    withdrawPeriodHours.props.value = +withdrawPeriodHours.props.value;
+    withdrawPeriodMinutes.props.value = +withdrawPeriodMinutes.props.value;
 
     return (
       <div className="container">
@@ -65,13 +96,14 @@ class CreatePredictionComponent extends React.Component {
 
                 {/* STATEMENT */}
                 <div className={`form-group ${statement.error ? 'has-danger' : ''}`}>
-                  <label>Statement:</label>
+                  <label>Statement</label>
                   <input
                     type="text"
                     className="form-control"
                     placeholder='Eg. "Ether will surpass bitcoin in 2018."'
                     {...statement.props}
                     />
+                  <br/>
                   <small className="text-muted">
                     Please enter a falsable and measurable
                     statement that can be answered to yes or no,
@@ -82,42 +114,85 @@ class CreatePredictionComponent extends React.Component {
                   </div>
                 </div>
 
+                <hr/>
+
                 {/* BET END DATE */}
-                <div className={`form-group ${betEndDate.error ? 'has-danger' : ''}`}>
-                  <label>Resolution Date:</label>
+                <div className={`form-group ${betEndDate.error !== undefined ? 'has-danger' : ''}`}>
+                  <label>Resolution Date</label>
                   <DatePicker
                     {...betEndDate.props}
                   />
-                  <small className="text-muted">
-                    Upon this date, the prediction can be resolved by it's owner to yes or no,
-                    meaning that all bets will be closed and that
-                    players can start withdrawing their prizes.
-                  </small>
-                  <div className="text-danger">
+                  <small className="text-danger">
                     {betEndDate.error}
-                  </div>
+                  </small>
+                  <br/>
+                  <small className="text-muted">
+                    Upon this date, the prediction enters a period in which it can be resolved by it's owner to yes or no,
+                    and players will no longer be able to place bets.
+                    Once the owner resolves the prediction, all
+                    players will be able to start withdrawing their prizes.
+                    Note that the resolution date only represents the moment when bets close and resolution can occur,
+                    but the actual resolution is an event that depends on an action taken by the owner of the prediction.
+                  </small>
                 </div>
 
-                {/* WITHDRAW END DATE */}
-                <div className={`form-group ${withdrawEndDate.error ? 'has-danger' : ''}`}>
-                  <label>Withdraw End Date:</label>
-                  <DatePicker
-                    {...withdrawEndDate.props}
-                  />
-                  <small className="text-muted">
-                    After this final date, the owner of the prediction will be able to withdraw his fees
-                    (i.e. whatever is left in the balance of the smart contract),
-                    and players will no longer be able to withdraw their prizes.
-                  </small>
-                  <div className="text-danger">
-                    {withdrawEndDate.error}
+                <hr/>
+
+                {/* WITHDRAWAL PERIOD */}
+                <div className={`form-group ${withdrawPeriodDays.error !== undefined ? 'has-danger' : ''}`}>
+                  <label>Withdrawal Period:</label>
+                  <div className="row">
+
+                    {/* DAYS */}
+                    <div className="col-sm-4">
+                      <small className="text-muted">Days</small>
+                      <NumberPicker
+                        {...withdrawPeriodDays.props}
+                      />
+                    </div>
+
+                    {/* HOURS */}
+                    <div className="col-sm-4">
+                      <small className="text-muted">Hours</small>
+                      <NumberPicker
+                        min={0}
+                        max={23}
+                        {...withdrawPeriodHours.props}
+                      />
+                    </div>
+
+                    {/* MINUTES */}
+                    <div className="col-sm-4">
+                      <small className="text-muted">Minutes</small>
+                      <NumberPicker
+                        min={0}
+                        max={59}
+                        {...withdrawPeriodMinutes.props}
+                      />
+                    </div>
+
                   </div>
-                  {this.props.minWithdrawEndTimestampDelta !== undefined &&
-                   this.props.minWithdrawEndTimestampDelta !== 0 &&
-                    <small className="text-muted">
-                      (The minimum of this market is {dateUtil.unixToHumanizedDuration(this.props.minWithdrawEndTimestampDelta)}
-                       &nbsp;after the resolution date.)
-                    </small>
+                  <small className="text-danger">
+                    {withdrawPeriodDays.error || withdrawPeriodHours.error || withdrawPeriodMinutes.error}
+                  </small>
+
+                  <br/>
+
+                  <small className="text-muted">
+                    After the prediction is resolved,
+                    the withdrawal period will begin, giving players time to withdraw their prizes.
+                    When this period finishes, the owner of the prediction will be able to withdraw his fees
+                    (and whatever still remains in the balance of the smart contract),
+                    and players that didn't withdraw their prizes yet, may not be able to do so.
+                  </small>
+                  {this.props.minWithdrawPeriod !== undefined &&
+                   this.props.minWithdrawPeriod !== 0 &&
+                    <div>
+                      <small className="text-default">
+                        *The minimum of this market is {dateUtil.unixToHumanizedDuration(this.props.minWithdrawPeriod)}
+                        &nbsp;after the resolution date.
+                      </small>
+                    </div>
                   }
                 </div>
 
@@ -145,26 +220,26 @@ class CreatePredictionComponent extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  CreatePredictionComponent.minWithdrawEndTimestampDelta = state.market.minWithdrawEndTimestampDelta;
+  CreatePredictionComponent.minWithdrawPeriod = state.market.minWithdrawPeriod;
   return {
     activeAccountAddress: state.network.activeAccountAddress,
     bcTimestamp: state.network.currentTime,
-    minWithdrawEndTimestampDelta: state.market.minWithdrawEndTimestampDelta,
+    minWithdrawPeriod: state.market.minWithdrawPeriod,
     isWaiting: state.network.isWaiting
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createPrediction: (statement, betEndDate, withdrawEndDate) => dispatch(createPrediction(statement, betEndDate, withdrawEndDate)),
+    createPrediction: (statement, betEndDate, withdrawPeriod) => dispatch(createPrediction(statement, betEndDate, withdrawPeriod)),
   };
 };
 
-const fields = ['statement', 'betEndDate', 'withdrawEndDate'];
+const fields = ['statement', 'betEndDate', 'withdrawPeriodDays', 'withdrawPeriodHours', 'withdrawPeriodMinutes'];
 const validate = values => {
   // console.log('validate', values);
 
-  const { statement, betEndDate, withdrawEndDate } = values;
+  const { statement, betEndDate, withdrawPeriodDays, withdrawPeriodHours, withdrawPeriodMinutes } = values;
   const errors = {};
 
   if (!statement || statement.length === 0) errors.statement = 'Statement is required.';
@@ -172,19 +247,18 @@ const validate = values => {
   const nowUnix = dateUtil.dateToUnix(new Date());
   if(betEndDate) {
     const betEndUnix = betEndDate.valueOf() / 1000;
-    if(betEndUnix <= nowUnix) errors.betEndDate = 'Please enter a later bet end date.';
+    if(betEndUnix <= nowUnix) errors.betEndDate = 'Please enter a later resolution date.';
   }
-  else errors.betEndDate = 'Bet end date is required.';
+  else errors.betEndDate = 'Resolution date is required.';
 
-  if(withdrawEndDate) {
-    const withdrawEndUnix = withdrawEndDate.valueOf() / 1000;
-    const betEndUnix = betEndDate.valueOf() / 1000;
-    const delta = withdrawEndUnix - betEndUnix;
-    const minDelta = CreatePredictionComponent.minWithdrawEndTimestampDelta ? CreatePredictionComponent.minWithdrawEndTimestampDelta : 0;
-    if(delta < minDelta) errors.withdrawEndDate = 'Please enter a later withdrawal end date.';
+  if(CreatePredictionComponent.minWithdrawPeriod !== undefined) {
+    const period = combinePeriods(withdrawPeriodDays, withdrawPeriodHours, withdrawPeriodMinutes);
+    if(period < CreatePredictionComponent.minWithdrawPeriod) {
+      errors.withdrawPeriodMinutes = 'Please provide a longer withdrawal period.';
+    }
   }
-  else errors.withdrawEndDate = 'Withdrawal end date is required.';
 
+  // console.log('errors:', errors);
   return errors;
 };
 

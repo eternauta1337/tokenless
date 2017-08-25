@@ -38,10 +38,10 @@ export function connectMarket() {
 
     // Get prediction info.
     market.address = contract.address;
-    let minDelta = getState().market.minWithdrawEndTimestampDelta;
-    if(!minDelta) {
+    let minWithdrawPeriod = getState().market.minWithdrawPeriod;
+    if(!minWithdrawPeriod) {
       // console.log('market delta retrieved');
-      market.minWithdrawEndTimestampDelta = ( await contract.minWithdrawEndTimestampDelta.call() ).toNumber();
+      market.minWithdrawPeriod = ( await contract.minWithdrawPeriod.call() ).toNumber();
       cacheMarket(marketAddress, market);
     }
     dispatch({
