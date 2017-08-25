@@ -27,6 +27,7 @@ async function checkNext(prediction, getState, dispatch) {
   // Query block batch.
   const fromBlock = Math.max(prediction.lastBlockCheckpoint - HISTORY_CHECK_BATCH, 0);
   const toBlock = prediction.lastBlockCheckpoint;
+  if(isNaN(fromBlock) || isNaN(toBlock)) return;
   getBetsInBlockRange(fromBlock, toBlock, prediction, getState)
     .then((foundBets) => {
       // console.log('found bets:', foundBets);

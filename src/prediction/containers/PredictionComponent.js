@@ -52,7 +52,7 @@ class Prediction extends React.Component {
       this.props.activeAccountAddress !== undefined &&
       this.props.activeAccountAddress === this.props.owner;
 
-    // console.log('betHistory', this.props.betHistory);
+    console.log('fees', this.props.estimateFees);
 
     return (
       <div className="container">
@@ -114,9 +114,9 @@ class Prediction extends React.Component {
             isOwned &&
             this.props.predictionState !== undefined &&
             this.props.predictionState === 2 &&
-            this.props.bcTimestamp > this.props.resolutionTimestamp + this.props.withdrawPeriod &&
+            this.props.estimateFees > 0 &&
             <WithdrawComponent
-              claimAmount={this.props.balance}
+              claimAmount={this.props.estimateFees}
               claimMethod={this.props.withdrawFees}
             />
           }
@@ -136,20 +136,7 @@ class Prediction extends React.Component {
             !isOwned &&
             this.props.predictionState !== undefined &&
             this.props.predictionState === 1 &&
-            <WaitComponent
-              isOwned={false}
-            />
-          }
-
-          {/* OWNER WAIT */}
-          { this.props.activeAccountAddress !== undefined &&
-            isOwned &&
-            this.props.predictionState !== undefined &&
-            this.props.predictionState === 2 &&
-            this.props.bcTimestamp < this.props.resolutionTimestamp + this.props.withdrawPeriod &&
-            <WaitComponent
-              isOwned={true}
-            />
+            <WaitComponent/>
           }
 
           {/* BET */}

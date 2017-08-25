@@ -65,18 +65,17 @@ contract('Prediction (Withdraw)', function(accounts) {
     await expectThrow(contract.withdrawPrize({from: accounts[1]}));
   });
 
-  it('should allow the owner to withdraw the contract balance a certain time after resolution, claiming whatever no one else claimed', async function() {
+  it.only('should allow the owner to withdraw his fees right after resolution', async function() {
     const contract = await Prediction.new(
       'Bitcoin will reach $5000 in October 1.',
       util.currentSimulatedDateUnix + dateUtil.daysToSeconds(5),
       dateUtil.daysToSeconds(10),
       2
     );
-    let state = 0;
-    // console.log('time: ', await util.getTimestamp(web3));
+    console.log('contract created');
 
-    // Make a few bets.
-    // console.log('make a few bets');
+    // Place bets.
+    console.log('making bet');
     await contract.bet(true, {
       from: accounts[1],
       value: web3.toWei(1, 'ether')
@@ -85,52 +84,41 @@ contract('Prediction (Withdraw)', function(accounts) {
       from: accounts[2],
       value: web3.toWei(1, 'ether')
     });
-    await contract.bet(false, {
-      from: accounts[3],
-      value: web3.toWei(1, 'ether')
-    });
 
-    // Skip bets.
-    // console.log('skip bets');
+    // Skip until bets are closed.
+    console.log('skipping betting period');
     await util.skipTime(dateUtil.daysToSeconds(6), web3);
+    console.log('time: ', await util.getTimestamp(web3));
 
-    // Resolve.
-    // console.log('resolve');
-    await contract.resolve(true, {from: accounts[0]});
+    // Resolve the prediction.
+    console.log('resolving...');
+    await contract.resolve(false, {from: accounts[0]});
+    const resolutionTime = dateUtil.unixToDate((await contract.resolutionTimestamp.call()).toNumber());
+    console.log('resolution timestamp: ', resolutionTime);
 
-    // Try to claim fees early.
-    // console.log('claim fees early');
-    await expectThrow(contract.withdrawFees({from: accounts[0]}));
+    // Withdraw prizes.
+    console.log('withdrawing prizes');
+    const prize = web3.fromWei(await contract.calculatePrize(false, {from: accounts[2]}), 'ether').toNumber();
+    console.log('expected prize:', prize);
+    await contract.withdrawPrize({from: accounts[2]});
 
-    // Withdraw winner.
-    // console.log('withdraw winner');
-    const initContractBalance = await util.getBalanceInEther(contract.address, web3);
-    // console.log('init contract balance:', initContractBalance);
-    // console.log('init player balance:', await util.getBalanceInEther(accounts[1], web3));
-    await contract.withdrawPrize({from: accounts[1]});
-    // console.log('new player balance:', await util.getBalanceInEther(accounts[1], web3));
-    const withdrawnContractBalance = await util.getBalanceInEther(contract.address, web3);
-    // console.log('withdrawn contract balance:', withdrawnContractBalance);
-
-    // Skip withdrawal phase.
-    // console.log('skip withdraw');
-    await util.skipTime(dateUtil.daysToSeconds(11), web3);
-
-    // Should work now...
-    // console.log('claim fees at right time');
     const initOwnerBalance = await util.getBalanceInEther(accounts[0], web3);
-    // console.log('init owner balance:', initOwnerBalance);
-    await contract.withdrawFees({from: accounts[0]});
-    state = (await contract.getState()).toNumber();
-    // console.log('state:', state);
-    assert.equal(3, state, 'incorrect contract state');
 
-    // Check owner balance
-    // console.log('check owner balance');
+    // Withdraw all fees.
+    console.log('withdrawing fees');
+    const fees = web3.fromWei(await contract.calculateFees({from: accounts[0]}), 'ether').toNumber();
+    console.log('expected fees:', fees);
+    await contract.withdrawFees({from: accounts[0]});
+
     const newOwnerBalance = await util.getBalanceInEther(accounts[0], web3);
-    // console.log('new owner balance:', newOwnerBalance);
-    const expectedNewOwnerBalance = initOwnerBalance + withdrawnContractBalance;
-    // console.log('expectedNewOwnerBalance:', expectedNewOwnerBalance);
-    assert.approximately(newOwnerBalance, expectedNewOwnerBalance, 0.01, 'expected owner balance is incorrect');
+    const expectedNewOwnerBalance = initOwnerBalance + fees;
+    // console.log('expectedNewPlayerBalance', expectedNewPlayerBalance);
+    assert.approximately(newOwnerBalance, expectedNewOwnerBalance, 0.01, 'expected winner balance is incorrect');
+
+    // Winners should not be able to withdraw twice.
+    // console.log('winner try to withdraw again');
+    await expectThrow(contract.withdrawFees({from: accounts[0]}));
   });
+
+  it('should allow the mediator to withdraw all funds after the withdrawal period finishes');
 });

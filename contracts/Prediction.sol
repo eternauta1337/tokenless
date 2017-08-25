@@ -88,7 +88,7 @@ contract Prediction is Ownable {
     require(prize > 0);
 
     // Send funds.
-    require(this.balance > prize);
+    require(this.balance >= prize);
     assert(msg.sender.send(prize)); 
     
     // Reset bets.
@@ -98,7 +98,7 @@ contract Prediction is Ownable {
     WithdrawPrizeEvent(msg.sender);
   }
 
-  function calculatePrize(bool prediction) constant returns (uint) {
+  function calculatePrize(bool prediction) onlyInState(State.Resolved) constant returns (uint) {
 
     /*
       The balance is split between a losing and a winning pot.
@@ -106,9 +106,6 @@ contract Prediction is Ownable {
       they represented in the winning pot, as well as recovering their original bet.
       A small fee of the loser takeaway chunk is retained for the contract owner.
     */
-
-    // Cant predict the future.
-    if(!resolved) return 0;
 
     // No prize if outcome is not matched.
     if(prediction != outcome) return 0;
@@ -131,14 +128,28 @@ contract Prediction is Ownable {
   // Fee withdrawals
   // --------------------------------------------------
 
+  bool public feesWithdrawn = false;
+
   event WithdrawFeesEvent(address indexed from);
 
   function withdrawFees() onlyOwner onlyInState(State.Resolved) {
-    uint elapsed = now.sub(resolutionTimestamp);
-    require(elapsed > withdrawPeriod);
-    require(this.balance > 0);
-    assert(owner.send(this.balance));
+    require(!feesWithdrawn);
+
+    // Calculate total prize.
+    uint fees = calculateFees();
+    require(fees > 0);
+
+    require(this.balance >= fees);
+    assert(owner.send(fees));
+    feesWithdrawn = true;
+
     WithdrawFeesEvent(msg.sender);
+  }
+
+  function calculateFees() onlyInState(State.Resolved) constant returns (uint) {
+    uint losingPot = totals[!outcome];
+    uint totalFee = losingPot.mul(feePercent).div(100);
+    return totalFee;
   }
 
   // --------------------------------------------------

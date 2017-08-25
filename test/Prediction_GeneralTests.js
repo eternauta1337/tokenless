@@ -57,54 +57,62 @@ contract('Prediction (General)', function(accounts) {
       dateUtil.daysToSeconds(10),
       2
     );
-    // console.log('contract created');
+    console.log('contract created');
 
     // Initial state should be 0 'OPEN'.
     let state = 0;
     state = (await contract.getState()).toNumber();
-    // console.log('time: ', await util.getTimestamp(web3));
-    // console.log('state:', state);
+    console.log('time: ', await util.getTimestamp(web3));
+    console.log('state:', state);
     assert.equal(state, 0, 'incorrect state');
 
-    // Make a bet.
-    // console.log('making bet');
+    // Place bets.
+    console.log('making bet');
     await contract.bet(true, {
       from: accounts[1],
       value: web3.toWei(1, 'ether')
     });
+    await contract.bet(false, {
+      from: accounts[2],
+      value: web3.toWei(1, 'ether')
+    });
 
     // Skip until bets are closed.
-    // console.log('skipping betting period');
+    console.log('skipping betting period');
     await util.skipTime(dateUtil.daysToSeconds(6), web3);
     console.log('time: ', await util.getTimestamp(web3));
 
     // State should be 1 'CLOSED'.
     state = (await contract.getState()).toNumber();
-    // console.log('state:', state);
+    console.log('state:', state);
     assert.equal(state, 1, 'incorrect state');
 
     // Resolve the prediction.
-    // console.log('resolving...');
-    await contract.resolve(true, {from: accounts[0]});
+    console.log('resolving...');
+    await contract.resolve(false, {from: accounts[0]});
     const resolutionTime = dateUtil.unixToDate((await contract.resolutionTimestamp.call()).toNumber());
-    // console.log('resolution timestamp: ', resolutionTime);
+    console.log('resolution timestamp: ', resolutionTime);
 
     // State should be 2 'RESOLVED'.
     state = (await contract.getState()).toNumber();
-    // console.log('state:', state);
+    console.log('state:', state);
     assert.equal(state, 2, 'incorrect state');
 
-    // Skip until withdrawals end.
-    // console.log('skipping withdrawal period');
-    await util.skipTime(dateUtil.daysToSeconds(11), web3);
+    // Withdraw prizes.
+    console.log('withdrawing prizes');
+    const prize = web3.fromWei(await contract.calculatePrize(false, {from: accounts[2]}), 'ether').toNumber();
+    console.log('expected prize:', prize);
+    await contract.withdrawPrize({from: accounts[2]});
 
-    // Withdraw all funds.
-    // console.log('withdrawing funds');
+    // Withdraw all fees.
+    console.log('withdrawing fees');
+    const fees = web3.fromWei(await contract.calculateFees({from: accounts[0]}), 'ether').toNumber();
+    console.log('expected fees:', fees);
     await contract.withdrawFees({from: accounts[0]});
 
     // State should be 3 'FINISHED'.
     state = (await contract.getState()).toNumber();
-    // console.log('state:', state);
+    console.log('state:', state);
     assert.equal(state, 3, 'incorrect state');
   });
 

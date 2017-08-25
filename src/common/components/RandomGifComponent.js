@@ -19,8 +19,8 @@ class RandomGifComponent extends React.PureComponent {
     let tag = this.props.tag;
     if(!tag) {
       const tags = [
-        'computers', 'patience', "8bit", 'relax', 'coffee', 'whatever',
-        'waiting', 'bored', 'boring', 'kitten', 'owl', 'slow'
+        'computers', 'patience', "8bit", 'relax', 'coffee', 'whatever', 'omg',
+        'waiting', 'bored', 'boring', 'kitten', 'owl', 'slow', 'wow'
       ];
       const idx = Math.floor(Math.random() * tags.length);
       tag = tags[idx];

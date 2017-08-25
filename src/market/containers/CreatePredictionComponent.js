@@ -23,13 +23,13 @@ class CreatePredictionComponent extends React.Component {
 
     // Default values.
     let now = dateUtil.dateToUnix(new Date());
-    let betEndDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 5 * 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
+    let betEndDate = DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? dateUtil.unixToDate(now + 60) : dateUtil.unixToDate( now + dateUtil.daysToSeconds( 7 ) );
     this.props.form.onValues({
       statement: DEBUG_MODE ? miscUtil.makeid() : '',
       betEndDate,
       withdrawPeriodDays: DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? 0 : 7,
       withdrawPeriodHours: 0,
-      withdrawPeriodMinutes: DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? 5 : 0,
+      withdrawPeriodMinutes: DEBUG_MODE || TARGET_LIVE_NETWORK === 'ropsten' ? 1 : 0,
     });
   }
 

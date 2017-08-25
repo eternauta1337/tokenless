@@ -70,18 +70,12 @@ export function connectPrediction(address) {
 export function updatePredictionOwner(address) {
   return async function(dispatch, getState) {
     const prediction = getState().prediction;
-    if(prediction.owner) return;
     const contract = getState().prediction.contract;
-    const web3 = getState().network.web3;
-    const player = getState().network.activeAccountAddress;
     console.log('get owner');
     prediction.owner = await contract.owner.call();
     if (!util.checkContinue(address, getState)) return;
-    if (prediction.predictionState === 2) {
-      prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
-    }
-    if (!util.checkContinue(address, getState)) return;
     util.cachePrediction(address, prediction);
+    console.log('prediction:', prediction);
     dispatch({
       type: UPDATE_PREDICTION,
       payload: prediction
@@ -183,18 +177,37 @@ export function updatePredictionBalances(address) {
 
 export function updatePredictionState(address) {
   return async function(dispatch, getState) {
+
     const prediction = getState().prediction;
     const contract = getState().prediction.contract;
-    console.log('get state');
+    const web3 = getState().network.web3;
+    const player = getState().network.activeAccountAddress;
+    console.log('get state (+prizes and fees)');
+
     prediction.outcome = await contract.outcome.call();
     if (!util.checkContinue(address, getState)) return;
     prediction.predictionState = (await contract.getState()).toNumber();
     if (!util.checkContinue(address, getState)) return;
     prediction.predictionStateStr = stateUtil.predictionStateToStr(prediction.predictionState);
+
+    // Prizes and fees.
+    prediction.estimatePrize = 0;
+    prediction.estimateFees = 0;
+    if (prediction.predictionState === 2) {
+      prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
+      if (!util.checkContinue(address, getState)) return;
+      prediction.feesWithdrawn = await contract.feesWithdrawn.call();
+      if(!prediction.feesWithdrawn) {
+        prediction.estimateFees = +web3.fromWei(await contract.calculateFees(), 'ether').toNumber();
+        if (!util.checkContinue(address, getState)) return;
+      }
+    }
+    // console.log('prediction', prediction);
+
     const preview = getState().market.previews[address];
     if(preview) preview.predictionState = prediction.predictionState;
     if(preview) preview.predictionStateStr = prediction.predictionStateStr;
-    if (!util.checkContinue(address, getState)) return;
+
     util.cachePrediction(address, prediction);
     dispatch({
       type: UPDATE_PREDICTION,
