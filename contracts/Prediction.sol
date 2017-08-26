@@ -104,7 +104,7 @@ contract Prediction is Ownable {
       The balance is split between a losing and a winning pot.
       Winners take chunks away from the losing pot according to the percentage
       they represented in the winning pot, as well as recovering their original bet.
-      A small fee of the loser takeaway chunk is retained for the contract owner.
+      A small fee is retained for the contract owner.
     */
 
     // No prize if outcome is not matched.
@@ -118,10 +118,10 @@ contract Prediction is Ownable {
 
     uint winPercentage = balance.div(winningPot);
     uint loserChunk = winPercentage.mul(losingPot);
-    uint fee = loserChunk.mul(feePercent).div(100);
     uint prize = loserChunk.sub(fee).add(balance);
+    uint fee = prize.mul(feePercent).div(100);
 
-    return prize;
+    return prize.sub(fee);
   }
 
   // --------------------------------------------------
@@ -147,9 +147,9 @@ contract Prediction is Ownable {
   }
 
   function calculateFees() onlyInState(State.Resolved) constant returns (uint) {
-    uint losingPot = totals[!outcome];
-    uint totalFee = losingPot.mul(feePercent).div(100);
-    return totalFee;
+    // Use total bets instead of balance because balance will decrease with withdrawals.
+    uint total = totals[true] + totals[false];
+    return total.mul(feePercent).div(100);
   }
 
   // --------------------------------------------------
