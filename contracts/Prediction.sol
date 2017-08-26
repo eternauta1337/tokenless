@@ -83,7 +83,7 @@ contract Prediction is Ownable {
 
   event WithdrawPrizeEvent(address indexed from);
 
-  function withdrawPrize() notOwner() atLeastInState(State.Resolved) {
+  function withdrawPrize() notOwner() onlyInStates(State.Resolved, State.Finished) {
 
     // Calculate total prize.
     uint prize = calculatePrize(outcome);
@@ -100,7 +100,7 @@ contract Prediction is Ownable {
     WithdrawPrizeEvent(msg.sender);
   }
 
-  function calculatePrize(bool prediction) atLeastInState(State.Resolved) constant returns (uint) {
+  function calculatePrize(bool prediction) onlyInStates(State.Resolved, State.Finished) constant returns (uint) {
 
     /*
       The balance is split between a losing and a winning pot.
@@ -118,8 +118,9 @@ contract Prediction is Ownable {
     uint winningPot = totals[outcome];
     uint losingPot = totals[!outcome];
 
-    uint winPercentage = playerBalance.div(winningPot);
-    uint loserChunk = winPercentage.mul(losingPot);
+    uint factor = 1000000000000000000000000;
+    uint winPercentage = playerBalance.mul(factor).div(winningPot);
+    uint loserChunk = winPercentage.mul(losingPot).div(factor);
     uint prize = loserChunk.add(playerBalance);
     uint fee = prize.mul(feePercent).div(100);
 
@@ -134,11 +135,12 @@ contract Prediction is Ownable {
 
   event WithdrawFeesEvent(address indexed from);
 
-  function withdrawFees() onlyOwner atLeastInState(State.Resolved) {
+  function withdrawFees() onlyOwner onlyInStates(State.Resolved, State.Finished) {
     require(!feesWithdrawn);
 
     // Calculate total prize.
     uint fees = calculateFees();
+    if(fees > this.balance) fees = this.balance;
     require(fees > 0);
 
     require(this.balance >= fees);
@@ -148,7 +150,7 @@ contract Prediction is Ownable {
     WithdrawFeesEvent(msg.sender);
   }
 
-  function calculateFees() atLeastInState(State.Resolved) constant returns (uint) {
+  function calculateFees() onlyInStates(State.Resolved, State.Finished) constant returns (uint) {
     // Use total bets instead of balance because balance will decrease with withdrawals.
     uint total = totals[true] + totals[false];
     return total.mul(feePercent).div(100);
@@ -171,8 +173,8 @@ contract Prediction is Ownable {
     _;
   }
 
-  modifier atLeastInState(State _state) {
-    if(_state < getState()) { revert(); }
+  modifier onlyInStates(State _state1, State _state2) {
+    if(_state1 != getState() && _state2 != getState()) { revert(); }
     _;
   }
 

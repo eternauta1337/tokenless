@@ -115,14 +115,11 @@ contract('Prediction (Bets)', function(accounts) {
     );
 
     let i;
-    let posPot = 0;
-    let negPot = 0;
     for(i = 0; i < 5; i++) {
       await contract.bet(true, {
         from: accounts[1],
         value: web3.toWei(1, 'ether')
       });
-      await web3Util.delay(200);
       util.log('positive bet');
     }
     for(i = 0; i < 3; i++) {
@@ -130,10 +127,10 @@ contract('Prediction (Bets)', function(accounts) {
         from: accounts[1],
         value: web3.toWei(1, 'ether')
       });
-      await web3Util.delay(200);
       util.log('negative bet');
     }
 
+    await web3Util.delay(500);
     const positivePredicionBalance = web3.fromWei((await contract.totals.call(true)).toNumber());
     const negativePredicionBalance = web3.fromWei((await contract.totals.call(false)).toNumber());
     util.log('positivePredicionBalance', positivePredicionBalance);
