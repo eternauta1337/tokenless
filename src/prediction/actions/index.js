@@ -16,3 +16,4 @@ export { placeBet } from './PlaceBetAction';
 export { resolveMarket } from './ResolvePredictionAction';
 export { withdrawPrize } from './WithdrawPrizeAction';
 export { withdrawFees } from './WithdrawFeesAction';
+export { purgePrediction } from './PurgeAction';

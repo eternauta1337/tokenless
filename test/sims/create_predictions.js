@@ -12,13 +12,13 @@ const addr0 = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39';
 
 module.exports = async function(callback) {
 
-  console.log('Running create_predictions...');
+  util.log('Running create_predictions...');
 
   // Retrieve deployed prediction prediction.
   const Market = TruffleContract(MarketArtifacts);
   Market.setProvider(web3.currentProvider);
   const market = await Market.at(constants.MARKET_ADDRESS['testrpc']);
-  console.log('market retrieved');
+  util.log('market retrieved');
 
   // Create a bunch of predictions.
   // createDeterministicPredictions(market);
@@ -33,7 +33,7 @@ module.exports = async function(callback) {
 
 async function createDeterministicPredictions(market) {
 
-  console.log('createDeterministicPredictions()');
+  util.log('createDeterministicPredictions()');
   const predictions = [
     {statement: 'Whrachikov will win the election.',
       duration: 1},
@@ -61,7 +61,7 @@ async function createDeterministicPredictions(market) {
     // Retrieve prediction.
     const creationEventArgs = creationTransaction.logs[0].args;
     const predictionAddress = creationEventArgs.predictionAddress;
-    console.log('prediction created:', predictionAddress);
+    util.log('prediction created:', predictionAddress);
   }
 }
 
@@ -70,7 +70,7 @@ async function createDeterministicPredictions(market) {
 // ---------------------
 
 async function createRandomPredictions(num, market) {
-  console.log('createRandomPredictions()', num);
+  util.log('createRandomPredictions()', num);
   for(let i = 0; i < num; i++) {
 
     const duration = Math.floor(1000 * Math.random()) + 10;
@@ -89,7 +89,7 @@ async function createRandomPredictions(num, market) {
     // Retrieve prediction.
     const creationEventArgs = creationTransaction.logs[0].args;
     const predictionAddress = creationEventArgs.predictionAddress;
-    console.log('prediction created:', predictionAddress);
+    util.log('prediction created:', predictionAddress);
   }
 }
 

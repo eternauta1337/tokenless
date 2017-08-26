@@ -202,7 +202,7 @@ export function updatePredictionState(address) {
         if (!util.checkContinue(address, getState)) return;
       }
     }
-    // console.log('prediction', prediction);
+    console.log('prediction', prediction);
 
     const preview = getState().market.previews[address];
     if(preview) preview.predictionState = prediction.predictionState;

@@ -10,6 +10,11 @@
     "test": "npm run test:ui && npm run test:sol",
     "test:ui": "node scripts/test.js --env=jsdom",
     "test:sol": "truffle test",
+    "test:sol:prediction:general": "truffle test test/Prediction_GeneralTests.js",
+    "test:sol:prediction:bets": "truffle test test/Prediction_BetTests.js",
+    "test:sol:prediction:resolve": "truffle test test/Prediction_ResolveTests.js",
+    "test:sol:prediction:withdraw": "truffle test test/Prediction_WithdrawTests.js",
+    "test:sol:market:general": "truffle test test/Prediction_GeneralTests.js",
     "sim:create": "truffle exec test/sims/create_predictions.js",
     "predeploy": "npm run build",
     "deploy": "firebase deploy"

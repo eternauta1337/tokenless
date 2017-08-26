@@ -65,6 +65,7 @@ contract Prediction is Ownable {
 
   bool public outcome;
   uint public resolutionTimestamp;
+  uint public withdrawEndTimestamp; // determined at the moment of resolution
 
   event ResolveEvent(bool selectedOutcome);
 
@@ -72,6 +73,7 @@ contract Prediction is Ownable {
     outcome = _outcome;
     resolved = true;
     resolutionTimestamp = now;
+    withdrawEndTimestamp = now.add(withdrawPeriod);
     ResolveEvent(outcome);
   }
 
@@ -81,7 +83,7 @@ contract Prediction is Ownable {
 
   event WithdrawPrizeEvent(address indexed from);
 
-  function withdrawPrize() notOwner() onlyInState(State.Resolved) {
+  function withdrawPrize() notOwner() atLeastInState(State.Resolved) {
 
     // Calculate total prize.
     uint prize = calculatePrize(outcome);
@@ -98,7 +100,7 @@ contract Prediction is Ownable {
     WithdrawPrizeEvent(msg.sender);
   }
 
-  function calculatePrize(bool prediction) onlyInState(State.Resolved) constant returns (uint) {
+  function calculatePrize(bool prediction) atLeastInState(State.Resolved) constant returns (uint) {
 
     /*
       The balance is split between a losing and a winning pot.
@@ -110,15 +112,15 @@ contract Prediction is Ownable {
     // No prize if outcome is not matched.
     if(prediction != outcome) return 0;
 
-    uint balance = bets[prediction][msg.sender];
-    if(balance == 0) return 0;
+    uint playerBalance = bets[prediction][msg.sender];
+    if(playerBalance == 0) return 0;
 
     uint winningPot = totals[outcome];
     uint losingPot = totals[!outcome];
 
-    uint winPercentage = balance.div(winningPot);
+    uint winPercentage = playerBalance.div(winningPot);
     uint loserChunk = winPercentage.mul(losingPot);
-    uint prize = loserChunk.sub(fee).add(balance);
+    uint prize = loserChunk.add(playerBalance);
     uint fee = prize.mul(feePercent).div(100);
 
     return prize.sub(fee);
@@ -132,7 +134,7 @@ contract Prediction is Ownable {
 
   event WithdrawFeesEvent(address indexed from);
 
-  function withdrawFees() onlyOwner onlyInState(State.Resolved) {
+  function withdrawFees() onlyOwner atLeastInState(State.Resolved) {
     require(!feesWithdrawn);
 
     // Calculate total prize.
@@ -146,10 +148,15 @@ contract Prediction is Ownable {
     WithdrawFeesEvent(msg.sender);
   }
 
-  function calculateFees() onlyInState(State.Resolved) constant returns (uint) {
+  function calculateFees() atLeastInState(State.Resolved) constant returns (uint) {
     // Use total bets instead of balance because balance will decrease with withdrawals.
     uint total = totals[true] + totals[false];
     return total.mul(feePercent).div(100);
+  }
+
+  function purge() onlyOwner onlyInState(State.Resolved) {
+    require(this.balance > 0);
+    assert(owner.send(this.balance));
   }
 
   // --------------------------------------------------
@@ -164,13 +171,18 @@ contract Prediction is Ownable {
     _;
   }
 
+  modifier atLeastInState(State _state) {
+    if(_state < getState()) { revert(); }
+    _;
+  }
+
   function getState() constant returns (State) {
     if(!resolved) {
       if(now < betEndTimestamp) return State.Open;
       else return State.Closed;
     }
     else {
-      if(this.balance > 0) return State.Resolved;
+      if(now < withdrawEndTimestamp) return State.Resolved;
       else return State.Finished;
     }
   }

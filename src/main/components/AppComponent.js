@@ -32,7 +32,7 @@ class App extends Component {
         </div>
 
         {/* FOOTER */}
-        <footer className="row footer-muted" style={{height: DEBUG_MODE ? '95px' : '30px'}}>
+        <footer className="row footer-muted" style={{height: DEBUG_MODE ? '120px' : '30px'}}>
           <div className="text-center">
             <small className="text-muted">
               <span className="glyphicon glyphicon-flash" aria-hidden="true"></span>

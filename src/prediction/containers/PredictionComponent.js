@@ -10,6 +10,7 @@ import WaitComponent from '../components/WaitComponent';
 import UserInfoComponent from '../components/UserInfoComponent';
 import HistoryComponent from '../components/HistoryComponent';
 import CommentsComponent from '../components/CommentsComponent';
+import PurgeComponent from '../components/PurgeComponent';
 import BubblePreloader from 'react-bubble-preloader';
 import {
   resetPrediction,
@@ -18,6 +19,7 @@ import {
   resolveMarket,
   withdrawPrize,
   withdrawFees,
+  purgePrediction
 } from '../actions';
 import {EXPLORER_URL, TARGET_LIVE_NETWORK} from "../../constants";
 
@@ -94,14 +96,25 @@ class Prediction extends React.Component {
           {/* FINISH */}
           { this.props.predictionState !== undefined &&
             this.props.predictionState >= 3 &&
+            this.props.balance === 0 &&
             <FinishComponent/>
+          }
+
+          {/* PURGE */}
+          { this.props.predictionState !== undefined &&
+            this.props.predictionState === 3 &&
+            isOwned &&
+            this.props.balance !== 0 &&
+            <PurgeComponent
+              purgePrediction={this.props.purgePrediction}
+            />
           }
 
           {/* WITHDRAW PRIZE */}
           { this.props.activeAccountAddress !== undefined &&
             !isOwned &&
             this.props.predictionState !== undefined &&
-            this.props.predictionState === 2 &&
+            this.props.predictionState >= 2 &&
             this.props.estimatePrize > 0 &&
             <WithdrawComponent
               claimAmount={this.props.estimatePrize}
@@ -113,7 +126,7 @@ class Prediction extends React.Component {
           { this.props.activeAccountAddress !== undefined &&
             isOwned &&
             this.props.predictionState !== undefined &&
-            this.props.predictionState === 2 &&
+            this.props.predictionState >= 2 &&
             this.props.estimateFees > 0 &&
             <WithdrawComponent
               claimAmount={this.props.estimateFees}
@@ -216,7 +229,8 @@ const mapDispatchToProps = (dispatch) => {
     resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
     withdrawPrize: () => dispatch(withdrawPrize()),
     withdrawFees: () => dispatch(withdrawFees()),
-    resetPrediction: () => dispatch(resetPrediction())
+    resetPrediction: () => dispatch(resetPrediction()),
+    purgePrediction: () => dispatch(purgePrediction())
   };
 };
 
