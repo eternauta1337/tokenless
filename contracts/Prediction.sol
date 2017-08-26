@@ -156,7 +156,7 @@ contract Prediction is Ownable {
     return total.mul(feePercent).div(100);
   }
 
-  function purge() onlyOwner onlyInState(State.Resolved) {
+  function purge() onlyOwner onlyInState(State.Finished) {
     require(this.balance > 0);
     assert(owner.send(this.balance));
   }
