@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function unixToStr(unix, format = 'MM/DD/YYYY HH:mm:ss') {
+export function unixToStr(unix, format = 'MM/DD/YYYY HH:mm') {
   return moment.unix(unix).format(format);
 }
 
