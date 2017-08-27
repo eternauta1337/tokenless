@@ -92,7 +92,7 @@ const InfoComponent = ({
             </span>
           </li>
         }
-        {predictionState >= 2 && resolutionTimestamp !== undefined &&
+        { predictionState > 0 && predictionState < 3 && resolutionTimestamp !== undefined &&
           <li className='list-inline-item'>
             <span className="label label-warning">
               Withdrawals end on: {dateUtil.unixToStr(resolutionTimestamp + withdrawPeriod)}
