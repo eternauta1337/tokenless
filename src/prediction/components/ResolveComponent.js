@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ResolveComponent = ({ resolveMarket }) => {
+const ResolveComponent = ({ resolvePrediction }) => {
 
   const handleResolveButtonClick = function(outcome) {
-    resolveMarket(outcome);
+    resolvePrediction(outcome);
   };
 
   return (

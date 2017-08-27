@@ -4,7 +4,7 @@ import {
   updatePredictionState
 } from ".";
 
-export function resolveMarket(outcome) {
+export function resolvePrediction(outcome) {
   return async function(dispatch, getState) {
 
     const prediction = getState().prediction.contract;

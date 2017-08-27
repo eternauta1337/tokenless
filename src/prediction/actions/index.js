@@ -13,7 +13,7 @@ export {
 export { updateBetHistory } from './UpdateBetHistoryAction';
 export { RESET_PREDICTION, resetPrediction } from './ResetPredictionAction';
 export { placeBet } from './PlaceBetAction';
-export { resolveMarket } from './ResolvePredictionAction';
+export { resolvePrediction } from './ResolvePredictionAction';
 export { withdrawPrize } from './WithdrawPrizeAction';
 export { withdrawFees } from './WithdrawFeesAction';
 export { purgePrediction } from './PurgeAction';

@@ -16,7 +16,7 @@ import {
   resetPrediction,
   connectPrediction,
   placeBet,
-  resolveMarket,
+  resolvePrediction,
   withdrawPrize,
   withdrawFees,
   purgePrediction
@@ -141,7 +141,7 @@ class Prediction extends React.Component {
             this.props.predictionState !== undefined &&
             this.props.predictionState === 1 &&
             <ResolveComponent
-              resolveMarket={this.props.resolveMarket}
+              resolvePrediction={this.props.resolvePrediction}
               />
           }
 
@@ -227,7 +227,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     connectPrediction: (address) => dispatch(connectPrediction(address)),
     placeBet: (prediction, value) => dispatch(placeBet(prediction, value)),
-    resolveMarket: (outcome) => dispatch(resolveMarket(outcome)),
+    resolvePrediction: (outcome) => dispatch(resolvePrediction(outcome)),
     withdrawPrize: () => dispatch(withdrawPrize()),
     withdrawFees: () => dispatch(withdrawFees()),
     resetPrediction: () => dispatch(resetPrediction()),
