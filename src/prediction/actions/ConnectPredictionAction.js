@@ -125,12 +125,15 @@ export function updatePredictionStatement(address) {
 
 export function updateDynamicPredictionData(address) {
   console.log('updateDynamicPredictionData()');
-  return async function(dispatch) {
+  return async function(dispatch, getState) {
     dispatch(updatePredictionDates(address));
     dispatch(updatePredictionState(address));
     dispatch(updatePredictionBalances(address));
     dispatch(updatePredictionPlayerBalances(address));
     dispatch(updateBetHistory(address));
+
+    const prediction = getState().prediction;
+    console.log('prediction', prediction);
   };
 }
 
@@ -193,7 +196,7 @@ export function updatePredictionState(address) {
     // Prizes and fees.
     prediction.estimatePrize = 0;
     prediction.estimateFees = 0;
-    if (prediction.predictionState === 2) {
+    if (prediction.predictionState >= 2) {
       prediction.estimatePrize = +web3.fromWei(await contract.calculatePrize(prediction.outcome, {from: player}), 'ether').toNumber();
       if (!util.checkContinue(address, getState)) return;
       prediction.feesWithdrawn = await contract.feesWithdrawn.call();
@@ -202,7 +205,6 @@ export function updatePredictionState(address) {
         if (!util.checkContinue(address, getState)) return;
       }
     }
-    console.log('prediction', prediction);
 
     const preview = getState().market.previews[address];
     if(preview) preview.predictionState = prediction.predictionState;
