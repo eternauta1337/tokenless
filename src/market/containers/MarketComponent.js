@@ -15,7 +15,6 @@ import {
 class Market extends React.Component {
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps()', nextProps.routeParams.page);
 
     // Check which previews have been updated.
     if(nextProps.addresses) {
@@ -65,7 +64,6 @@ class Market extends React.Component {
 
     // Build list items array.
     const listItems = [];
-    console.log('offset', offset);
     if(!showNoItems) {
       const limit = Math.min(offset + FETCH_PREDICTIONS_BATCH, this.props.addresses.length);
       for(let i = offset; i < limit; i++) {

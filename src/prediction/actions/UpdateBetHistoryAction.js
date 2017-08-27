@@ -20,7 +20,11 @@ export function updateBetHistory(address) {
 async function checkNext(prediction, getState, dispatch) {
   console.log('history - checkNext()');
   updateAcountedBalances(prediction);
-  if(!shouldContinueSearching(prediction)) return;
+
+  if(!shouldContinueSearching(prediction)) {
+    if(prediction.betHistory === undefined) prediction.betHistory = [];
+    return;
+  }
 
   console.log('should check');
 
@@ -79,27 +83,31 @@ function updateAcountedBalances(prediction) {
 
 function shouldContinueSearching(prediction) {
   if(prediction.positivePredicionBalance === 0 && prediction.negativePredicionBalance === 0) {
-    // console.log('0 balances');
+    console.log('0 balances');
     return false;
   }
   if(prediction.lastBlockCheckpoint === 0) {
-    // console.log('reached 0');
+    console.log('reached 0');
     return false;
   }
-  if(prediction.historyAccountedPositiveBetBalance === undefined) {
-    // console.log('no accounted pos balance');
+  if(prediction.historyAccountedPositiveBetBalance === undefined &&
+     prediction.positivePredicionBalance !== undefined &&
+     prediction.positivePredicionBalance !== 0) {
+    console.log('no accounted pos balance');
     return true;
   }
-  if(prediction.historyAccountedNegativeBetBalance === undefined) {
-    // console.log('no accounted neg balance');
+  if(prediction.historyAccountedNegativeBetBalance === undefined &&
+     prediction.negativePredicionBalance !== undefined &&
+     prediction.negativePredicionBalance !== 0) {
+    console.log('no accounted neg balance');
     return true;
   }
   if(prediction.historyAccountedPositiveBetBalance < prediction.positivePredicionBalance) {
-    // console.log('pos balance not reached');
+    console.log('pos balance not reached');
     return true;
   }
   if(prediction.historyAccountedNegativeBetBalance < prediction.negativePredicionBalance) {
-    // console.log('neg balance not reached');
+    console.log('neg balance not reached');
     return true;
   }
   return false;
