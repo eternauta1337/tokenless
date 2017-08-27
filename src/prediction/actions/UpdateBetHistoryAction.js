@@ -10,7 +10,7 @@ export function updateBetHistory(address) {
     const prediction = getState().prediction;
 
     const currentBlock = getState().network.blockNumber;
-    if (!util.checkContinue(prediction.address, getState)) return;
+    if (!util.checkContinue(address, getState)) return;
     prediction.lastBlockCheckpoint = currentBlock;
 
     checkNext(prediction, getState, dispatch);
@@ -34,6 +34,8 @@ async function checkNext(prediction, getState, dispatch) {
   if(isNaN(fromBlock) || isNaN(toBlock)) return;
   getBetsInBlockRange(fromBlock, toBlock, prediction, getState)
     .then((foundBets) => {
+
+      if (!util.checkContinue(prediction.address, getState)) return;
       // console.log('found bets:', foundBets);
 
       // Sweep found bets and update cached history if any is new.
