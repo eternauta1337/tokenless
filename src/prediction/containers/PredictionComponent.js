@@ -54,7 +54,7 @@ class Prediction extends React.Component {
       this.props.activeAccountAddress !== undefined &&
       this.props.activeAccountAddress === this.props.owner;
 
-    console.log('fees', this.props.estimateFees);
+    // console.log('fees', this.props.estimateFees);
 
     return (
       <div className="container">
@@ -93,21 +93,11 @@ class Prediction extends React.Component {
             balance={this.props.balance}
             />
 
-          {/* FINISH */}
+          {/* FINISHED */}
           { this.props.predictionState !== undefined &&
             this.props.predictionState >= 3 &&
             this.props.balance === 0 &&
             <FinishComponent/>
-          }
-
-          {/* PURGE */}
-          { this.props.predictionState !== undefined &&
-            this.props.predictionState === 3 &&
-            isOwned &&
-            this.props.balance !== 0 &&
-            <PurgeComponent
-              purgePrediction={this.props.purgePrediction}
-            />
           }
 
           {/* WITHDRAW PRIZE */}
@@ -128,9 +118,20 @@ class Prediction extends React.Component {
             this.props.predictionState !== undefined &&
             this.props.predictionState >= 2 &&
             this.props.estimateFees > 0 &&
+            this.props.balance > this.props.estimateFees &&
             <WithdrawComponent
               claimAmount={this.props.estimateFees}
               claimMethod={this.props.withdrawFees}
+            />
+          }
+
+          {/* PURGE */}
+          { this.props.predictionState !== undefined &&
+            this.props.predictionState === 3 &&
+            isOwned &&
+            this.props.balance !== 0 &&
+            <PurgeComponent
+              purgePrediction={this.props.purgePrediction}
             />
           }
 

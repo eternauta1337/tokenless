@@ -1,6 +1,6 @@
 import {setWaiting} from "../../network/actions/SetWaitingAction";
 import {USE_INJECTED_WEB3} from "../../constants";
-import {updatePredictionState} from "./ConnectPredictionAction";
+import {updateDynamicPredictionData} from "./ConnectPredictionAction";
 
 export function purgePrediction() {
   console.log('purgePrediction()');
@@ -18,11 +18,11 @@ export function purgePrediction() {
       console.log(err);
       dispatch(setWaiting(false));
     }).then(() => {
-      console.log('contract resolved!');
+      console.log('contract purged!');
       dispatch(setWaiting(false));
 
       // Invalidate prediction data.
-      dispatch(updatePredictionState(prediction.address));
+      dispatch(updateDynamicPredictionData());
     });
   };
 }

@@ -211,6 +211,10 @@ contract('Prediction (Withdraw)', function(accounts) {
     assert.notEqual(0, fees, 'fees should not be zero');
     await contract.withdrawFees({from: accounts[0]});
 
+    util.log('skipping withdrawal period');
+    await web3Util.skipTime(dateUtil.daysToSeconds(10), web3);
+    util.log('time: ', await web3Util.getTimestamp(web3));
+
     // Purge contract.
     let contractBalance = await web3Util.getBalanceInEther(contract.address, web3);
     util.log('contractBalance:', contractBalance);
