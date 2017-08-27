@@ -14,11 +14,12 @@ export const FETCH_PREDICTIONS_BATCH = 15;
 // Market contract urls.
 export const MARKET_ADDRESS = {
   mainnet: '',
-  ropsten: '0x7b6103e6be6cfad55c167fa94c148ac459ecc847',
+  ropsten: '0x60b45651d19e1cdeeef802bfe64cd9dea6107b1b',
   testrpc: '0x85a84691547b7ccf19d7c31977a7f8c0af1fb25a'
 };
 
 // Old ropsten markets (most recent on top):
+// 0x60b45651d19e1cdeeef802bfe64cd9dea6107b1b
 // 0x7b6103e6be6cfad55c167fa94c148ac459ecc847
 // 0x385a77447f640b9a06bbbce70c6eaa401dce3810
 // 0xa2d93fe188660e0ff8fdf27dd32b6568f0822055
