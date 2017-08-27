@@ -146,7 +146,7 @@ class CreatePredictionComponent extends React.Component {
                   <div className="row">
 
                     {/* DAYS */}
-                    <div className="col-sm-4">
+                    <div className="col-sm-3">
                       <small className="text-muted">Days</small>
                       <NumberPicker
                         {...withdrawPeriodDays.props}
@@ -154,7 +154,7 @@ class CreatePredictionComponent extends React.Component {
                     </div>
 
                     {/* HOURS */}
-                    <div className="col-sm-4">
+                    <div className="col-sm-3">
                       <small className="text-muted">Hours</small>
                       <NumberPicker
                         min={0}
@@ -164,7 +164,7 @@ class CreatePredictionComponent extends React.Component {
                     </div>
 
                     {/* MINUTES */}
-                    <div className="col-sm-4">
+                    <div className="col-sm-3">
                       <small className="text-muted">Minutes</small>
                       <NumberPicker
                         min={0}
