@@ -21,7 +21,6 @@ import {
   PATH_ABOUT, USE_CACHE, PATH_LIST
 } from './constants';
 import './styles/index.css';
-import './styles/datetime.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/themes/bootstrap-slate-theme.css';
 import 'react-widgets/dist/css/react-widgets.css';

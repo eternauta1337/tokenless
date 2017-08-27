@@ -70,6 +70,10 @@ ol {
     border-radius: 1em;
 }
 
+.rw-calendar-grid {
+    background-color: #fff !important;
+}
+
 hr {
     display: block;
     height: 1px;

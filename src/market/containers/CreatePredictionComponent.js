@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-datetime';
 import * as dateUtil from '../../utils/DateUtil';
 import * as miscUtil from '../../utils/MiscUtil';
 import NumberPicker from 'react-widgets/lib/NumberPicker';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import { form } from 'react-inform';
 import ConnectComponent from '../../common/components/ConnectComponent';
 import {
@@ -119,7 +119,9 @@ class CreatePredictionComponent extends React.Component {
                 {/* BET END DATE */}
                 <div className={`form-group ${betEndDate.error !== undefined ? 'has-danger' : ''}`}>
                   <label>Resolution Date</label>
-                  <DatePicker
+                  <DateTimePicker
+                    className="date-component"
+                    step={DEBUG_MODE ? 1 : 15}
                     {...betEndDate.props}
                   />
                   <small className="text-danger">
